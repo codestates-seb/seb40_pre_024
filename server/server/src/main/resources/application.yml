@@ -1,0 +1,46 @@
+spring:
+
+#  ---------------------------------------------------
+#  h2 ??
+#  h2? ?? ????? ??????? ???? ???.
+
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:test
+#  jpa:
+#    hibernate:
+#      ddl-auto: create  # ??? ?? ??
+#    show-sql: true      # SQL ?? ??
+#    properties:
+#      hibernate:
+#        format_sql: true  # SQL pretty print
+#  ---------------------------------------------------
+
+#  ---------------------------------------------------
+#  mysql ??
+#  push ? ??? ? ?? ???? ??? ????.
+
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/mysql-test?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: admin
+#    password: ${DB_PASSWORD}
+#
+#  jpa:
+#    database: mysql
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        format_sql: true
+#        use_sql_comments: true
+#  ---------------------------------------------------
+
+
+server: # ?? ?? ??
+  servlet:
+    encoding:
+      force-response: true

@@ -1,6 +1,7 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 function App() {
-  return <div className="App">div</div>;
+  return <Routes></Routes>;
 }
 
 export default App;

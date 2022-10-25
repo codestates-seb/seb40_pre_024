@@ -27,6 +27,12 @@ const AddBtn = styled.button`
   height: 32px;
   margin-right: 16px;
   align-self: flex-end;
+  transition: 0.5s;
+  cursor: pointer;
+  &:hover {
+    background-color: #0074cc;
+    transition: 0.5s;
+  }
 `;
 export default function QuestionAdd() {
   const navigate = useNavigate();

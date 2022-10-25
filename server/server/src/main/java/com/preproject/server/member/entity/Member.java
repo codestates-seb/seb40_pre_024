@@ -20,20 +20,15 @@ public class Member extends Auditable {
     @Id
     private Long memberId;
 
-
-    @Length(min = 16, max = 16)
     @Column(nullable = false)
     private String memberPwd;
 
-    @Length(min = 1, max = 50)
     @Column(nullable = false)
     private String memberEmail;
 
-    @Length(min = 16, max = 16)
     @Column(nullable = false)
     private String memberName;
 
-    @Length(max = 300)
     private String memberImageUrl;
 
 }

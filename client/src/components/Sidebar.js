@@ -1,8 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ImEarth } from 'react-icons/im';
-import { ImCross } from 'react-icons/im';
 import { Link } from 'react-router-dom';
+
+function Sidebar() {
+  const [isActive, setIsActive] = useState(false);
+  const handleClick = (index) => {
+    setIsActive(index);
+  };
+  const menuItems = [
+    { name: 'Questions', link: '#' },
+    { name: 'Tags', link: '#' },
+    { name: 'Users', link: '#' },
+  ];
+
+  return (
+    <>
+      <Container>
+        <Menu>
+          <li>
+            <p>Public</p>
+            {menuItems.map((el, index) => {
+              return (
+                <MenuLink
+                  key={index}
+                  to={el.link}
+                  className={isActive === index ? 'isActive' : null}
+                  onClick={() => handleClick(index)}
+                >
+                  {index === 0 ? <EarthIcon /> : null}
+                  {el.name}
+                </MenuLink>
+              );
+            })}
+          </li>
+        </Menu>
+        <MenuTeams>
+          <p>
+            <strong>Stack Overflow for Teams</strong> - Start Collaborating and
+            sharing organizational knowledge.
+          </p>
+          <img alt="teamlogo" src={require('../assets/img/teams.png')} />
+          <Button
+            href="https://github.com/orgs/codestates-seb/projects/211/"
+            target="_blank"
+          >
+            Create a free Team
+          </Button>
+          <WhiteButton>Why Teams?</WhiteButton>
+        </MenuTeams>
+      </Container>
+    </>
+  );
+}
+
+export default Sidebar;
 
 // 사이드바 전체
 const Container = styled.nav`
@@ -37,12 +89,12 @@ const MenuLink = styled(Link)`
   position: relative;
   height: 35px;
   padding-left: 30px;
-  &:hover:active {
+  &.isActive {
     background-color: #eee;
     border-right: 5px #f48025 solid;
     opacity: 1;
     font-weight: bold;
-    transition: 0.1s ease-in-out;
+    transition: 0.2s ease-in-out;
   }
 `;
 
@@ -94,39 +146,3 @@ const EarthIcon = styled(ImEarth)`
   left: 8px;
   border: 0.1px solid #eee;
 `;
-
-function Sidebar() {
-  return (
-    <>
-      <Container>
-        <Menu>
-          <li>
-            <p>Public</p>
-            <MenuLink to="#">
-              <EarthIcon />
-              Questions
-            </MenuLink>
-            <MenuLink to="#">Tags</MenuLink>
-            <MenuLink to="#">Users</MenuLink>
-          </li>
-        </Menu>
-        <MenuTeams>
-          <p>
-            <strong>Stack Overflow for Teams</strong> - Start Collaborating and
-            sharing organizational knowledge.
-          </p>
-          <img alt="teamlogo" src={require('../assets/img/teams.png')} />
-          <Button
-            href="https://github.com/orgs/codestates-seb/projects/211/"
-            target="_blank"
-          >
-            Create a free Team
-          </Button>
-          <WhiteButton>Why Teams?</WhiteButton>
-        </MenuTeams>
-      </Container>
-    </>
-  );
-}
-
-export default Sidebar;

@@ -6,6 +6,7 @@ import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.member.service.MemberService;
 
+import com.preproject.server.response.SingleResponseDto;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -33,9 +34,9 @@ public class MemberController {
         Member member = mapper.memberDtoPostToMember(dto);
         Member createdMember = service.createMember(member);
         MemberDto.Response response = mapper.memberToMemberDtoResponse(createdMember);
+        SingleResponseDto<MemberDto.Response> singleResponseDto = new SingleResponseDto<>(response);
 
-
-        return new ResponseEntity(response,HttpStatus.CREATED);
+        return new ResponseEntity(singleResponseDto,HttpStatus.CREATED);
     }
 
 
@@ -52,7 +53,8 @@ public class MemberController {
 
         Member findMember = service.findMember(memberId);
         MemberDto.Response response = mapper.memberToMemberDtoResponse(findMember);
-        return new ResponseEntity(response, HttpStatus.OK);
+        SingleResponseDto<MemberDto.Response> singleResponseDto = new SingleResponseDto<>(response);
+        return new ResponseEntity(singleResponseDto, HttpStatus.OK);
     }
 
 

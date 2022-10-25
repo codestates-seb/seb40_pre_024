@@ -25,9 +25,10 @@ public class MemberService {
 
 
     public Member removeMember(Long memberId) {
-        Member deleteMember = verifyExistsMember(memberId);
-        deleteMember.setMemberStatus(MemberStatus.LEAVE);
-        return deleteMember;
+        Member deletingMember = verifyExistsMember(memberId);
+        deletingMember.setMemberStatus(MemberStatus.LEAVE);
+        Member deletedMember = memberRepository.save(deletingMember);
+        return deletedMember;
     }
 
     public Member findMember(Long memberId) {

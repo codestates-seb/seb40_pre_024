@@ -71,7 +71,6 @@ const RightSidebar = () => {
         <header className="header">Featured on Meta</header>
         <li>
           <BiMessageAlt color="#45a2d9" />
-          <BiMessageAlt color="#45a2d9" />
           <a href="https://meta.stackexchange.com/questions/383022/the-2022-community-a-thon-has-begun?cb=1">
             The 2022 Community-a-thon has begun!
           </a>

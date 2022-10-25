@@ -1,11 +1,15 @@
 package com.preproject.server.member.controller;
 
+import com.preproject.server.dto.MultiResponse;
+import com.preproject.server.dto.PageDto;
+import com.preproject.server.dto.SingleResponse;
 import com.preproject.server.member.dto.MemberDto;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.member.service.MemberService;
 import com.preproject.server.member.stub.MemberStubData;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,8 +30,6 @@ public class MemberController {
     private final MemberService service;
 
 
-
-
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post dto) {
 
@@ -36,8 +38,9 @@ public class MemberController {
         //stub
         Member stub = MemberStubData.stubList.get(0);
         MemberDto.Response stubResponse = mapper.memberToMemberDtoResponse(stub);
+        SingleResponse<MemberDto.Response> response = new SingleResponse<>(stubResponse);
 
-        return new ResponseEntity(stubResponse, HttpStatus.CREATED);
+        return new ResponseEntity(response,HttpStatus.CREATED);
     }
 
     @PatchMapping("/{member-id}")
@@ -50,9 +53,10 @@ public class MemberController {
         //stub
         Member stub = MemberStubData.stubList.get(0);
         MemberDto.Response stubResponse = mapper.memberToMemberDtoResponse(stub);
+        SingleResponse<MemberDto.Response> response = new SingleResponse<>(stubResponse);
 
 
-        return new ResponseEntity(stubResponse, HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
 
@@ -62,26 +66,43 @@ public class MemberController {
         //stub
         Member stub = MemberStubData.stubList.get(0);
         MemberDto.Response stubResponse = mapper.memberToMemberDtoResponse(stub);
+        SingleResponse<MemberDto.Response> response = new SingleResponse<>(stubResponse);
 
-        return new ResponseEntity(stubResponse, HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
 
     }
 
-//    @GetMapping
-//    public ResponseEntity getMembers(@Positive @RequestParam("size") Integer size,
-//                                     @Positive @RequestParam("page") Integer page) {
-//
-//        //stub
-//        List<Member> stub = new ArrayList<>();
-//        for (int i = 0; i < size; i++) {
-//            stub.add(MemberStubData.stubList.get(i));
-//        }
-//
-//
-//
-//
-//    }
+    @GetMapping
+    public ResponseEntity getMembers(@Positive @RequestParam("size") Integer size,
+                                     @Positive @RequestParam("page") Integer page) {
 
+
+        //stub
+        List<Member> stub = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            stub.add(MemberStubData.stubList.get(i));
+        }
+        Page<Member> memberPage = new PageImpl<>(
+                stub,
+                PageRequest.of(page,size,Sort.by(Sort.Direction.DESC,"memberId"))
+                ,stub.size());
+        List<MemberDto.Response> responses = mapper.memberListToMemberDtoResponseList(stub);
+        PageDto pageDto = new PageDto(
+                page,stub.size(), 20
+        );
+        MultiResponse<MemberDto.Response> response = new MultiResponse<>(responses, pageDto);
+
+
+        return new ResponseEntity(response, HttpStatus.OK);
+
+
+    }
+
+    @DeleteMapping("/{member-id}")
+    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId) {
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 
 }

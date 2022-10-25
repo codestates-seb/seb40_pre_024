@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 public class MemberDto {
@@ -16,15 +18,17 @@ public class MemberDto {
     @Setter
     public static class Post{
 
-
-        private Long memberId;
-
+        @NotBlank
+        @Length(max = 50)
         @Email
         private String memberEmail;
 
         //정규식 필요
+        @NotBlank
+        @Pattern(regexp = "^[가-힣a-zA-Z]*$")
         private String memberName;
 
+        @Length(max = 300)
         private String memberImageUrl;
     }
 
@@ -35,6 +39,8 @@ public class MemberDto {
     public static class Patch{
 
         //정규식 필요
+        @NotBlank
+        @Pattern(regexp = "^[가-힣a-zA-Z]*$")
         private String memberName;
 
     }

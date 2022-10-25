@@ -3,9 +3,10 @@ package com.preproject.server.member.service;
 import com.preproject.server.exception.BusinessException;
 import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.member.entity.Member;
+import com.preproject.server.member.enums.MemberStatus;
 import com.preproject.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
 
     public Member createMember(Member member) {
 
@@ -23,14 +23,11 @@ public class MemberService {
         return savedMember;
     }
 
-    public Member updateMember(Member member) {
 
-        return null;
-    }
-
-    public Member deleteMember(Long memberId) {
-
-        return null;
+    public Member removeMember(Long memberId) {
+        Member deleteMember = verifyExistsMember(memberId);
+        deleteMember.setMemberStatus(MemberStatus.LEAVE);
+        return deleteMember;
     }
 
     public Member findMember(Long memberId) {
@@ -39,10 +36,18 @@ public class MemberService {
         return findMember;
     }
 
-    public Page<Member> findMembers() {
+//    public Page<Member> findMembers() {
+//
+//        return null;
+//    }
 
-        return null;
-    }
+
+    //    public Member updateMember(Member member) {
+//
+//        return null;
+//    }
+
+    //----------------------- 핸들러 메소드 영역 -------------------------------
 
 
     private Member verifyExistsMember(Long memberId) {

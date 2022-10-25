@@ -1,6 +1,7 @@
 package com.preproject.server.member.entity;
 
 import com.preproject.server.auditable.Auditable;
+import com.preproject.server.member.enums.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,9 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private String memberName;
 
-    private String memberImageUrl;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MemberStatus memberStatus = MemberStatus.ACTIVE;
 
+    private String memberImageUrl;
 }

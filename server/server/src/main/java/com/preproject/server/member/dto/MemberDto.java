@@ -28,6 +28,10 @@ public class MemberDto {
         @Pattern(regexp = "^[가-힣a-zA-Z]*$")
         private String memberName;
 
+        @NotBlank
+        @Length(min = 8, max = 16)
+        private String memberPwd;
+
         @Length(max = 300)
         private String memberImageUrl;
     }

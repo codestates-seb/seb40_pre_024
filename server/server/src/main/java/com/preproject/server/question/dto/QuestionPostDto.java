@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class QuestionPostDto {
 
-    private Long questionId;
     private String questionTitle;
     private String questionContent;
 

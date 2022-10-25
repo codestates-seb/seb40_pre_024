@@ -1,9 +1,11 @@
 package com.preproject.server.answer.entity;
 
 
+import com.preproject.server.auditable.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 
@@ -13,16 +15,13 @@ import javax.persistence.*;
 @Setter
 @Table(name = "ANSWERS")
 
-public class Answer {
+public class Answer extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Length(min = 5, max = 1000)
+    @Column(nullable = false)
     private String answerContent;
 
-    public Answer(String answerContent) {
-
-        this.answerContent = answerContent;
-    }
 }

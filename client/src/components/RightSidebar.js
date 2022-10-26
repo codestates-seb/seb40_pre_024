@@ -8,8 +8,11 @@ const Sidebar = styled.div`
   border: 1px solid hsl(47, 65%, 84%);
   background-color: hsl(47, 83%, 91%);
   color: #525960;
+  width: 298px;
   box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
     0 2px 8px hsla(0, 0%, 0%, 0.05);
+  float: right;
+  margin-bottom: 16px;
 
   header {
     padding: 12px 1px;
@@ -17,6 +20,7 @@ const Sidebar = styled.div`
     background-color: #faf3d6;
     font-size: 13px;
     font-weight: 700;
+    margin-left: -10px;
   }
 
   ul {
@@ -26,12 +30,16 @@ const Sidebar = styled.div`
   }
 
   li {
-    margin: 12px 0;
+    margin: 1px 0;
     font-size: 13px;
     list-style: none;
   }
   a {
     text-decoration-line: none;
+  }
+
+  svg {
+    padding-right: 10px;
   }
 `;
 
@@ -73,32 +81,32 @@ const RightSidebar = () => {
       <ul>
         <header className="header">Featured on Meta</header>
         <li>
-          <BiMessageAlt color="#45a2d9" />
+          <BiMessageAlt color="#45a2d9" size={16} />
           <a href="https://meta.stackexchange.com/questions/383022/the-2022-community-a-thon-has-begun?cb=1">
             The 2022 Community-a-thon has begun!
           </a>
         </li>
         <li>
-          <BiMessageAlt color="#45a2d9" />
+          <BiMessageAlt color="#45a2d9" size={16} />
 
           <a href="https://meta.stackexchange.com/questions/383026/mobile-app-infrastructure-being-decommissioned?cb=1">
             Mobile app infrastructure being decommissioned
           </a>
         </li>
         <li>
-          <FaStackOverflow />
+          <FaStackOverflow size={16} />
           <a href="https://meta.stackoverflow.com/questions/420897/staging-ground-workflow-canned-comments?cb=1">
             Staging Ground Workflow: Canned Comments
           </a>
         </li>
         <li>
-          <FaStackOverflow />
+          <FaStackOverflow size={16} />
           <a href="https://meta.stackoverflow.com/questions/406928/the-script-tag-is-being-burninated?cb=1">
             The [script] tag is being burninated{' '}
           </a>
         </li>
         <li>
-          <FaStackOverflow />
+          <FaStackOverflow size={16} />
           <a href="https://meta.stackoverflow.com/questions/421038/ask-wizard-test-graduation?cb=1">
             Ask Wizard Test Graduation
           </a>

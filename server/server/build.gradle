@@ -21,7 +21,7 @@ repositories {
 dependencies {
 
     //JPA
-//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     //WEB
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -53,11 +53,11 @@ dependencies {
 //    implementation 'mysql:mysql-connector-java'
 
     //H2 로컬용
-//    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.h2database:h2'
 
     //Spring Security
     //아직 사용하지 않으므로, 추후 추가
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 tasks.named('test') {

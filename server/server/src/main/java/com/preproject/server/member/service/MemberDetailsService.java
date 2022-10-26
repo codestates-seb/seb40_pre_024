@@ -4,16 +4,19 @@ import com.preproject.server.exception.BusinessException;
 import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.repository.MemberRepository;
+import com.preproject.server.utils.CustomAuthorityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class MemberDetailsService implements UserDetailsService {
 
     private final MemberRepository repository;
-
+    private final CustomAuthorityUtil customAuthorityUtil;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

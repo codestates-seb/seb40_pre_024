@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         //JWT 토큰 발행 해야함
-        Member authenticatedMember = (Member) authResult;
+        Member authenticatedMember = (Member) authResult.getPrincipal();
         String accessToken = delegateGenerateAccessToken(authenticatedMember);
         String refreshToken = delegateGenerateRefreshToken(authenticatedMember.getMemberName());
 

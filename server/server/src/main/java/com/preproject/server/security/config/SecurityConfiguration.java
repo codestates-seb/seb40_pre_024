@@ -5,6 +5,7 @@ import com.preproject.server.filter.JwtAuthenticationFilter;
 import com.preproject.server.jwt.JwtTokenizer;
 import com.preproject.server.security.handler.CustomAuthenticationFailureHandler;
 import com.preproject.server.security.handler.CustomAuthenticationSuccesshandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +23,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
 
+    private final JwtTokenizer jwtTokenizer;
     @Value("${client.url}")
     private String clientUrl;
 
@@ -74,7 +77,7 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
 
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
-            JwtTokenizer jwtTokenizer = new JwtTokenizer();
+
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
 

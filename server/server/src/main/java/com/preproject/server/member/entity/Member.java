@@ -12,11 +12,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -43,12 +45,16 @@ public class Member extends Auditable implements UserDetails {
 
     private String memberImageUrl;
 
-    @ElementCollection
+
+    //Fetch 전략을 EAGER로 하지 않으면 LAZY 전략이 디폴트이므로,
+    //getAuthorities() 메소드가 트랜잭션이 종료된 시점이라 영속성 컨텍스트가 존재하지 않아서 데이터를 가져오지 못하고 에러
+    @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.getRoles().stream().map(strAuth -> new SimpleGrantedAuthority("ROLE_" + strAuth)).collect(Collectors.toList());
+        List<GrantedAuthority> authorities = this.getRoles().stream().map(strAuth -> new SimpleGrantedAuthority("ROLE_" + strAuth)).collect(Collectors.toList());
+        return authorities;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.enums.MemberStatus;
 import com.preproject.server.member.repository.MemberRepository;
+import com.preproject.server.utils.CustomAuthorityUtil;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,12 +16,14 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
     private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtil customAuthorityUtil;
+
     public Member createMember(Member member) {
 
         verifyNotExistsMember(member.getMemberEmail(), member.getMemberName());
         member.setMemberPwd(passwordEncoder.encode(member.getPassword()));
+        member.setRoles(customAuthorityUtil.getRole());
         Member savedMember = memberRepository.save(member);
 
         return savedMember;

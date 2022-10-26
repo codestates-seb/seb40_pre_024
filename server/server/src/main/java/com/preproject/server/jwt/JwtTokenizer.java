@@ -2,6 +2,7 @@ package com.preproject.server.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,16 +11,19 @@ import java.security.Key;
 import java.util.*;
 
 
+@Component
 public class JwtTokenizer {
-
-    @Value("${jwt.secretKey}")
+    @Getter
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.access-token-exp}")
-    private int accessTokenExp;
+    @Getter
+    @Value("${jwt.access-token-expiration-minutes}")
+    private int accessTokenExpirationMinutes;
 
-    @Value("${jwt.refresh-token-exp}")
-    private int refreshTokenExp;
+    @Getter
+    @Value("${jwt.refresh-token-expiration-minutes}")
+    private int refreshTokenExpirationMinutes;
 
 
 
@@ -63,14 +67,14 @@ public class JwtTokenizer {
     public Date getAccessTokenExpDate() {
 
         Calendar currentCalendar = Calendar.getInstance();
-        currentCalendar.add(Calendar.MINUTE, accessTokenExp);
+        currentCalendar.add(Calendar.MINUTE, accessTokenExpirationMinutes);
         return currentCalendar.getTime();
     }
 
     public Date getRefreshTokenExpDate() {
 
         Calendar currentCalendar = Calendar.getInstance();
-        currentCalendar.add(Calendar.MINUTE, refreshTokenExp);
+        currentCalendar.add(Calendar.MINUTE, refreshTokenExpirationMinutes);
         return currentCalendar.getTime();
     }
 
@@ -85,9 +89,9 @@ public class JwtTokenizer {
 
     public Key getSecretKeyFromPlainSecretKey() {
 
-        byte[] bytes = this.secretKey.getBytes();
-        SecretKey secretKey = Keys.hmacShaKeyFor(bytes);
-        return secretKey;
+        byte[] bytes = secretKey.getBytes();
+        SecretKey key = Keys.hmacShaKeyFor(bytes);
+        return key;
 
     }
 

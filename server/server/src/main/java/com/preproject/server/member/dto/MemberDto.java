@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 public class MemberDto {
 
@@ -62,6 +63,8 @@ public class MemberDto {
         private String memberName;
 
         private String memberImageUrl;
+
+        private List<String> roles;
 
     }
 }

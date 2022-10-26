@@ -1,7 +1,9 @@
 package com.preproject.server.question.controller;
 
+import com.preproject.server.question.dto.QuestionAnswerDto;
 import com.preproject.server.question.dto.QuestionPatchDto;
 import com.preproject.server.question.dto.QuestionPostDto;
+import com.preproject.server.question.dto.QuestionResponseDto;
 import com.preproject.server.question.entity.Question;
 import com.preproject.server.question.mapper.QuestionMapper;
 import com.preproject.server.question.service.QuestionService;
@@ -34,9 +36,12 @@ public class QuestionController {
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
 
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
+        Question createdQuestion = service.createQuestion(question);
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.questionToQuestionResponseDto(question)), HttpStatus.CREATED);
+        SingleResponseDto<QuestionResponseDto> singleResponseDto =
+                new SingleResponseDto<>(mapper.questionToQuestionResponseDto(createdQuestion));
+
+        return new ResponseEntity<>(singleResponseDto, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{question-id}")
@@ -44,17 +49,22 @@ public class QuestionController {
                                         @Valid @RequestBody QuestionPatchDto questionPatchDto) {
 
         Question question = mapper.questionPatchDtoToQuestion(questionPatchDto);
+        Question updateQuestion = service.updateQuestion(question);
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.questionToQuestionResponseDto(question)), HttpStatus.OK);
+        SingleResponseDto<QuestionResponseDto> singleResponseDto =
+                new SingleResponseDto<>(mapper.questionToQuestionResponseDto(updateQuestion));
+
+        return new ResponseEntity<>(singleResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}") // 질문을 클릭했을 때
     public ResponseEntity getQuestion(@PathVariable("question-id") @Positive Long questionId){
         Question question = service.findQuestion(questionId);
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.questionToQuestionResponseDto(question)), HttpStatus.OK);
+        SingleResponseDto<QuestionAnswerDto> singleResponseDto =
+                new SingleResponseDto<>(mapper.questionToQuestionAnswerDto(question));
+
+        return new ResponseEntity<>(singleResponseDto, HttpStatus.OK);
     }
 
     @GetMapping // 전체 질문 조회
@@ -63,9 +73,11 @@ public class QuestionController {
         Page<Question> pageQuestions = service.findQuestions(page - 1, size);
         List<Question> questions = pageQuestions.getContent();
 
+        MultiResponseDto<QuestionResponseDto> multiResponseDto =
+                new MultiResponseDto<>(mapper.questionsToQuestionResponseDtoList(questions), pageQuestions);
 
-        return new ResponseEntity(
-                new MultiResponseDto<>(mapper.questionsToQuestionResponseDtoList(questions), pageQuestions), HttpStatus.OK);
+
+        return new ResponseEntity(multiResponseDto, HttpStatus.OK);
     }
 
 

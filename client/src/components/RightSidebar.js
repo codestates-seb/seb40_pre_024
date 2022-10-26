@@ -11,27 +11,37 @@ const Sidebar = styled.div`
   box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
     0 2px 8px hsla(0, 0%, 0%, 0.05);
 
+  width: 298px;
+  float: right;
+  margin-bottom: 16px;
+
   header {
     padding: 12px 1px;
     border-bottom: 1px solid #efe5c5;
     background-color: #faf3d6;
     font-size: 13px;
     font-weight: 700;
+    margin-left: -10px;
   }
 
   ul {
     margin: 0;
-    padding: 12px 15px;
+    padding: 0px 15px 12px 15px;
     background-color: #fdf7e1;
   }
 
   li {
-    margin: 12px 0;
+    margin: 1px 0;
     font-size: 13px;
     list-style: none;
+    padding-top: 10px;
   }
   a {
     text-decoration-line: none;
+  }
+
+  svg {
+    padding-right: 10px;
   }
 `;
 
@@ -73,32 +83,32 @@ const RightSidebar = () => {
       <ul>
         <header className="header">Featured on Meta</header>
         <li>
-          <BiMessageAlt color="#45a2d9" />
+          <BiMessageAlt color="#45a2d9" size={16} />
           <a href="https://meta.stackexchange.com/questions/383022/the-2022-community-a-thon-has-begun?cb=1">
             The 2022 Community-a-thon has begun!
           </a>
         </li>
         <li>
-          <BiMessageAlt color="#45a2d9" />
+          <BiMessageAlt color="#45a2d9" size={16} />
 
           <a href="https://meta.stackexchange.com/questions/383026/mobile-app-infrastructure-being-decommissioned?cb=1">
             Mobile app infrastructure being decommissioned
           </a>
         </li>
         <li>
-          <FaStackOverflow />
+          <FaStackOverflow size={16} />
           <a href="https://meta.stackoverflow.com/questions/420897/staging-ground-workflow-canned-comments?cb=1">
             Staging Ground Workflow: Canned Comments
           </a>
         </li>
         <li>
-          <FaStackOverflow />
+          <FaStackOverflow size={16} />
           <a href="https://meta.stackoverflow.com/questions/406928/the-script-tag-is-being-burninated?cb=1">
             The [script] tag is being burninated{' '}
           </a>
         </li>
         <li>
-          <FaStackOverflow />
+          <FaStackOverflow size={16} />
           <a href="https://meta.stackoverflow.com/questions/421038/ask-wizard-test-graduation?cb=1">
             Ask Wizard Test Graduation
           </a>
@@ -108,7 +118,7 @@ const RightSidebar = () => {
         <header className="header">Hot Meta Posts</header>
         <li>
           <a href="https://meta.stackoverflow.com/questions/421007/should-i-edit-questions-to-tidy-code-snippets?cb=1">
-            Should I edit questions to tidy code snippets?
+            5 Should I edit questions to tidy code snippets?
           </a>
         </li>
       </ul>

@@ -8,9 +8,10 @@ const Sidebar = styled.div`
   border: 1px solid hsl(47, 65%, 84%);
   background-color: hsl(47, 83%, 91%);
   color: #525960;
-  width: 298px;
   box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
     0 2px 8px hsla(0, 0%, 0%, 0.05);
+
+  width: 298px;
   float: right;
   margin-bottom: 16px;
 

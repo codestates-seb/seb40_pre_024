@@ -25,7 +25,7 @@ const Sidebar = styled.div`
 
   ul {
     margin: 0;
-    padding: 12px 15px;
+    padding: 0px 15px 12px 15px;
     background-color: #fdf7e1;
   }
 
@@ -33,6 +33,7 @@ const Sidebar = styled.div`
     margin: 1px 0;
     font-size: 13px;
     list-style: none;
+    padding-top: 10px;
   }
   a {
     text-decoration-line: none;
@@ -116,7 +117,7 @@ const RightSidebar = () => {
         <header className="header">Hot Meta Posts</header>
         <li>
           <a href="https://meta.stackoverflow.com/questions/421007/should-i-edit-questions-to-tidy-code-snippets?cb=1">
-            Should I edit questions to tidy code snippets?
+            5 Should I edit questions to tidy code snippets?
           </a>
         </li>
       </ul>

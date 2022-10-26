@@ -2,13 +2,16 @@ package com.preproject.server.security.config;
 
 
 import com.preproject.server.filter.JwtAuthenticationFilter;
+import com.preproject.server.filter.JwtVerificationFilter;
 import com.preproject.server.jwt.JwtTokenizer;
 import com.preproject.server.security.handler.CustomAuthenticationFailureHandler;
 import com.preproject.server.security.handler.CustomAuthenticationSuccesshandler;
+import com.preproject.server.utils.CustomAuthorityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -28,6 +31,7 @@ public class SecurityConfiguration {
 
 
     private final JwtTokenizer jwtTokenizer;
+    private final CustomAuthorityUtil customAuthorityUtil;
     @Value("${client.url}")
     private String clientUrl;
 
@@ -63,6 +67,17 @@ public class SecurityConfiguration {
 //                .authenticationEntryPoint() //인증 처리시 예외처리 핸들러
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.GET, "/api/members/**").hasAnyRole("USER") //멤버 정보
+                        .antMatchers(HttpMethod.POST, "/api/members/logout").hasAnyRole("USER") //멤버 로그아웃
+
+                        .antMatchers(HttpMethod.DELETE, "/api/questions/**").hasAnyRole("USER") //질문 삭제
+                        .antMatchers(HttpMethod.PATCH, "/api/questions/**").hasAnyRole("USER") //질문 수정
+                        .antMatchers(HttpMethod.POST, "/api/questions").hasAnyRole("USER") //질문 등록
+
+                        .antMatchers(HttpMethod.DELETE,"/api/answer/**").hasAnyRole("USER") //답변 삭제
+                        .antMatchers(HttpMethod.PATCH,"/api/answer/**").hasAnyRole("USER") //답변 수정
+                        .antMatchers(HttpMethod.POST,"/api/answer").hasAnyRole("USER") //답변 등록
+
                         .anyRequest().permitAll() //임시로 모든 요청 허용
                 );
 
@@ -86,7 +101,13 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccesshandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
-            builder.addFilter(jwtAuthenticationFilter);
+
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtil);
+
+
+            builder.addFilter(jwtAuthenticationFilter)
+                            .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+
 
         }
     }

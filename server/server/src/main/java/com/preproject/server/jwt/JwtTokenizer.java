@@ -1,5 +1,7 @@
 package com.preproject.server.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
@@ -64,6 +66,15 @@ public class JwtTokenizer {
     }
 
 
+    /** 토큰 검증 **/
+    public Map<String, Object> verifyJws(String jws) {
+        Jws<Claims> jwsClaims = getJwsClaims(jws);
+        Map<String, Object> claims = jwsClaims.getBody();
+        return claims;
+    }
+
+
+
     public Date getAccessTokenExpDate() {
 
         Calendar currentCalendar = Calendar.getInstance();
@@ -85,14 +96,21 @@ public class JwtTokenizer {
         return currentCalendar.getTime();
     }
 
-
-
     public Key getSecretKeyFromPlainSecretKey() {
 
         byte[] bytes = secretKey.getBytes();
         SecretKey key = Keys.hmacShaKeyFor(bytes);
         return key;
 
+    }
+
+    private Jws<Claims> getJwsClaims(String jws) {
+
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(getSecretKeyFromPlainSecretKey())
+                .build()
+                .parseClaimsJws(jws);
+
+        return claimsJws;
     }
 
 

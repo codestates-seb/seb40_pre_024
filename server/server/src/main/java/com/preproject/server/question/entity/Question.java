@@ -40,6 +40,6 @@ public class Question extends Auditable {
         this.member = member;
     }
 
-    @OneToMany(mappedBy = "answer")
+    @OneToMany(mappedBy = "question")
     private List<Answer> answer = new ArrayList<>();
 }

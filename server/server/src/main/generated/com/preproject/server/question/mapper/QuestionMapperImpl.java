@@ -1,5 +1,6 @@
 package com.preproject.server.question.mapper;
 
+import com.preproject.server.question.dto.QuestionAnswerDto;
 import com.preproject.server.question.dto.QuestionPatchDto;
 import com.preproject.server.question.dto.QuestionPostDto;
 import com.preproject.server.question.dto.QuestionResponseDto;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-10-25T18:54:54+0900",
+    date = "2022-10-26T15:00:18+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.16 (Azul Systems, Inc.)"
 )
 @Component
@@ -58,8 +59,28 @@ public class QuestionMapperImpl implements QuestionMapper {
         questionResponseDto.setQuestionTitle( question.getQuestionTitle() );
         questionResponseDto.setQuestionContent( question.getQuestionContent() );
         questionResponseDto.setQuestionViewed( question.getQuestionViewed() );
+        questionResponseDto.setCreatedAt( question.getCreatedAt() );
+        questionResponseDto.setModifiedAt( question.getModifiedAt() );
 
         return questionResponseDto;
+    }
+
+    @Override
+    public QuestionAnswerDto questionToQuestionAnswerDto(Question question) {
+        if ( question == null ) {
+            return null;
+        }
+
+        QuestionAnswerDto questionAnswerDto = new QuestionAnswerDto();
+
+        questionAnswerDto.setQuestionId( question.getQuestionId() );
+        questionAnswerDto.setQuestionTitle( question.getQuestionTitle() );
+        questionAnswerDto.setQuestionContent( question.getQuestionContent() );
+        questionAnswerDto.setQuestionViewed( question.getQuestionViewed() );
+        questionAnswerDto.setCreatedAt( question.getCreatedAt() );
+        questionAnswerDto.setModifiedAt( question.getModifiedAt() );
+
+        return questionAnswerDto;
     }
 
     @Override

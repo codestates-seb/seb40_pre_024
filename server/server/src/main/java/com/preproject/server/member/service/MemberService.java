@@ -7,6 +7,7 @@ import com.preproject.server.member.enums.MemberStatus;
 import com.preproject.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -15,9 +16,11 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final PasswordEncoder passwordEncoder;
     public Member createMember(Member member) {
 
         verifyNotExistsMember(member.getMemberEmail(), member.getMemberName());
+        member.setMemberPwd(passwordEncoder.encode(member.getPassword()));
         Member savedMember = memberRepository.save(member);
 
         return savedMember;
@@ -26,7 +29,7 @@ public class MemberService {
 
     public Member removeMember(Long memberId) {
         Member deletingMember = verifyExistsMember(memberId);
-        deletingMember.setMemberStatus(MemberStatus.LEAVE);
+//        deletingMember.setMemberStatus(MemberStatus.LEAVE);
         Member deletedMember = memberRepository.save(deletingMember);
         return deletedMember;
     }
@@ -65,6 +68,8 @@ public class MemberService {
                 findMember -> {throw new BusinessException(ExceptionCode.MEMBER_ALREADY_EXISTS);});
 
     }
+
+
 
 
 }

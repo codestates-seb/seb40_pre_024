@@ -30,9 +30,6 @@ const Sidebar = styled.div`
     font-size: 13px;
     list-style: none;
   }
-  a {
-    text-decoration-line: none;
-  }
 `;
 
 const RightSidebar = () => {

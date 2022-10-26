@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
@@ -55,6 +56,14 @@ public class MemberController {
         MemberDto.Response response = mapper.memberToMemberDtoResponse(findMember);
         SingleResponseDto<MemberDto.Response> singleResponseDto = new SingleResponseDto<>(response);
         return new ResponseEntity(singleResponseDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity logOut(HttpServletRequest request) {
+        System.out.println("로그아웃");
+        service.outMember(request);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 

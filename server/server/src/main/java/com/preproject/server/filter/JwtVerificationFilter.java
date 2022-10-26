@@ -1,8 +1,13 @@
 package com.preproject.server.filter;
 
+import com.preproject.server.exception.BusinessException;
+import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.jwt.JwtTokenizer;
 import com.preproject.server.utils.CustomAuthorityUtil;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -14,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,20 +31,34 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     //토큰이 유효한지
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtil customAuthorityUtil;
-
+    private final RedisTemplate redisTemplate;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
 
         String header = request.getHeader("Authorization");
         String jws = header.replace("bearer", "");
 
+        //토큰 검증
         Map<String, Object> claims = jwtTokenizer.verifyJws(jws); //검증 부분
+
+        //로그아웃 토큰 여부 확인, 정상적인 토큰일 경우만 로그아웃 여부 확인
+        verifyLoginToken(jws);
 
         setSecurityContext(claims);
 
         filterChain.doFilter(request,response);
     }
 
+    private void verifyLoginToken(String jws) {
+
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String key = "logout_" + jws;
+        String username = (String)valueOperations.get(key);
+
+        if(username != null)
+            throw new BusinessException(ExceptionCode.ALREADY_LOGOUT_MEMBER);
+    }
 
 
     @Override
@@ -62,4 +82,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                 new UsernamePasswordAuthenticationToken(username, null,grantedAuthorities);
         sc.setAuthentication(usernamePasswordAuthenticationToken);
     }
+
+
 }

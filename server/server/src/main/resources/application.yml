@@ -54,10 +54,16 @@ server: # ?? ?? ??
 
 jwt: # 속성 생성
   secret-key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 10
+  access-token-expiration-minutes: 120
   refresh-token-expiration-minutes: 420
 
 client:
   url: https://example.com
+
+redis:
+  network:
+    host: localhost
+    port: 6379
+
 
 

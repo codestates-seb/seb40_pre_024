@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class AnswerResponseDto {
     private long answerId;
     private String answerContent;
-    private LocalDateTime creationDate;
-    private LocalDateTime lastEditDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private MemberDto.Response member;
 }

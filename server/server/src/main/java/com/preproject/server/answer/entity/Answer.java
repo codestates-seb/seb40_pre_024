@@ -2,6 +2,8 @@ package com.preproject.server.answer.entity;
 
 
 import com.preproject.server.auditable.Auditable;
+import com.preproject.server.member.entity.Member;
+import com.preproject.server.question.entity.Question;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +22,23 @@ public class Answer extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
 
-    @Length(min = 5, max = 1000)
     @Column(nullable = false)
     private String answerContent;
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    public void addMember(Member member) {
+        this.member = member;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "QUESTION_ID")
+    private Question question;
+
+    public void addQuestion(Question question) {
+        this.question = question;
+    }
 
 }

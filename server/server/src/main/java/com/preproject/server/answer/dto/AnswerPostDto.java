@@ -9,10 +9,9 @@ import javax.validation.constraints.Positive;
 @Getter
 public class AnswerPostDto {
 
-    private long answerId;
-
     @Length(min = 5, max = 1000)
     @NotBlank
     private String answerContent;
 
-    }
+
+}

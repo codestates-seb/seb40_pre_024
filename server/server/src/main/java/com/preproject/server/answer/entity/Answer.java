@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -18,6 +19,7 @@ import javax.persistence.*;
 @Table(name = "ANSWERS")
 
 public class Answer extends Auditable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
@@ -41,4 +43,7 @@ public class Answer extends Auditable {
         this.question = question;
     }
 
+    public Answer(String answerContent) {
+        this.answerContent = answerContent;
+    }
 }

@@ -61,13 +61,11 @@ public class QuestionService {
         return findQeustions;
     }
 
-    public Question deleteQuestion(Long questionId){
+    public void deleteQuestion(Long questionId){
 
         Question findQeustion = verifyExistsQuestion(questionId);
 
         questionRepository.delete(findQeustion);
-
-        return null;
 
     }
 

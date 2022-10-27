@@ -1,5 +1,6 @@
 package com.preproject.server.question.controller;
 
+import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.question.dto.QuestionAnswerDto;
 import com.preproject.server.question.dto.QuestionPatchDto;
 import com.preproject.server.question.dto.QuestionPostDto;
@@ -9,6 +10,7 @@ import com.preproject.server.question.mapper.QuestionMapper;
 import com.preproject.server.question.service.QuestionService;
 import com.preproject.server.response.MultiResponseDto;
 import com.preproject.server.response.SingleResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +21,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@RestController
-@RequestMapping("/questions")
 @Validated
+@RequestMapping("/api/questions")
+@RestController
 public class QuestionController {
 
     private final QuestionMapper mapper;
     private final QuestionService service;
 
-    public QuestionController(QuestionMapper mapper, QuestionService service) {
+    private final MemberMapper memberMapper;
+
+    public QuestionController(QuestionMapper mapper, QuestionService service, MemberMapper memberMapper) {
         this.mapper = mapper;
         this.service = service;
+        this.memberMapper = memberMapper;
     }
 
     @PostMapping
@@ -49,6 +54,7 @@ public class QuestionController {
                                         @Valid @RequestBody QuestionPatchDto questionPatchDto) {
 
         Question question = mapper.questionPatchDtoToQuestion(questionPatchDto);
+        question.setQuestionId(questionId);
         Question updateQuestion = service.updateQuestion(question);
 
         SingleResponseDto<QuestionResponseDto> singleResponseDto =

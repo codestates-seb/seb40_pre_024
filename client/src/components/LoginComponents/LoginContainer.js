@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import Logo from '../../assets/img/Logo.png';
 import { useNavigate } from 'react-router-dom';
-
+import { BiLinkExternal } from 'react-icons/bi';
 const Container = styled.div`
   width: 300px;
   display: flex;
@@ -11,8 +11,10 @@ const Container = styled.div`
   justify-content: center;
   margin-bottom: 10px;
   align-items: center;
+  background-color: white;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 10px 24px 0px,
     rgba(0, 0, 0, 0.05) 0px 20px 48px 0px, rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;
+  border-radius: 10px;
 `;
 
 const MentDiv = styled.div`
@@ -72,6 +74,9 @@ const SubmitBtn = styled.input`
   border-radius: 3px;
   padding: 0;
   margin-bottom: 5px;
+  &:hover {
+    background-color: #0074cc;
+  }
 `;
 
 const LogoPng = styled.img`
@@ -152,12 +157,12 @@ export default function LoginContainer() {
       </Container>
       <MentDiv>
         Don{"'"}t have an account?{' '}
-        <MentSpan onClick={() => navigate('/regiser')}>Sign up</MentSpan>
+        <MentSpan onClick={() => navigate('/register')}>Sign up</MentSpan>
       </MentDiv>
       <MentDiv>
         Are you an employer?{' '}
-        <MentSpan onClick={() => navigate('/regiser')}>
-          Sign up on Talent{' '}
+        <MentSpan onClick={() => navigate('/register')}>
+          Sign up on Talent <BiLinkExternal />
         </MentSpan>
       </MentDiv>
     </MainContainer>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Nav from '../components/Nav';
@@ -6,17 +6,33 @@ import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
 
 export default function Ask() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = {};
-    axios
-      .post('#', data)
-      .then((res) => console.log(res.data))
-      .catch((err) => console(err));
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const editorRef = useRef();
+
+  const onChange = () => {
+    const data = editorRef.current.getInstance().getHTML();
+    setContent(data);
   };
 
-  const handleChange = (event) => {
-    console.log(event.target.value);
+  console.log('title data 🚀', title);
+  console.log('Content is 🚀', content);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const exampleData = {
+      questionTitle: title,
+      questionContent: content,
+    };
+
+    axios
+      .post('http://localhost:4000/test', exampleData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    setTitle('');
+    setContent('');
   };
 
   return (
@@ -34,8 +50,9 @@ export default function Ask() {
             <Input
               type="text"
               placeholder="type here.."
-              maxLength="100" //??
-              onChange={handleChange}
+              maxLength="100"
+              onChange={(event) => setTitle(event.target.value)}
+              required
             ></Input>
           </Section>
           <Section>
@@ -44,7 +61,7 @@ export default function Ask() {
               Introduce the problem and expand on what you put in the title.
               Minimum 20 characters.
             </small>
-            <TextEditor />
+            <TextEditor ref={editorRef} onChange={onChange} />
           </Section>
           <Section>
             <SectionTitle>Tags</SectionTitle>

@@ -1,6 +1,7 @@
 package com.preproject.server.question.dto;
 
 import com.preproject.server.answer.dto.AnswerResponseDto;
+import com.preproject.server.member.dto.MemberDto;
 import com.preproject.server.response.MultiResponseDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,5 +24,6 @@ public class QuestionAnswerDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private MultiResponseDto<AnswerResponseDto> answerResponseDto;
+    private MemberDto.Response memberResponseDto;
 
 }

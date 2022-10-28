@@ -39,6 +39,9 @@ public class MemberController {
         MemberDto.Response response = mapper.memberToMemberDtoResponse(createdMember);
         SingleResponseDto<MemberDto.Response> singleResponseDto = new SingleResponseDto<>(response);
 
+
+
+
         return new ResponseEntity(singleResponseDto,HttpStatus.CREATED);
     }
 

@@ -83,7 +83,7 @@ export default function Ask() {
             </span>
             <TextEditor ref={editorRef} onChange={onChange} value={' '} />
             <LengthCounter>
-              {lengthContent} / {MIN_LENGTH_CONTENT}
+              {/* {lengthContent - 11} / {MIN_LENGTH_CONTENT} 버그 고칠떄까지 주석처리 */}
             </LengthCounter>
           </Section>
           <Section>

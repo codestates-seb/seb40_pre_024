@@ -2,8 +2,10 @@ package com.preproject.server.question.controller;
 
 import com.preproject.server.answer.mapper.AnswerMapper;
 import com.preproject.server.answer.service.AnswerService;
+import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.member.service.MemberService;
+import com.preproject.server.member.wrapper.WrapperUserNamePasswordAuthenticationToken;
 import com.preproject.server.question.dto.QuestionAnswerDto;
 import com.preproject.server.question.dto.QuestionPatchDto;
 import com.preproject.server.question.dto.QuestionPostDto;
@@ -17,11 +19,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.security.Principal;
 import java.util.List;
 
 @Validated
@@ -45,9 +51,18 @@ public class QuestionController {
 
 
     @PostMapping
-    public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
+    public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto, Authentication authentication) {
+
+
+        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
+        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
 
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
+
+        Member member = new Member();
+        member.setMemberId((long)memberId);
+        question.setMember(member);
+
         Question createdQuestion = service.createQuestion(question);
 
         SingleResponseDto<QuestionResponseDto> singleResponseDto =

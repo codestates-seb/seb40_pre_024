@@ -9,6 +9,7 @@ import com.preproject.server.answer.service.AnswerService;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.member.service.MemberService;
+import com.preproject.server.member.wrapper.WrapperUserNamePasswordAuthenticationToken;
 import com.preproject.server.question.dto.QuestionResponseDto;
 import com.preproject.server.question.entity.Question;
 import com.preproject.server.response.MultiResponseDto;
@@ -16,6 +17,7 @@ import com.preproject.server.response.SingleResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +40,10 @@ public class AnswerController {
     }
 
     @PostMapping
-    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto answerPostDto) {
+    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto answerPostDto, Authentication authentication) {
+
+        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
+        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
 
         Answer answer = mapper.answerPostDtoToAnswer(answerPostDto);
         Answer createdAnswer = answerService.createAnswer(answer);

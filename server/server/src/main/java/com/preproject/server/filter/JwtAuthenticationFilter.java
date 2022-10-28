@@ -70,6 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", member.getMemberEmail());
         claims.put("roles", member.getRoles());
+        claims.put("memberId", member.getMemberId());
 
         Date currentDate = jwtTokenizer.getCurrentDate();
         Date accessTokenExpDate = jwtTokenizer.getAccessTokenExpDate();

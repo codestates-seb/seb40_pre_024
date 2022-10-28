@@ -3,6 +3,7 @@ package com.preproject.server.filter;
 import com.preproject.server.exception.BusinessException;
 import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.jwt.JwtTokenizer;
+import com.preproject.server.member.wrapper.WrapperUserNamePasswordAuthenticationToken;
 import com.preproject.server.utils.CustomAuthorityUtil;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         String jws = header.replace("bearer", "");
 
         //토큰 검증
-        Map<String, Object> claims = jwtTokenizer.verifyJws(jws); //검증 부분
+        Map<String, Object> claims = jwtTokenizer.verifyJws(jws); //검증 부분, 파싱할때 Long이였던 memberId가 자동으로 Integer로 파싱됨..
 
         //로그아웃 토큰 여부 확인, 정상적인 토큰일 경우만 로그아웃 여부 확인
         verifyLoginToken(jws);
@@ -73,14 +74,23 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private void setSecurityContext(Map<String, Object> claims) {
 
+        Integer memberId = (Integer)claims.get("memberId");
         String username = claims.get("username").toString();
         List<String> roles = (List)claims.get("roles");
+
+
         List<GrantedAuthority> grantedAuthorities = customAuthorityUtil.convertStringToGrantedAuthority(roles);
 
         SecurityContext sc = SecurityContextHolder.getContext();
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(username, null,grantedAuthorities);
-        sc.setAuthentication(usernamePasswordAuthenticationToken);
+
+        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = new WrapperUserNamePasswordAuthenticationToken(username, null, grantedAuthorities, memberId);
+
+        sc.setAuthentication(wrapperUserNamePasswordAuthenticationToken);
+
+
+//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+//                new UsernamePasswordAuthenticationToken(username, null,grantedAuthorities);
+//        sc.setAuthentication(usernamePasswordAuthenticationToken);
     }
 
 

@@ -1,7 +1,9 @@
 package com.preproject.server.question;
 
 import com.google.gson.Gson;
+import com.preproject.server.answer.mapper.AnswerMapper;
 import com.preproject.server.member.dto.MemberDto;
+import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.question.controller.QuestionController;
 import com.preproject.server.question.dto.QuestionAnswerDto;
 import com.preproject.server.question.dto.QuestionPatchDto;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,10 +34,12 @@ import java.util.List;
 
 import static com.preproject.server.util.ApiDocumentUtils.getRequestPreProcessor;
 import static com.preproject.server.util.ApiDocumentUtils.getResponsePreProcessor;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -44,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockBean(JpaMetamodelMappingContext.class)
-@WebMvcTest(QuestionController.class)
+@WebMvcTest(value = QuestionController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureRestDocs
 class QuestionControllerTest {
 
@@ -57,17 +62,26 @@ class QuestionControllerTest {
     @MockBean
     private QuestionMapper mapper;
 
+    @MockBean
+    private MemberMapper memberMapper;
+
+    @MockBean
+    private AnswerMapper answerMapper;
+
     @Autowired
     private Gson gson;
 
 
     @Test
-    void postQuestion() throws Exception{
+    void postQuestion() throws Exception {
 
         //given
         QuestionPostDto post = new QuestionPostDto();
+        post.setMemberId(1L);
         post.setQuestionTitle("질문제목은5자리");
         post.setQuestionContent("질문내용은15자리제한입니다아아아아아");
+
+        Long memberId = 1L;
 
         String content = gson.toJson(post);
 
@@ -84,7 +98,7 @@ class QuestionControllerTest {
 
         given(service.createQuestion(Mockito.any(Question.class))).willReturn(new Question());
 
-        given(mapper.questionToQuestionResponseDto(Mockito.any(Question.class))).willReturn(responseDto);
+        given(mapper.questionToQuestionResponseDto(Mockito.any(Question.class), eq(memberMapper))).willReturn(responseDto);
 
         //when
         ResultActions actions =
@@ -106,6 +120,7 @@ class QuestionControllerTest {
                         getResponsePreProcessor(),
                         requestFields(
                                 List.of(
+                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
                                         fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
                                         fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용")
                                 )
@@ -123,8 +138,6 @@ class QuestionControllerTest {
                                 )
                         )
                 ));
-
-
 
 
     }
@@ -155,7 +168,7 @@ class QuestionControllerTest {
 
         given(service.updateQuestion(Mockito.any(Question.class))).willReturn(new Question());
 
-        given(mapper.questionToQuestionResponseDto(Mockito.any(Question.class))).willReturn(responseDto);
+        given(mapper.questionToQuestionResponseDto(Mockito.any(Question.class), eq(memberMapper))).willReturn(responseDto);
 
         //when
         ResultActions actions =
@@ -199,13 +212,13 @@ class QuestionControllerTest {
                 ));
 
 
-
     }
 
     @Test
     void getQuestion() throws Exception {
 
         //given
+
         Long questionId = 1L;
 
         QuestionAnswerDto responseDto = new QuestionAnswerDto();
@@ -219,7 +232,9 @@ class QuestionControllerTest {
 
         given(service.findQuestion(Mockito.anyLong())).willReturn(new Question());
 
-        given(mapper.questionToQuestionAnswerDto(Mockito.any(Question.class))).willReturn(responseDto);
+        given(mapper.questionToQuestionAnswerDto(
+                Mockito.any(Question.class), eq(memberMapper), eq(answerMapper)))
+                .willReturn(responseDto);
 
         //when
         ResultActions actions =
@@ -249,6 +264,7 @@ class QuestionControllerTest {
                                         fieldWithPath("data.questionContent").type(JsonFieldType.STRING).description("질문 내용"),
                                         fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
                                         fieldWithPath("data.answerResponseDto").type(JsonFieldType.NULL).description("답변리스폰스"),
+                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.NULL).description("멤버리스폰스"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.NULL).description("작성 시간"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.NULL).description("수정 시간")
                                 )
@@ -315,7 +331,7 @@ class QuestionControllerTest {
 
         given(service.findQuestions(Mockito.anyInt(), Mockito.anyInt())).willReturn(pagequestion);
 
-        given(mapper.questionsToQuestionResponseDtoList(Mockito.any(List.class))).willReturn(responseDto);
+        given(mapper.questionsToQuestionResponseDtoList(Mockito.any(List.class), eq(memberMapper))).willReturn(responseDto);
 
         //when
 
@@ -360,20 +376,14 @@ class QuestionControllerTest {
     @Test
     void deleteQuestion() throws Exception {
 
+        postQuestion();
+
         Long questionId = 1L;
 
-        QuestionPostDto post = new QuestionPostDto();
-        post.setQuestionTitle("질문제목은5자리");
-        post.setQuestionContent("질문내용은15자리제한입니다아아아아아");
-
-        given(mapper.questionPostDtoToQuestion(Mockito.any(QuestionPostDto.class))).willReturn(new Question());
-
-        given(service.createQuestion(Mockito.any(Question.class))).willReturn(new Question());
-
-        doNothing().when(service).deleteQuestion(questionId);
+        doNothing().when(service).deleteQuestion(Mockito.anyLong());
 
         ResultActions actions = mockMvc.perform(
-                delete("/api/question/{question-id}", questionId)
+                delete("/api/questions/{question-id}", questionId)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
         );

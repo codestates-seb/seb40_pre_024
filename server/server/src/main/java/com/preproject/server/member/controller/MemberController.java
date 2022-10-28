@@ -34,13 +34,11 @@ public class MemberController {
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post dto) {
 
+
         Member member = mapper.memberDtoPostToMember(dto);
         Member createdMember = service.createMember(member);
         MemberDto.Response response = mapper.memberToMemberDtoResponse(createdMember);
         SingleResponseDto<MemberDto.Response> singleResponseDto = new SingleResponseDto<>(response);
-
-
-
 
         return new ResponseEntity(singleResponseDto,HttpStatus.CREATED);
     }

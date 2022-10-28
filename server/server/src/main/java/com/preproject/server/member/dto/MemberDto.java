@@ -1,9 +1,6 @@
 package com.preproject.server.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -13,6 +10,7 @@ import java.util.List;
 
 public class MemberDto {
 
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
@@ -33,8 +31,6 @@ public class MemberDto {
         @Length(min = 8, max = 16)
         private String memberPwd;
 
-        @Length(max = 300)
-        private String memberImageUrl;
     }
 
     @NoArgsConstructor
@@ -50,6 +46,7 @@ public class MemberDto {
 
     }
 
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
@@ -62,7 +59,7 @@ public class MemberDto {
 
         private String memberName;
 
-        private String memberImageUrl;
+//        private String memberImageUrl;
 
         private List<String> roles;
 

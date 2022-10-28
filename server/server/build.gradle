@@ -20,15 +20,24 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    asciidoctorExt
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
 }
 
+configurations {
+    asciidoctorExtensions
+}
 
 dependencies {
+    //rest docs
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     //JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //유효성 관련
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     //WEB
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -37,18 +46,18 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    //H2 로컬용
+    runtimeOnly 'com.h2database:h2'
+
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    //유효성 관련
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-    //Json Mapper
-    implementation 'com.google.code.gson:gson:2.9.0'
 
     //MapStruct
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+    //Json Mapper
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     //JWT 관련
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -59,36 +68,27 @@ dependencies {
     //My Sql 서버용
 //    implementation 'mysql:mysql-connector-java'
 
-    //H2 로컬용
-//    runtimeOnly 'com.h2database:h2'
+
 
     //Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    //rest docs
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
 
     //redis cache
     implementation 'org.springframework.boot:spring-boot-starter-cache:2.7.5'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.7.5'
 }
 
-
-//rest docs
-ext {
-    snippetsDir = file('build/generated-snippets') //스니핏이 생성될 경로를 변수에 할당
-}
-
 tasks.named('test') {
-    outputs.dir snippetsDir //rest docs, test task 작동할때 생성되는 스니핏의 저장 경로를 snippetsDir 에 저장된 경로로 설정하겠다
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
-asciidoctor { //실제 스니핏 asciidoc 문서를 만드는 task
-    configurations 'asciidoctorExt' //구성 설정
-    inputs.dir snippetsDir //해당 작업의 input 디렉토리를 snippetsDir로 하겠다. 즉, test task의 결과물이 asciidoctor task의 인풋이다
-    dependsOn test //test task가 먼저 시작되고 해당 task가 돌아간다 (즉, 의존하겠다)
+tasks.named('asciidoctor') {
+    configurations "asciidoctorExtensions"
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 task copyDocument(type: Copy) {
@@ -100,4 +100,11 @@ task copyDocument(type: Copy) {
 
 build {
     dependsOn copyDocument
+}
+
+bootJar {
+    dependsOn copyDocument
+    from ("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }

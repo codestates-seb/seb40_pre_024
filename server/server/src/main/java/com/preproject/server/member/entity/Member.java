@@ -2,10 +2,7 @@ package com.preproject.server.member.entity;
 
 import com.preproject.server.auditable.Auditable;
 import com.preproject.server.member.enums.MemberStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Builder
 @Transactional
 @AllArgsConstructor
 @NoArgsConstructor

@@ -12,7 +12,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "Spring")
+@Mapper(componentModel = "spring")
 public interface AnswerMapper {
     default Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto) {
         Answer answer = new Answer();

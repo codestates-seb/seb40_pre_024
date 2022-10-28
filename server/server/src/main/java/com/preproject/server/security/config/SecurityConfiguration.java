@@ -4,6 +4,8 @@ package com.preproject.server.security.config;
 import com.preproject.server.filter.JwtAuthenticationFilter;
 import com.preproject.server.filter.JwtVerificationFilter;
 import com.preproject.server.jwt.JwtTokenizer;
+import com.preproject.server.security.handler.CustomAccessDeniedHandler;
+import com.preproject.server.security.handler.CustomAuthenticationEntryPoint;
 import com.preproject.server.security.handler.CustomAuthenticationFailureHandler;
 import com.preproject.server.security.handler.CustomAuthenticationSuccesshandler;
 import com.preproject.server.utils.CustomAuthorityUtil;
@@ -66,8 +68,8 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .exceptionHandling()
-//                .accessDeniedHandler() //권한에 맞지 않는 요청시 거부핸들러
-//                .authenticationEntryPoint() //인증 처리시 예외처리 핸들러
+                .accessDeniedHandler(new CustomAccessDeniedHandler()) //권한에 맞지 않는 요청시 거부핸들러
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증 처리시 예외처리 핸들러
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.GET, "/api/members/**").hasAnyRole("USER") //멤버 정보

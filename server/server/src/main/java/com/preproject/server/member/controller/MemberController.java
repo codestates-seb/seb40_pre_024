@@ -1,6 +1,9 @@
 package com.preproject.server.member.controller;
 
 
+import com.preproject.server.answer.dto.AnswerPostDto;
+import com.preproject.server.answer.entity.Answer;
+import com.preproject.server.answer.mapper.AnswerMapper;
 import com.preproject.server.member.dto.MemberDto;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
@@ -28,9 +31,9 @@ public class MemberController {
     private final MemberMapper mapper;
     private final MemberService service;
 
-
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post dto) {
+
 
         Member member = mapper.memberDtoPostToMember(dto);
         Member createdMember = service.createMember(member);

@@ -34,14 +34,14 @@ public class QuestionController {
 
     private final MemberMapper memberMapper;
 
+    private final AnswerMapper answerMapper;
+
     public QuestionController(QuestionMapper mapper, QuestionService service, MemberMapper memberMapper, AnswerMapper answerMapper) {
         this.mapper = mapper;
         this.service = service;
         this.memberMapper = memberMapper;
         this.answerMapper = answerMapper;
     }
-
-    private final AnswerMapper answerMapper;
 
 
     @PostMapping

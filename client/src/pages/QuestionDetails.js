@@ -99,6 +99,37 @@ const Details = styled.div`
 `;
 
 const QuestionDetails = () => {
+  let id = 'abc1';
+  const dummyData = [
+    {
+      id: 'abc1',
+      title: '이게 안되요1',
+      question:
+        '내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  ',
+      athor: '김코딩',
+    },
+    {
+      id: 'abc2',
+      title: '이게 안되요2',
+      question:
+        '내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  ',
+      athor: '김코딩2',
+    },
+    {
+      id: 'abc3',
+      title: '이게 안되요3',
+      question:
+        '내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  ',
+      athor: '김코딩3',
+    },
+    {
+      id: 'abc4',
+      title: '이게 안되요4',
+      question:
+        '내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  ',
+      athor: '김코딩4',
+    },
+  ];
   return (
     <>
       <Nav />
@@ -111,6 +142,7 @@ const QuestionDetails = () => {
             title, 타이틀 제목 내용 Using less (2.2.1) raises an error requiring
             therubyracer cant install therubyracer on
           </h1>
+
           <button className="askbutton">Ask Question</button>
         </header>
         <div className="container">
@@ -171,24 +203,17 @@ const QuestionDetails = () => {
               </svg>
             </div>
             <div className="contentsmain">
-              <div className="contentspost">
-                메인내용 Im getting the video Trailer data but it doesnt play
-                until I manually click the Play button (twice). But when I
-                switch to different routes and come back to the same, it plays
-                automatically. Again when I reload the page it doesnt.
-              </div>
-              <div className="contentspost">
-                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              </div>
-              <div className="contentspost">
-                dddddddddddddddddddddddddddddddddddddd
-              </div>
-              <div className="contentspost">
-                cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+              <div>
+                {dummyData.map((dummy) => (
+                  <div className="contentspost" key={dummy.id}>
+                    {dummy.question}
+                  </div>
+                ))}
               </div>
             </div>
-
-            <RightSidebar />
+            <div className="right">
+              <RightSidebar />
+            </div>
           </div>
         </div>
       </Details>

@@ -51,17 +51,17 @@ public class QuestionController {
 
 
     @PostMapping
-    public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto, Authentication authentication) {
+    public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
 
 
-        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
-        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
+//        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
+//        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
 
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
-
-        Member member = new Member();
-        member.setMemberId((long)memberId);
-        question.setMember(member);
+//
+//        Member member = new Member();
+//        member.setMemberId((long)memberId);
+//        question.setMember(member);
 
         Question createdQuestion = service.createQuestion(question);
 

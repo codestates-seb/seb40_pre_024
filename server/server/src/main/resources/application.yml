@@ -1,65 +1,81 @@
 spring:
 
-  #  ---------------------------------------------------
-  #  h2 ??
-  #  h2? ?? ????? ??????? ???? ???.
+#  ---------------------------------------------------
 
-  h2:
-    console:
-      enabled: true
-      path: /h2
+# h2
+
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:test
+#  jpa:
+#    hibernate:
+#      ddl-auto: create  # ??? ?? ??
+#    show-sql: true      # SQL ?? ??
+#    properties:
+#      hibernate:
+#        format_sql: true  # SQL pretty print
+#  ---------------------------------------------------
+
+#  ---------------------------------------------------
+
+
+# mysql
+
+### Server
+
   datasource:
-    url: jdbc:h2:mem:test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: admin
+    password: 12341234
+    url: ${DB_RDS_SERVER}
+
   jpa:
     hibernate:
-      ddl-auto: create  # ??? ?? ??
-    show-sql: true      # SQL ?? ??
+      ddl-auto: create
     properties:
       hibernate:
-        format_sql: true  # SQL pretty print
-#  ---------------------------------------------------
+        format_sql: true
 
-#  ---------------------------------------------------
-#  mysql ??
-#  push ? ??? ? ?? ???? ??? ????.
+
+### Local
 
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/mysql-test?serverTimezone=UTC&characterEncoding=UTF-8
-#    username: admin
-#    password: ${DB_PASSWORD}
+#    username: root
+#    password: qwer1234
+#    url: jdbc:mysql://localhost:3306/pre-project-server?serverTimezone=UTC&characterEncoding=UTF-8
 #
 #  jpa:
-#    database: mysql
-#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    hibernate:
+#      ddl-auto: create
 #    properties:
 #      hibernate:
-#        show_sql: true
 #        format_sql: true
-#        use_sql_comments: true
+
 #  ---------------------------------------------------
 
 
 
-
-server: # ?? ?? ??
+# encoding
+server:
   servlet:
     encoding:
       force-response: true
 
-#JWT:
-#  SECRET_KEY: ${JWT_SECRET_KEY}
-#  ACCESS-TOKEN-EXP: 120
-#  REFRESH_TOKEN_EXP: 1440
-
-jwt: # 속성 생성
+# jwt, my properties
+jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 120
   refresh-token-expiration-minutes: 420
 
+# cors, my properties
 client:
   url: https://example.com
 
+# redis, my properties
 redis:
   network:
     host: localhost

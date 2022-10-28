@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //add는 기존에 같은 헤더키가 존재한다면 키에 해당하는 값이 복수로 생김,
         response.setHeader("Authorization", "bearer"+accessToken);
         response.setHeader("Refresh", refreshToken);
-
+//        System.out.println();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", member.getMemberEmail());
         claims.put("roles", member.getRoles());
-        claims.put("memberId", member.getMemberId());
+//        claims.put("memberId", member.getMemberId());
 
         Date currentDate = jwtTokenizer.getCurrentDate();
         Date accessTokenExpDate = jwtTokenizer.getAccessTokenExpDate();

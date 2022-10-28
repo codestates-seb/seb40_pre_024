@@ -47,7 +47,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     //H2 로컬용
-    runtimeOnly 'com.h2database:h2'
+//    runtimeOnly 'com.h2database:h2'
 
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -66,7 +66,7 @@ dependencies {
 
 
     //My Sql 서버용
-//    implementation 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java'
 
 
 

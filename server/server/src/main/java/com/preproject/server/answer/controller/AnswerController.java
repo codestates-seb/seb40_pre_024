@@ -40,10 +40,10 @@ public class AnswerController {
     }
 
     @PostMapping
-    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto answerPostDto, Authentication authentication) {
+    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto answerPostDto) {
 
-        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
-        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
+//        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
+//        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
 
         Answer answer = mapper.answerPostDtoToAnswer(answerPostDto);
         Answer createdAnswer = answerService.createAnswer(answer);

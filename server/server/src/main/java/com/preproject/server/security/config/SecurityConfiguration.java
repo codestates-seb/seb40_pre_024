@@ -60,6 +60,8 @@ public class SecurityConfiguration {
 
         httpSecurity.headers().frameOptions().sameOrigin()
                 .and()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
@@ -121,11 +123,16 @@ public class SecurityConfiguration {
 
 
     //cors 설정자 빈 등록
-    @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(clientUrl));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+//        configuration.setAllowedOrigins(Arrays.asList(clientUrl));
+//        configuration.setAllowedMethods(Arrays.asList("*"));
+
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

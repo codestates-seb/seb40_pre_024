@@ -26,7 +26,11 @@ export default function Ask() {
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
     setContent(data);
-    setLengthContent(data.length);
+    const dataWithoutTag = data.replace(
+      /<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/gi,
+      ''
+    );
+    setLengthContent(dataWithoutTag.length);
   };
 
   const handleSubmit = async (event) => {
@@ -71,7 +75,9 @@ export default function Ask() {
               }}
               required
             />
-            <LengthCounter qualified={lengthTitle >= 20 ? 'qualified' : null}>
+            <LengthCounter
+              qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
+            >
               {lengthTitle} / {MIN_LENGTH_TITLE}
             </LengthCounter>
           </Section>
@@ -82,8 +88,12 @@ export default function Ask() {
               Minimum ${MIN_LENGTH_CONTENT} characters.`}
             </span>
             <TextEditor ref={editorRef} onChange={onChange} value={' '} />
-            <LengthCounter>
-              {/* {lengthContent - 11} / {MIN_LENGTH_CONTENT} 버그 고칠떄까지 주석처리 */}
+            <LengthCounter
+              qualified={
+                lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
+              }
+            >
+              {lengthContent} / {MIN_LENGTH_CONTENT}
             </LengthCounter>
           </Section>
           <Section>
@@ -185,6 +195,8 @@ const Button = styled.button`
 `;
 
 const LengthCounter = styled.div`
-  font-size: 13px;
+  font-size: 10px;
+  font-weight: ${(props) => (props.qualified ? 'bold' : 'normal')};
   color: ${(props) => (props.qualified ? 'green' : 'red')};
+  padding-left: 5px;
 `;

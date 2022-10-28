@@ -1,0 +1,87 @@
+= 스택 오버 플로우
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+Team 024 - Backend Team <unool6976@gmail.com>
+
+v1.0.0, 2022.10.28
+
+
+***
+== MemberController
+=== 회원 등록
+.curl-request
+include::{snippets}/post-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-member/response-fields.adoc[]
+
+=== 회원 로그인
+
+.curl-request
+include::{snippets}/login-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/login-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/login-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/login-member/http-response.adoc[]
+
+=== 회원 로그아웃
+
+.curl-request
+include::{snippets}/logout-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/logout-member/http-request.adoc[]
+
+.http-response
+include::{snippets}/logout-member/http-response.adoc[]
+
+
+***
+== QuestionController
+=== 질문 상세 페이지
+
+.curl-request
+include::{snippets}/get-question/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-question/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-question/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-question/response-fields.adoc[]
+
+
+
+=== 질문 페이지네이션
+
+.curl-request
+include::{snippets}/get-questions/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-questions/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-questions/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-questions/response-fields.adoc[]

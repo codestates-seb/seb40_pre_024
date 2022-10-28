@@ -42,6 +42,7 @@ public class MemberService {
         member.setRoles(customAuthorityUtil.getRole());
         Member savedMember = memberRepository.save(member);
 
+
         return savedMember;
     }
 

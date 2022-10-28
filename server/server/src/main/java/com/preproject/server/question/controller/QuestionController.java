@@ -29,12 +29,11 @@ public class QuestionController {
     private final QuestionMapper mapper;
     private final QuestionService service;
 
-    private final MemberMapper memberMapper;
 
-    public QuestionController(QuestionMapper mapper, QuestionService service, MemberMapper memberMapper) {
+
+    public QuestionController(QuestionMapper mapper, QuestionService service) {
         this.mapper = mapper;
         this.service = service;
-        this.memberMapper = memberMapper;
     }
 
     @PostMapping

@@ -4,6 +4,7 @@ import { BiLinkExternal } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Description from './Description';
+import axios from 'axios';
 
 const Container = styled.div`
   width: 300px;
@@ -43,7 +44,7 @@ const Form = styled.form`
   justify-content: space-evenly;
   height: 100%;
   width: 100%;
-  padding: 10px;
+  padding: 20px 10px 10px 10px;
 `;
 
 const InputContainer = styled.div`
@@ -115,10 +116,6 @@ const Checkbox = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-`;
-
 export default function RegisterContainer() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -131,7 +128,7 @@ export default function RegisterContainer() {
     // console.log(data);
     // 회원가입 api 자리
     try {
-      console.log(data);
+      axios.post('#', { ...data });
     } catch (err) {
       setError(err);
     }

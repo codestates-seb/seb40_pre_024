@@ -14,10 +14,12 @@ export default function Questions() {
   // api로 전체 데이터 받아오기([{질문 아이디, 질문 제목, 질문 내용, 멤버 닉네임, 작성 날짜},...] 형식)
   const dummyData = [
     {
-      id: 'kuu',
-      title: '이게 안되요1',
-      question: '이렇게 했는 데 이게 안되요1',
-      athor: '김코딩',
+      title: {
+        id: 'kuu',
+        title: '이게 안되요1',
+        question: '이렇게 했는 데 이게 안되요1',
+        athor: '김코딩',
+      },
     },
     {
       id: 'kuu5',
@@ -42,7 +44,7 @@ export default function Questions() {
     <ListContainer>
       <QuestionAdd />
       {/* API 데이터를 전달(질문의 총개수를 전달) */}
-      <QuestionListNum resultLength={dummyData.length} />
+      <QuestionListNum resultLength={dummyData.length} /> {/* 타이틀 */}
       {dummyData.map((question) => (
         <QuestionsContainer key={question.id} QuestionData={question} />
       ))}

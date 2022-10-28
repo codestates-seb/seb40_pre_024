@@ -1,5 +1,7 @@
 package com.preproject.server.security.handler;
 
+import com.preproject.server.exception.BusinessException;
+import com.preproject.server.exception.ExceptionCode;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -15,6 +17,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
         System.out.println(authException.getMessage());
+
+        //임시
+        throw new BusinessException(ExceptionCode.AUTHENTICATION_FAIL);
 
     }
 }

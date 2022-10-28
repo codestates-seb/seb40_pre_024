@@ -29,11 +29,12 @@ const Navbar = styled.nav`
 
   .nav-container {
     width: 100%; // 창 크기 조절에 따라 서치바 사이즈 자동 조정
-    max-width: 1300px;
+    min-width: auto;
+    /* max-width: 1300px; */
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin: 0 130px;
+    margin: 0 120px;
     /* background-color: #f8f9f9; // 구역 확인용 */
 
     .logo-box {
@@ -232,6 +233,7 @@ const SearchToggle = styled.div`
   justify-content: flex-start;
   align-items: space-between;
   padding: 10px 13px;
+  background-color: white;
 
   .search-toggle-text {
     display: flex;
@@ -307,7 +309,7 @@ const Nav = () => {
         <div className="logo-box">
           <img src={logostackoverflow} alt="stackoverflow-logo" />
         </div>
-        {!isLogin ? (
+        {isLogin ? (
           <div className="menu-box">
             <button>
               <a href="/">Products</a>
@@ -379,7 +381,7 @@ const Nav = () => {
             )}
           </form>
         </div>
-        {!isLogin ? (
+        {isLogin ? (
           <div className="login-button-box">
             <div className="userinfo-box">
               <button>
@@ -413,7 +415,8 @@ const Nav = () => {
           </div>
         ) : (
           <div className="button-box">
-            <button>Log in</button>
+            {/* 수정(버튼 클릭시 임시 로그인 기능 조치) */}
+            <button onClick={() => setIsLogin(true)}>Log in</button>
             <button>Sign up</button>
           </div>
         )}

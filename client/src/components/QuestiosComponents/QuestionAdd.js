@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.header`
+  width: 100%;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  padding-left: 16px;
+  padding-left: 18px;
 `;
 const Title = styled.h1`
   margin: 24px 0 0 0;
@@ -25,7 +25,6 @@ const AddBtn = styled.button`
   border-radius: 3px;
   width: 98px;
   height: 32px;
-  margin-right: 16px;
   align-self: flex-end;
   transition: 0.5s;
   cursor: pointer;

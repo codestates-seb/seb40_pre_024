@@ -3,6 +3,7 @@ package com.preproject.server.question.entity;
 import com.preproject.server.answer.entity.Answer;
 import com.preproject.server.auditable.Auditable;
 import com.preproject.server.member.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +41,8 @@ public class Question extends Auditable {
         this.member = member;
     }
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answer = new ArrayList<>();
+
+    //
 }

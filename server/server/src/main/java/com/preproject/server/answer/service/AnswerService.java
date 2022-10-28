@@ -4,6 +4,7 @@ import com.preproject.server.answer.entity.Answer;
 import com.preproject.server.answer.repository.AnswerRepository;
 import com.preproject.server.exception.BusinessException;
 import com.preproject.server.exception.ExceptionCode;
+import com.preproject.server.question.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

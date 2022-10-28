@@ -26,6 +26,7 @@ public interface AnswerMapper {
         question.setQuestionId(answerPostDto.getQuestionId());
         answer.setQuestion(question);
 
+
         return answer;
     }
 

@@ -4,31 +4,44 @@ import axios from 'axios';
 import Nav from '../components/Nav';
 import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
+import Modal from '../components/Modal';
 
 export default function Ask() {
   const [title, setTitle] = useState('');
+  const [lengthTitle, setLengthTitle] = useState('');
   const [content, setContent] = useState('');
+  const [lengthContent, setLengthContent] = useState('');
+
+  const MIN_LENGTH_TITLE = 20;
+  const MIN_LENGTH_CONTENT = 50;
+
+  const navigate = useNavigate();
+  const backNavigate = () => {
+    navigate(-1);
+  };
+
   const editorRef = useRef();
 
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
     setContent(data);
+    setLengthContent(data.length);
   };
 
-  console.log('title data 🚀', title);
-  console.log('Content is 🚀', content);
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const exampleData = {
       questionTitle: title,
-      questionContent: content,
+      questionContent: JSON.stringify(content),
     };
 
-    axios
+    await axios
       .post('http://localhost:4000/test', exampleData)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res.data);
+      })
       .catch((err) => console.log(err));
 
     setTitle('');
@@ -43,37 +56,62 @@ export default function Ask() {
         <SectionContainer>
           <Section>
             <SectionTitle>Title</SectionTitle>
-            <small>
-              Be specific and imagine you are asking a question to another
-              person.
-            </small>
+            <span>
+              {`Be specific and imagine you are asking a question to another
+              person. Minimum ${MIN_LENGTH_TITLE} characters.`}
+            </span>
             <Input
               type="text"
               placeholder="type here.."
-              maxLength="100"
-              onChange={(event) => setTitle(event.target.value)}
+              maxLength="70"
+              value={title}
+              onChange={(event) => {
+                setTitle(event.target.value);
+                setLengthTitle(event.target.value.length);
+              }}
               required
-            ></Input>
+            />
+            <LengthCounter qualified={lengthTitle >= 20 ? 'qualified' : null}>
+              {lengthTitle} / {MIN_LENGTH_TITLE}
+            </LengthCounter>
           </Section>
           <Section>
             <SectionTitle>Body</SectionTitle>
-            <small>
-              Introduce the problem and expand on what you put in the title.
-              Minimum 20 characters.
-            </small>
-            <TextEditor ref={editorRef} onChange={onChange} />
+            <span>
+              {`Introduce the problem and expand on what you put in the title.
+              Minimum ${MIN_LENGTH_CONTENT} characters.`}
+            </span>
+            <TextEditor ref={editorRef} onChange={onChange} value={' '} />
+            <LengthCounter>
+              {lengthContent} / {MIN_LENGTH_CONTENT}
+            </LengthCounter>
           </Section>
           <Section>
             <SectionTitle>Tags</SectionTitle>
-            <small>
+            <span>
               Add up to 5 tags to describe what your question is about.
-            </small>
-            <InputTag></InputTag>
+            </span>
+            <InputTag disabled placeholder="Temporarily disabled"></InputTag>
           </Section>
         </SectionContainer>
-        <form>
-          <Button onClick={handleSubmit}>Submit</Button>
-        </form>
+        <ButtonContainer>
+          <form>
+            <Button
+              disabled={
+                title.length <= MIN_LENGTH_TITLE ||
+                content.length <= MIN_LENGTH_CONTENT
+                  ? true
+                  : null
+              }
+              typed="submit"
+              onClick={handleSubmit}
+              submit
+            >
+              Review your question
+            </Button>
+          </form>
+          <Modal functionHandler={backNavigate} />
+        </ButtonContainer>
       </Container>
       <Footer />
     </>
@@ -106,6 +144,15 @@ const Section = styled.div`
   padding: 1.5vw 2vw;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.1);
+  span {
+    font-size: 12px;
+  }
+`;
+
+const SectionTitle = styled.div`
+  font-size: 18px;
+  font-weight: bolder;
+  margin: 0;
 `;
 
 const Input = styled.input`
@@ -118,20 +165,26 @@ const InputTag = styled(Input)`
   width: 50%;
 `;
 
-const SectionTitle = styled.div`
-  font-size: 18px;
-  font-weight: bolder;
-  margin: 0;
+const ButtonContainer = styled.div`
+  display: flex;
 `;
 
 const Button = styled.button`
-  background-color: #0074cc;
+  background-color: ${(props) => (props.submit ? '#0074CC' : null)};
   border-radius: 5px;
   border: none;
-  color: white;
+  color: ${(props) => (props.submit ? 'white' : '#B13235')};
   font-size: 13px;
-  padding: 5px 10px;
-  width: 100px;
+  padding: 10px;
+  width: 150px;
+  height: 40px;
   cursor: pointer;
   align-self: start;
+  opacity: ${(props) => (props.disabled ? '0.5' : '1')};
+  margin-right: 25px;
+`;
+
+const LengthCounter = styled.div`
+  font-size: 13px;
+  color: ${(props) => (props.qualified ? 'green' : 'red')};
 `;

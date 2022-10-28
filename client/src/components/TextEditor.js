@@ -12,7 +12,7 @@ const TextEditor = forwardRef((props, ref) => {
         initialEditType="markdown" // markdown or wysiwyg
         ref={ref}
         onChange={props.onChange}
-        autofocus={false}
+        autofocus={true}
         previewHighlight={false}
         toolbarItems={[
           ['heading', 'bold', 'italic', 'strike'],

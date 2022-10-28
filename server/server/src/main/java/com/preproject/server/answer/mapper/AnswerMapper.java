@@ -7,6 +7,7 @@ import com.preproject.server.answer.entity.Answer;
 import com.preproject.server.member.dto.MemberDto;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
+import com.preproject.server.question.entity.Question;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -16,6 +17,15 @@ public interface AnswerMapper {
     default Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto) {
         Answer answer = new Answer();
         answer.setAnswerContent(answerPostDto.getAnswerContent());
+
+        Member member = new Member(); // memberId를 answer에 저장
+        member.setMemberId(answerPostDto.getMemberId());
+        answer.setMember(member);
+
+        Question question = new Question(); // questionId를 answer에 저장
+        question.setQuestionId(answerPostDto.getQuestionId());
+        answer.setQuestion(question);
+
 
         return answer;
     }
@@ -55,7 +65,7 @@ public interface AnswerMapper {
         answerResponseDto.setAnswerContent( answer.getAnswerContent() );
         answerResponseDto.setCreatedAt( answer.getCreatedAt() );
         answerResponseDto.setModifiedAt( answer.getModifiedAt() );
-        answerResponseDto.setMember(memberToMemberResponseDto(member));
+        answerResponseDto.setMemberResponseDto(memberToMemberResponseDto(member));
 
         return answerResponseDto;
     }

@@ -18,6 +18,7 @@ const Modal = styled.div`
   justify-content: flex-start;
   align-items: center;
   font-size: 12px;
+  background-color: white; // 추가(뒷배경 보임 조치)
 `;
 
 const ModalMenu = styled.div`
@@ -110,6 +111,7 @@ const ModalMenu = styled.div`
   .modal-menu-box {
     position: relative;
     padding-top: 10px;
+    background-color: white; // 추가(뒷배경 보임 조치)
 
     input {
       width: 360px;
@@ -118,6 +120,7 @@ const ModalMenu = styled.div`
       border-radius: 3px;
       padding-left: 32px;
       margin-left: 7px;
+
       &::placeholder {
         color: #b0b0b0;
       }

@@ -64,8 +64,9 @@ const Container = styled.nav`
   font-weight: 400;
   width: 165px;
   z-index: 100;
-  height: 150vh;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  /* height: 150vh; */
+  height: 100%; // (수정) 메인페이지 게시물 리스트 길이 변화에 따른 스크롤시 footer 하단 고정 관련 이슈로 수정
+  /* border-right: 1px solid rgba(0, 0, 0, 0.1); // (삭제) 줄이겹쳐서 줄이 긴쪽에서 반영하고 삭제 */
 `;
 
 // 메뉴 리스트

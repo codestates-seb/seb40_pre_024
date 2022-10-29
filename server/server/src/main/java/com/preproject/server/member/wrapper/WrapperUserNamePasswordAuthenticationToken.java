@@ -13,9 +13,9 @@ import java.util.Collection;
 @Setter
 public class WrapperUserNamePasswordAuthenticationToken extends UsernamePasswordAuthenticationToken {
 
-    private Integer memberId;
+    private Long memberId;
 
-    public WrapperUserNamePasswordAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities, Integer memberId) {
+    public WrapperUserNamePasswordAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities, Long memberId) {
         super(principal, credentials, authorities);
         this.memberId = memberId;
     }

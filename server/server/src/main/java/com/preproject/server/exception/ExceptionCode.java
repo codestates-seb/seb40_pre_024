@@ -1,5 +1,7 @@
 package com.preproject.server.exception;
 
+import lombok.Getter;
+
 public enum ExceptionCode {
 
     MEMBER_ALREADY_EXISTS(400, "member_already_exists"),
@@ -12,10 +14,13 @@ public enum ExceptionCode {
     AUTHENTICATION_FAIL(400, "authentication_fail"),
     ACCESS_DENIED(400, "access_denied");
 
-    int code;
-    String message;
+
+    @Getter
+    private int status;
+    @Getter
+    private String message;
     ExceptionCode(int code, String message) {
-        this.code = code;
+        this.status = code;
         this.message = message;
     }
 }

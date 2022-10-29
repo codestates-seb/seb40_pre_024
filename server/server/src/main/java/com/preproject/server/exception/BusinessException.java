@@ -1,10 +1,14 @@
 package com.preproject.server.exception;
 
+import lombok.Getter;
+
 public class BusinessException extends RuntimeException{
 
-    ExceptionCode exceptionCode;
+    @Getter
+    private ExceptionCode exceptionCode;
 
     public BusinessException(ExceptionCode exceptionCode) {
-        super(exceptionCode.message);
+        super(exceptionCode.getMessage());
+        this.exceptionCode = exceptionCode;
     }
 }

@@ -18,7 +18,7 @@ const Navbar = styled.nav`
     margin: 0;
     padding: 0;
   }
-
+  z-index: 1; // navbar 상단 고정을 위한 코드 추가
   position: fixed;
   width: 100%;
   display: flex;

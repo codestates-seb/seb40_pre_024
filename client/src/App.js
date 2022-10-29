@@ -1,11 +1,11 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import DetailsComponent from './components/DetailComponent/DetailsComponent';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Ask from './pages/Ask';
+import QuestionDetails from './pages/QuestionDetails';
 
 function App() {
   return (
@@ -15,7 +15,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/ask" element={<Ask />} />
+        <Route path="/editask" element={<Ask />} />
+        <Route path="/detail/:id" element={<QuestionDetails />} />
       </Routes>
     </>
   );

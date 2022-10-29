@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
 import IconContainer from './IconContainer';
 import ProfileContainer from './ProfileContainer';
 

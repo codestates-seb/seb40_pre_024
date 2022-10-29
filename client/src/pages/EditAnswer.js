@@ -6,6 +6,7 @@ import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal';
+import Sidebar from '../components/Sidebar';
 import AnswerTipModal from '../components/AnswerTipModal';
 
 export default function EditAnswer() {
@@ -58,81 +59,104 @@ export default function EditAnswer() {
   return (
     <>
       <Nav />
-      <Container>
-        <h2>Edit Your Answer</h2>
-        <AnswerTipModal margin={'0px 0px 30px 0px'} />
-        <SectionContainer>
-          <Section>
-            <SectionTitle>Answer</SectionTitle>
-            <span>
-              {`Introduce the problem and expand on what you put in the title.
+      <ContainerWrapper>
+        <SidebarWrapper>
+          <Sidebar />
+        </SidebarWrapper>
+        <Container>
+          <h2>Edit Your Answer</h2>
+          <AnswerTipModal margin={'0px 0px 30px 0px'} />
+          <SectionContainer>
+            <Section>
+              <SectionTitle>Answer</SectionTitle>
+              <span>
+                {`Introduce the problem and expand on what you put in the title.
               Minimum ${MIN_LENGTH_CONTENT} characters.`}
-            </span>
-            <TextEditor
-              ref={editorRef}
-              onChange={onChange}
-              value={'수정할 텍스트를 불러올 부분입니다.'}
-              onFocus={onFocus}
-            />
-            <LengthCounter
-              qualified={
-                lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
-              }
-            >
-              {lengthContent} / {MIN_LENGTH_CONTENT}
-            </LengthCounter>
-          </Section>
-          <Section>
-            <SectionTitle>Edit Summary</SectionTitle>
-            <span>
-              {`Be specific and imagine you are asking a question to another
+              </span>
+              <TextEditor
+                ref={editorRef}
+                onChange={onChange}
+                value={'수정할 텍스트를 불러올 부분입니다.'}
+                onFocus={onFocus}
+              />
+              <LengthCounter
+                qualified={
+                  lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
+                }
+              >
+                {lengthContent} / {MIN_LENGTH_CONTENT}
+              </LengthCounter>
+            </Section>
+            <Section>
+              <SectionTitle>Edit Summary</SectionTitle>
+              <span>
+                {`Be specific and imagine you are asking a question to another
               person. Minimum ${MIN_LENGTH_TITLE} characters.`}
-            </span>
-            <Input
-              type="text"
-              placeholder="type here.."
-              maxLength="70"
-              value={'수정할 텍스트를 불러올 부분입니다.'}
-              onChange={(event) => {
-                setTitle(event.target.value);
-                setLengthTitle(event.target.value.length);
-              }}
-              required
-            />
-            <LengthCounter
-              qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
-            >
-              {lengthTitle} / {MIN_LENGTH_TITLE}
-            </LengthCounter>
-          </Section>
-        </SectionContainer>
-        <ButtonContainer>
-          <form>
-            <Button
-              disabled={
-                title.length <= MIN_LENGTH_TITLE ||
-                content.length <= MIN_LENGTH_CONTENT
-                  ? true
-                  : null
-              }
-              typed="submit"
-              onClick={handleSubmit}
-              submit
-            >
-              Save Edits
-            </Button>
-          </form>
-          <Modal functionHandler={backNavigate} />
-        </ButtonContainer>
-      </Container>
+              </span>
+              <Input
+                type="text"
+                placeholder="type here.."
+                maxLength="70"
+                value={'수정할 텍스트를 불러올 부분입니다.'}
+                onChange={(event) => {
+                  setTitle(event.target.value);
+                  setLengthTitle(event.target.value.length);
+                }}
+                required
+              />
+              <LengthCounter
+                qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
+              >
+                {lengthTitle} / {MIN_LENGTH_TITLE}
+              </LengthCounter>
+            </Section>
+          </SectionContainer>
+          <ButtonContainer>
+            <form>
+              <Button
+                disabled={
+                  title.length <= MIN_LENGTH_TITLE ||
+                  content.length <= MIN_LENGTH_CONTENT
+                    ? true
+                    : null
+                }
+                typed="submit"
+                onClick={handleSubmit}
+                submit
+              >
+                Save Edits
+              </Button>
+            </form>
+          </ButtonContainer>
+        </Container>
+      </ContainerWrapper>
       <Footer />
     </>
   );
 }
 
+const ContainerWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  max-width: 1300px;
+  padding-top: 30px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto; // (이슈) 계속 중앙정렬 안되다가 이걸로 시도하니 해결
+`;
+
+const SidebarWrapper = styled.div`
+  position: sticky;
+  top: 53px;
+  height: 450px; // sticky 적용을 위한 height 설정 필수
+  margin-bottom: 8px;
+`;
+
 const Container = styled.main`
-  padding: 8vh 10vw;
-  background-color: #f1f2f3;
+  padding: 4vh 5vw;
+  background-color: transparent;
+  border: 1px solid #eee;
   display: flex;
   flex-direction: column;
   h2 {

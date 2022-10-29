@@ -1,11 +1,8 @@
 package com.preproject.server.question.controller;
 
 import com.preproject.server.answer.mapper.AnswerMapper;
-import com.preproject.server.answer.service.AnswerService;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
-import com.preproject.server.member.service.MemberService;
-import com.preproject.server.member.wrapper.WrapperUserNamePasswordAuthenticationToken;
 import com.preproject.server.question.dto.QuestionAnswerDto;
 import com.preproject.server.question.dto.QuestionPatchDto;
 import com.preproject.server.question.dto.QuestionPostDto;
@@ -15,19 +12,16 @@ import com.preproject.server.question.mapper.QuestionMapper;
 import com.preproject.server.question.service.QuestionService;
 import com.preproject.server.response.MultiResponseDto;
 import com.preproject.server.response.SingleResponseDto;
-import lombok.RequiredArgsConstructor;
+import com.preproject.server.tx.NeedMemberId;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.security.Principal;
 import java.util.List;
 
 @Validated
@@ -49,19 +43,15 @@ public class QuestionController {
         this.answerMapper = answerMapper;
     }
 
-
+    @NeedMemberId //파라미터로 서버에서 인증된 MemberId가 필요한 경우 붙이면 되는 사용자 정의 어노테이션
     @PostMapping
-    public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
-
-
-//        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
-//        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
+    public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto, Long authMemberId) {
 
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
-//
-//        Member member = new Member();
-//        member.setMemberId((long)memberId);
-//        question.setMember(member);
+
+        Member member = new Member();
+        member.setMemberId(authMemberId);
+        question.setMember(member);
 
         Question createdQuestion = service.createQuestion(question);
 
@@ -84,6 +74,7 @@ public class QuestionController {
 
         return new ResponseEntity<>(singleResponseDto, HttpStatus.OK);
     }
+
 
     @GetMapping("/{question-id}") // 질문을 클릭했을 때
     public ResponseEntity getQuestion(@PathVariable("question-id") @Positive Long questionId,
@@ -110,7 +101,7 @@ public class QuestionController {
         return new ResponseEntity(multiResponseDto, HttpStatus.OK);
     }
 
-
+    @NeedMemberId //파라미터로 서버에서 인증된 MemberId가 필요한 경우 붙이면 되는 사용자 정의 어노테이션
     @DeleteMapping("/{question-id}")
     public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive Long questionId) {
         service.deleteQuestion(questionId);

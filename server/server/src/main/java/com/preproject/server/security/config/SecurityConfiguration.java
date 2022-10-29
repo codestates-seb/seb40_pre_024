@@ -17,6 +17,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -27,7 +29,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-
+@EnableWebSecurity //등록 필터 로그로 확인 위해
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
@@ -74,21 +76,21 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증 처리시 예외처리 핸들러
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.GET, "/api/members/**").hasAnyRole("USER") //멤버 정보
-                        .antMatchers(HttpMethod.POST, "/api/members/logout").hasAnyRole("USER") //멤버 로그아웃
+                                .antMatchers(HttpMethod.PATCH,"/api/questions/*").hasRole("USER")
+                                .antMatchers(HttpMethod.DELETE,"/api/questions/*").hasRole("USER")
+                                .antMatchers(HttpMethod.POST,"/api/questions").hasRole("USER")  // POST이면서 /api/questions/로 시작하는 것은 USER 권한
+                                .antMatchers(HttpMethod.GET,"/api/questions/**").permitAll() // GET이면서 /api/questions/로 시작하는 것은 모두 허용
 
-                        .antMatchers(HttpMethod.DELETE, "/api/questions/**").hasAnyRole("USER") //질문 삭제
-                        .antMatchers(HttpMethod.PATCH, "/api/questions/**").hasAnyRole("USER") //질문 수정
-                        .antMatchers(HttpMethod.POST, "/api/questions").hasAnyRole("USER") //질문 등록
+                                .antMatchers(HttpMethod.GET,"/api/members/**").hasRole("USER")
+                                .antMatchers(HttpMethod.POST,"/api/members/logout").hasRole("USER")
+                                .antMatchers(HttpMethod.POST,"/api/members/").permitAll()
 
-                        .antMatchers(HttpMethod.DELETE,"/api/answer/**").hasAnyRole("USER") //답변 삭제
-                        .antMatchers(HttpMethod.PATCH,"/api/answer/**").hasAnyRole("USER") //답변 수정
-                        .antMatchers(HttpMethod.POST,"/api/answer").hasAnyRole("USER") //답변 등록
+                                .antMatchers(HttpMethod.PATCH,"/api/answers/*").hasRole("USER")
+                                .antMatchers(HttpMethod.DELETE,"/api/answers/*").hasRole("USER")
+                                .antMatchers(HttpMethod.POST,"/api/answers").hasRole("USER")  // POST이면서 /api/questions/로 시작하는 것은 USER 권한
+                                .antMatchers(HttpMethod.GET,"/api/answers/**").permitAll() // GET이면서 /api/questions/로 시작하는 것은 모두 허용
 
-                        .anyRequest().permitAll() //임시로 모든 요청 허용
                 );
-
-
         return httpSecurity.build();
     }
 
@@ -136,6 +138,12 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    //등록 필터 로그로 확인 위해
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.debug(true);
     }
 
     @Bean

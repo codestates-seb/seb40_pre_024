@@ -10,7 +10,10 @@ public enum ExceptionCode {
 
     //임시
     AUTHENTICATION_FAIL(400, "authentication_fail"),
-    ACCESS_DENIED(400, "access_denied");
+    ACCESS_DENIED(400, "access_denied"),
+
+    BAD_REQUEST(400,"bad_request");
+
 
     int code;
     String message;

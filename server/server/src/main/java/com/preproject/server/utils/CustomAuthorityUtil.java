@@ -16,7 +16,7 @@ public class CustomAuthorityUtil {
 
     public List<String> getRole() {
 
-        return USER_ROLE;
+        return ADMIN_ROLE;
     }
 
     public List<GrantedAuthority> convertStringToGrantedAuthority(List<String> strRole) {

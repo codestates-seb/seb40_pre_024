@@ -44,12 +44,12 @@ public class MemberController {
     }
 
 
-    @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId) {
-
-        service.removeMember(memberId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
+//    @DeleteMapping("/{member-id}")
+//    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId) {
+//
+//        service.removeMember(memberId);
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+//    }
 
 
     @GetMapping("/{member-id}")

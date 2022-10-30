@@ -8,7 +8,7 @@ const Container = styled.main`
   margin-top: 16px;
   padding-top: 16px;
   min-height: 186px;
-  border-bottom: 1px solid #6a737c;
+  border-bottom: 1px solid #eee;
   & aside {
     padding-right: 16px;
     display: flex;
@@ -32,6 +32,8 @@ const TitleContainer = styled.h4`
 
 // 질문 데이터 하나하나를 여기에 담음
 export default function DetailsComponent({ detail }) {
+  console.log(detail);
+  // console.log(detail.questionTitle);
   return (
     <Container>
       <aside>
@@ -39,9 +41,9 @@ export default function DetailsComponent({ detail }) {
       </aside>
       <main>
         {/* 질문 타이틀 넣어주기 */}
-        <TitleContainer>fasdfasdfasdfasdfasdfasdasdfasdasd</TitleContainer>
+        <TitleContainer>{detail && detail.answerContent}</TitleContainer>
         {/* 태그 제외 , 작성자 정보 알려주기, 여기 현재 아이디와 다르다면 현재 유저는 edit버튼을 가질 수 없음*/}
-        <ProfileContainer detail={{ userId: '1' }} />
+        <ProfileContainer detail={detail} />
         {/* detail */}
       </main>
     </Container>

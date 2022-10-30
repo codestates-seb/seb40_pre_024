@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import DetailsComponent from '../components/DetailComponent/DetailsComponent';
 import RightSidebar from '../components/RightSidebar';
 import Sidebar from '../components/Sidebar';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
-import DetailsComponent from '../components/DetailComponent/DetailsComponent';
-
+import TextEditor from '../components/TextEditor';
+import { useNavigate } from 'react-router-dom';
 const MainContainer = styled.div`
   * {
     box-sizing: border-box;
@@ -23,11 +23,11 @@ const SidebarWrapper = styled.div`
   /* min-width: 165px; */
   /* padding-top: 10px; */
   /* position: sticky; */
-
   padding-top: 53px;
-  height: 450px; // sticky 적용을 위한 height 설정 필수
+  height: 100%; // sticky 적용을 위한 height 설정 필수
   padding-bottom: 8px;
-  width: 300px;
+  padding-left: 3px;
+  border-right: 1px solid #eee;
   /* height: 1500px; */
 `;
 
@@ -35,9 +35,15 @@ const NavContainer = styled.div`
   z-index: 300;
 `;
 
+const ContentWrappers = styled.div`
+  display: flex;
+  width: 90%;
+`;
+
 const Details = styled.div`
-  padding-right: 165px;
-  padding-left: 150px;
+  /* padding-right: 165px;
+  padding-left: 150px; */
+  justify-content: center;
   display: flex;
   width: 100%;
 
@@ -49,7 +55,7 @@ const Details = styled.div`
     justify-content: space-between;
   }
   .right {
-    margin-top: 60px;
+    margin-top: 0px;
     margin-left: 10px;
   }
   .askbutton {
@@ -93,7 +99,7 @@ const Details = styled.div`
   }
   .contentspost {
     width: 100%;
-
+    margin-top: 20px;
     word-break: break-all;
     margin-bottom: 16.5px;
     font-size: 15px;
@@ -123,75 +129,137 @@ const Details = styled.div`
   .contentsmain {
     width: 700px;
   }
+  @media (max-width: 1000px) {
+    .right {
+      display: none;
+    }
+  }
 `;
 
 const ContentWrapper = styled.div`
   width: 100%;
-
+  margin-left: 20px;
   & .container {
     width: 100%;
   }
 `;
+
 const Comments = styled.div`
   display: flex;
   flex-direction: column;
+
+  width: 100%;
+
+  & h3 {
+    margin-top: 15px;
+  }
 `;
+
 const Smallcomments = styled.div`
   display: flex;
+  border-bottom: 1px solid #eee;
 `;
+
+const EditorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & h2 {
+    margin-top: 17px;
+  }
+
+  & .disableBtn {
+    background-color: rgb(183, 225, 247);
+  }
+  & .enableBtn {
+    background-color: #379fef;
+    transition: 0.5s;
+    &:hover {
+      background-color: #0074cc;
+      transition: 0.5s;
+    }
+  }
+  & .innerContain {
+    display: flex;
+    flex-direction: row;
+    height: 120px;
+    align-items: center;
+  }
+  &.LoginMessage {
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+  }
+  & #Btn {
+    margin-right: 10px;
+    width: 180px;
+    height: 35px;
+    color: white;
+    border-radius: 3px;
+    border: 0;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  & .Link {
+    display: inline-block;
+    color: #379fef;
+    margin: 0;
+    cursor: pointer;
+  }
+`;
+
 const QuestionDetails = () => {
-  let id = 'abc1';
-  const dummyData = [
-    {
-      id: 'abc1',
-      title: '이게 안되요1',
-      question:
-        '내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  내용 1  ',
-      athor: '김코딩',
+  const loginState = false;
+  const dummyDataQ = {
+    data: {
+      questionId: 1,
+      questionTitle: '질문제목은5자리',
+      questionContent: '질문내용은15자리제한입니다아아아아아',
+      questionViewed: 0,
+      createdAt: null,
+      modifiedAt: null,
+      answerResponseDto: null,
+      memberResponseDto: null,
     },
-    {
-      comment: [
-        {
-          id: 'abc2',
-          title: '이게 안되요2',
-          question:
-            '내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  내용 2  ',
-          athor: '김코딩2',
-        },
-        {
-          id: 'abc3',
-          title: '이게 안되요3',
-          question:
-            '내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  내용 3  ',
-          athor: '김코딩3',
-        },
-        {
-          id: 'abc4',
-          title: '이게 안되요4',
-          question:
-            '내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  내용 4  ',
-          athor: '김코딩4',
-        },
-      ],
-    },
-  ];
+  };
+  const navigate = useNavigate();
+  const onNavigate = (e) => {
+    navigate(`/${e}`);
+  };
+  const coments = {
+    data: [
+      // {
+      //   answerId: 1,
+      //   answerContent: '답변은5자리부터',
+      //   createdAt: '2022-10-30',
+      //   modifiedAt: null,
+      //   memberResponseDto: '유저 이름인가요 여기가?',
+      // },
+      // {
+      //   answerId: 1,
+      //   answerContent: '답변은5자리부터',
+      //   createdAt: '2022-10-31',
+      //   modifiedAt: null,
+      //   memberResponseDto: '유저2 이름인가요 여기가?',
+      // },
+    ],
+  };
+
   return (
     <MainContainer>
       <NavContainer>
         <Nav />
       </NavContainer>
       <Details>
-        <div style={{ display: 'flex' }}>
+        <ContentWrappers>
           <SidebarWrapper>
             <Sidebar />
           </SidebarWrapper>
           <ContentWrapper>
             {/* 여기엔 API에서 질문의 제목을 입력해주세요 */}
             <header className="head">
-              <h1 className="title">
-                title, 타이틀 제목 내용 Using less (2.2.1) raises an error
-                requiring therubyracer cant install therubyracer on
-              </h1>
+              <h1 className="title">{dummyDataQ.data.questionTitle}</h1>
               {/* 유저가 로그인 되있으면 아래에 onClick 이벤트를 줘서 댓글창으로 이동해주세요 */}
               <button className="askbutton">Ask Question</button>
             </header>
@@ -215,64 +283,113 @@ const QuestionDetails = () => {
                 <Comments>
                   {' '}
                   {/* question 안에다가 댓글 넣을 것 */}
-                  {/* <Smallcomments>
-                  <div className="vote">
-                    <svg
-                      aria-hidden="true"
-                      className="svg-icon iconArrowUpLg"
-                      width="36"
-                      height="36"
-                      viewBox="0 0 36 36"
-                    >
-                      <path d="M2 25h32L18 9 2 25Z"></path>
-                    </svg>
-                    <div className="count">0</div>
-                    <svg
-                      aria-hidden="true"
-                      className="iconArrowDownLg"
-                      width="36"
-                      height="36"
-                      viewBox="0 0 36 36"
-                    >
-                      <path d="M2 11h32L18 27 2 11Z"></path>
-                    </svg>
-                    <svg
-                      aria-hidden="true"
-                      className="iconBookmarkAlt"
-                      width="23"
-                      height="23"
-                      viewBox="0 0 18 18"
-                      preserveAspectRatio="none"
-                    >
-                      <path d="m9 10.6 4 2.66V3H5v10.26l4-2.66ZM3 17V3c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v14l-6-4-6 4Z"></path>
-                    </svg>
-                    <svg
-                      aria-hidden="true"
-                      className="iconHistory"
-                      width="23"
-                      height="23"
-                      viewBox="0 0 19 18"
-                      preserveAspectRatio="none"
-                    >
-                      <path d="M3 9a8 8 0 1 1 3.73 6.77L8.2 14.3A6 6 0 1 0 5 9l3.01-.01-4 4-4-4h3L3 9Zm7-4h1.01L11 9.36l3.22 2.1-.6.93L10 10V5Z"></path>
-                    </svg>
-                  </div>
-                  <div className="contentsmain">
-                    <div>
-                      <div className="contentspost" key={dummyData[0].id}>
-                        {dummyData[0].question}
+                  <Smallcomments>
+                    <div className="vote">
+                      <svg
+                        aria-hidden="true"
+                        className="svg-icon iconArrowUpLg"
+                        width="36"
+                        height="36"
+                        viewBox="0 0 36 36"
+                      >
+                        <path d="M2 25h32L18 9 2 25Z"></path>
+                      </svg>
+                      <div className="count">0</div>
+                      <svg
+                        aria-hidden="true"
+                        className="iconArrowDownLg"
+                        width="36"
+                        height="36"
+                        viewBox="0 0 36 36"
+                      >
+                        <path d="M2 11h32L18 27 2 11Z"></path>
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        className="iconBookmarkAlt"
+                        width="23"
+                        height="23"
+                        viewBox="0 0 18 18"
+                        preserveAspectRatio="none"
+                      >
+                        <path d="m9 10.6 4 2.66V3H5v10.26l4-2.66ZM3 17V3c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v14l-6-4-6 4Z"></path>
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        className="iconHistory"
+                        width="23"
+                        height="23"
+                        viewBox="0 0 19 18"
+                        preserveAspectRatio="none"
+                      >
+                        <path d="M3 9a8 8 0 1 1 3.73 6.77L8.2 14.3A6 6 0 1 0 5 9l3.01-.01-4 4-4-4h3L3 9Zm7-4h1.01L11 9.36l3.22 2.1-.6.93L10 10V5Z"></path>
+                      </svg>
+                    </div>
+                    <div className="contentsmain">
+                      <div>
+                        <div className="contentspost">
+                          {dummyDataQ.data.questionContent}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Smallcomments> */}
+                  </Smallcomments>
+                  {/* 질문에 대한 제목이 들어가야함 */}
+                  {coments && coments.data.length > 0 && <h3>Answers</h3>}
+                  {coments &&
+                    coments.data.length > 0 &&
+                    coments.data.map((coment) => (
+                      <DetailsComponent key={coment.id} detail={coment} />
+                    ))}
+                  {/* 텍스트 에디터 부분 */}
+                  <EditorContainer>
+                    <h2>Your Answer</h2>
+                    <div className="AnswerContainer">
+                      <TextEditor />
+                    </div>
+                    <div className="innerContain">
+                      <button
+                        className={loginState ? 'enableBtn' : 'disableBtn'}
+                        id="Btn"
+                        disabled={!loginState}
+                      >
+                        Post Your Answer
+                      </button>
+                      {!loginState && (
+                        <div className="LoginMessage">
+                          You need to{' '}
+                          <p
+                            role="presentation"
+                            className="Link"
+                            onClick={() => {
+                              onNavigate('login');
+                            }}
+                          >
+                            login
+                          </p>{' '}
+                          or{' '}
+                          <p
+                            className="Link"
+                            role="presentation"
+                            onClick={() => {
+                              onNavigate('register');
+                            }}
+                          >
+                            signup
+                          </p>{' '}
+                          to add an answer.
+                        </div>
+                      )}
+                    </div>
+                  </EditorContainer>
+                  {/*  */}
                 </Comments>
+                <div className="right">
+                  <RightSidebar />
+                </div>
               </div>
             </div>
           </ContentWrapper>
-          <div className="right">
-            <RightSidebar />
-          </div>
-        </div>
+        </ContentWrappers>
       </Details>
       <Footer />
     </MainContainer>

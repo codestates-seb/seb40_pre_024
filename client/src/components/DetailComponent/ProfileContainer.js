@@ -53,21 +53,22 @@ export default function ProfileContainer({ detail }) {
   const moveToEdit = (id) => {
     navigate(`detail/edit/${id}`);
   };
-
+  console.log(detail);
   return (
     <MainContainer>
       <div>
         <DetailBtn>Share</DetailBtn>
         <DetailBtn>Follwing</DetailBtn>
-        {currentId === detail.userId && (
+        {/* 댓글을 제작한 유저의 데이터가 필요함 */}
+        {/* {currentId === detail.userId && (
           <DetailBtn onClick={() => moveToEdit(detail.userId)}>Edit</DetailBtn>
-        )}
+        )} */}
       </div>
       <ProfileContain>
-        <div>4 hours ago</div>
+        <div>{detail && detail.createdAt}</div>
         <Profile>
           <img src={ProfileImg} alt={'프로필 사진'} />
-          <div>유저 닉네임</div>
+          <div>{detail && detail.memberResponseDto}</div>
           {/* 작성 유저 닉넥임을 여기에 넣습니다 */}
         </Profile>
       </ProfileContain>

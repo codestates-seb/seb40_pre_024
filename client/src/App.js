@@ -6,7 +6,8 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Ask from './pages/Ask';
 import QuestionDetails from './pages/QuestionDetails';
-
+import EditQuestion from './pages/EditQuestion';
+import EditAnswer from './pages/EditAnswer';
 function App() {
   return (
     <>
@@ -17,6 +18,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/editask" element={<Ask />} />
         <Route path="/detail/:id" element={<QuestionDetails />} />
+        <Route path="/editquestion" element={<EditQuestion />} />
+        <Route path="/editanswer/:id" element={<EditAnswer />} />
       </Routes>
     </>
   );

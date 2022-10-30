@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { BsSearch } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 const Modal = styled.div`
   position: absolute;
@@ -141,6 +142,12 @@ const ModalMenu = styled.div`
   }
 `;
 
+const LogoutLink = styled(Link)`
+  span {
+    color: #0074cb;
+  }
+`;
+
 const MenuModal = ({ setMenuModal, menuRef }) => {
   const outsidemenuRef = useRef();
 
@@ -187,7 +194,9 @@ const MenuModal = ({ setMenuModal, menuRef }) => {
                 <a href="/">chat</a>
               </span>
               <span>
-                <a href="/">log out</a>
+                <LogoutLink to="/logout">
+                  <span>Log out</span>
+                </LogoutLink>
               </span>
             </div>
           </div>

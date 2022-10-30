@@ -47,33 +47,44 @@ const Button = styled.button`
   }
 `;
 
+let PAGE_LIMIT = 5; // 페이지 리스트를 표시하고 넘길 단위
+
 export const sliceArrayBylimit = (total, limit) => {
   // 먼저 필요한 페이지 개수 만들어 배열에 담기
-  const totalPageArray = Array(total)
+  const numPages = Math.ceil(total / limit);
+
+  // 필요한 페이지의 수를 배열로 만들기
+  const totalPageArray = Array(numPages)
     .fill()
     .map((_el, i) => i);
-  // limit 기준으로 잘라서 필요한 페이지 수만큼 이중 배열 만들기
-  return Array(Math.ceil(total / limit))
+
+  // 페이지를 pageLimite 단위로 끊어서 보여줄 배열의 수만큼 이중 배열 만들기
+  return Array(Math.ceil(numPages / PAGE_LIMIT))
     .fill()
-    .map(() => totalPageArray.splice(0, limit));
+    .map(() => totalPageArray.splice(0, PAGE_LIMIT));
 };
 
 const Pagination = ({ total, limit, page, setPage }) => {
   const [currentPageArray, setCurrentPageArray] = useState([]);
   const [totalPageArray, setTotalPageArray] = useState([]);
-  // 필요한 페이지수
+  // 필요한 페이지 수
   const numPages = Math.ceil(total / limit);
+  // console.log(totalPageArray);
+  // console.log(currentPageArray);
 
   useEffect(() => {
-    if (page % limit === 1) {
-      setCurrentPageArray(totalPageArray[Math.floor(page / limit)]);
-    } else if (page % limit === 0) {
-      setCurrentPageArray(totalPageArray[Math.floor(page / limit) - 1]);
+    // 현재 페이지가
+    if (page % PAGE_LIMIT === 1) {
+      setCurrentPageArray(totalPageArray[Math.floor(page / PAGE_LIMIT)]);
+    } else if (page % PAGE_LIMIT === 0) {
+      setCurrentPageArray(totalPageArray[Math.floor(page / PAGE_LIMIT) - 1]);
     }
   }, [page]);
 
   useEffect(() => {
     const slicedPageArray = sliceArrayBylimit(total, limit);
+    // console.log(slicedPageArray); // [[0~14], [15~29], [30~44], [45~49]]
+    // console.log(slicedPageArray[numPages]); //undefined
     setTotalPageArray(slicedPageArray);
     setCurrentPageArray(slicedPageArray[0]);
   }, [total]);

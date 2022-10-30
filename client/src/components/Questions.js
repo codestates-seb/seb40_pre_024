@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import QuestionAdd from './QuestiosComponents/QuestionAdd';
 import QuestionListNum from './QuestiosComponents/QuestionListNum';
@@ -17,6 +17,19 @@ const ListContainer = styled.div`
 
 export default function Questions() {
   // api로 전체 데이터 받아오기([{질문 아이디, 질문 제목, 질문 내용, 멤버 닉네임, 작성 날짜},...] 형식)
+
+  // const getQuestions = async () => {
+  //   const { data } = await axios
+  //     .get(
+  //       'http://ec2-3-36-182-194.ap-northeast-2.compute.amazonaws.com:8080/api/questions'
+  //     )
+  //     .console.log(data);
+  // };
+
+  // useEffect(() => {
+  //   getQuestions();
+  // }, []);
+
   const dummyData = [
     {
       id: 'kuu1',
@@ -511,7 +524,7 @@ export default function Questions() {
     },
     {
       id: 'kuu50',
-      title: '이게 안되요4',
+      title: '이게 안되요4(마지막)',
       question: '이렇게 했는데 이게 안되요18',
       author: '김코딩4',
       votes: '34 votes',
@@ -524,7 +537,7 @@ export default function Questions() {
   const [filterModal, setFilterModal] = useState(false);
 
   let [questions, setQuestions] = useState([]); // 총 게시물 데이터
-  const [limit, setLimit] = useState(5); // 페이지당 게시물 수
+  const [limit, setLimit] = useState(15); // 페이지당 게시물 수
   const [page, setPage] = useState(1); // 현재 페이지
 
   questions = dummyData;

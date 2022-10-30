@@ -11,6 +11,7 @@ import { HiInbox } from 'react-icons/hi2';
 import { TiThMenu } from 'react-icons/ti';
 import { FaUserCircle } from 'react-icons/fa';
 import MenuModal from './MenuModal';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar = styled.nav`
   * {
@@ -45,14 +46,19 @@ const Navbar = styled.nav`
       justify-content: space-between;
       align-items: center;
 
+      button {
+        border: none;
+        background-color: #f8f9f9;
+        &:hover {
+          background-color: #e9e9e9;
+        }
+      }
+
       img {
         width: 157px;
         height: 38px;
         padding: 5px;
         cursor: pointer;
-      }
-      &:hover {
-        background-color: #e9e9e9;
       }
     }
 
@@ -124,35 +130,6 @@ const Navbar = styled.nav`
       justify-content: center;
       align-items: center;
       gap: 5px;
-
-      button:first-child {
-        width: 60px;
-        height: 37px;
-        border: 1px solid #7faac9;
-        border-radius: 3px;
-        color: #2d5877;
-        background-color: #e1ecf4;
-        font-weight: 500;
-        cursor: pointer;
-        &:hover {
-          background-color: #c5dceb;
-        }
-      }
-
-      button:last-child {
-        width: 70px;
-        height: 37px;
-        margin-right: 5px;
-        border: 1px solid #7faac9;
-        border-radius: 3px;
-        color: white;
-        background-color: #2192e9;
-        font-weight: 600;
-        cursor: pointer;
-        &:hover {
-          background-color: #0a6bb6;
-        }
-      }
     }
 
     .login-button-box {
@@ -218,6 +195,49 @@ const Navbar = styled.nav`
   }
 `;
 
+const LoginLink = styled(Link)`
+  width: 60px;
+  height: 37px;
+  border: 1px solid #7faac9;
+  border-radius: 3px;
+  background-color: #e1ecf4;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: #2d5877;
+    font-weight: 500;
+  }
+
+  &:hover {
+    background-color: #c5dceb;
+  }
+`;
+
+const SignupLink = styled(Link)`
+  width: 70px;
+  height: 37px;
+  margin-right: 5px;
+  border: 1px solid #7faac9;
+  border-radius: 3px;
+  background-color: #2192e9;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: white;
+    font-weight: 600;
+  }
+
+  &:hover {
+    background-color: #0a6bb6;
+  }
+`;
+
 const SearchToggle = styled.div`
   width: 100%;
   min-width: 500px;
@@ -280,6 +300,8 @@ const Nav = () => {
   const [menuModal, setMenuModal] = useState(false);
   const [inputText, setInputText] = useState('');
 
+  const navigate = useNavigate();
+
   const outsideRef = useRef();
   const menuRef = useRef(null);
   useEffect(() => {
@@ -303,11 +325,19 @@ const Nav = () => {
     setInputText('');
   };
 
+  // 메인페이지로 이동하면서 새로고침하는 함수 생성
+  const clickToHome = () => {
+    navigate('/');
+    window.location.reload();
+  };
+
   return (
     <Navbar>
       <div className="nav-container">
         <div className="logo-box">
-          <img src={logostackoverflow} alt="stackoverflow-logo" />
+          <button onClick={clickToHome}>
+            <img src={logostackoverflow} alt="stackoverflow-logo" />
+          </button>
         </div>
         {isLogin ? (
           <div className="menu-box">
@@ -415,9 +445,16 @@ const Nav = () => {
           </div>
         ) : (
           <div className="button-box">
-            {/* 수정(버튼 클릭시 임시 로그인 기능 조치) */}
-            <button onClick={() => setIsLogin(true)}>Log in</button>
-            <button>Sign up</button>
+            {/* 수정(임시로 로그인 모드 진행하는 코드) */}
+            {/* <button onClick={() => setIsLogin(true)}>Log in</button>
+            <button>Sign up</button> */}
+            {/* 수정(Link로 페이지 연결) */}
+            <LoginLink to="/login">
+              <span>Log in</span>
+            </LoginLink>
+            <SignupLink to="/register">
+              <span>Sign up</span>
+            </SignupLink>
           </div>
         )}
       </div>

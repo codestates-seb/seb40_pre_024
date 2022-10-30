@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/** 인증처리 필터 **/
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -62,6 +63,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        //인증 실패시 해당 메소드에서 따로 처리 하진 않고, 인증 실패에 대한 예외처리는 해당 필터에 연결된
+        //AuthenticationFailureHandler 에게 위임한다.
+
         super.unsuccessfulAuthentication(request, response, failed);
     }
 

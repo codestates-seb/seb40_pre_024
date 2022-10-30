@@ -1,5 +1,6 @@
 package com.preproject.server.member.service;
 
+import com.preproject.server.exception.AuthException;
 import com.preproject.server.exception.BusinessException;
 import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.member.entity.Member;
@@ -31,7 +32,7 @@ public class MemberDetailsService implements UserDetailsService {
     private Member verifyExistsMember(String email) {
 
         Member findMember = repository.findMemberByMemberEmail(email).orElseThrow(() -> {
-            throw new BusinessException(ExceptionCode.MEMBER_NOT_EXISTS);
+            throw new AuthException(ExceptionCode.MEMBER_NOT_EXISTS);
         });
 
         return findMember;

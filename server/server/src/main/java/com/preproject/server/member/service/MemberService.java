@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.util.Map;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class MemberService {

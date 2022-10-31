@@ -7,6 +7,7 @@ import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import TextEditor from '../components/TextEditor';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const MainContainer = styled.div`
   * {
     box-sizing: border-box;
@@ -209,6 +210,44 @@ const EditorContainer = styled.div`
   }
 `;
 
+const Contentpostmenu = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  button {
+    border: none;
+    color: #6a737c;
+    padding: 0px 10px 0px 0px;
+    font-size: 13px;
+    background-color: inherit;
+  }
+`;
+
+// 날짜 계산
+function timeForToday(value) {
+  const today = new Date();
+  const timeValue = new Date(value);
+
+  const betweenTime = Math.floor(
+    (today.getTime() - timeValue.getTime()) / 1000 / 60
+  );
+  if (betweenTime < 1) return '방금전';
+  if (betweenTime < 60) {
+    return `${betweenTime}분전`;
+  }
+
+  const betweenTimeHour = Math.floor(betweenTime / 60);
+  if (betweenTimeHour < 24) {
+    return `${betweenTimeHour}시간전`;
+  }
+
+  const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+  if (betweenTimeDay < 365) {
+    return `${betweenTimeDay}일전`;
+  }
+
+  return `${Math.floor(betweenTimeDay / 365)}년전`;
+}
+
 const QuestionDetails = () => {
   const loginState = false;
   const dummyDataQ = {
@@ -217,8 +256,8 @@ const QuestionDetails = () => {
       questionTitle: '질문제목은5자리',
       questionContent: '질문내용은15자리제한입니다아아아아아',
       questionViewed: 0,
-      createdAt: null,
-      modifiedAt: null,
+      createdAt: '2022-10-28',
+      modifiedAt: '2022-10-30',
       answerResponseDto: null,
       memberResponseDto: null,
     },
@@ -261,22 +300,35 @@ const QuestionDetails = () => {
             <header className="head">
               <h1 className="title">{dummyDataQ.data.questionTitle}</h1>
               {/* 유저가 로그인 되있으면 아래에 onClick 이벤트를 줘서 댓글창으로 이동해주세요 */}
-              <button className="askbutton">Ask Question</button>
+              <button
+                className="askbutton"
+                onClick={() => {
+                  onNavigate('editask');
+                }}
+              >
+                Ask Question
+              </button>
             </header>
 
             <div className="container">
               <div className="current">
                 <div>
                   Asked
-                  <span className="currentcontents asked">today</span>
+                  <span className="currentcontents asked">
+                    {timeForToday(dummyDataQ.data.createdAt)}
+                  </span>
                 </div>
                 <div>
                   Modified
-                  <span className="currentcontents Modified">today</span>
+                  <span className="currentcontents Modified">
+                    {timeForToday(dummyDataQ.data.modifiedAt)}
+                  </span>
                 </div>
                 <div>
                   Viewed
-                  <span className="currentcontents Viewed">1 times</span>
+                  <span className="currentcontents Viewed">
+                    {dummyDataQ.data.questionViewed} times
+                  </span>
                 </div>
               </div>
               <div className="contents">
@@ -287,7 +339,7 @@ const QuestionDetails = () => {
                     <div className="vote">
                       <svg
                         aria-hidden="true"
-                        className="svg-icon iconArrowUpLg"
+                        className="iconArrowUpLg"
                         width="36"
                         height="36"
                         viewBox="0 0 36 36"
@@ -330,6 +382,28 @@ const QuestionDetails = () => {
                         <div className="contentspost">
                           {dummyDataQ.data.questionContent}
                         </div>
+                      </div>
+                      <div>
+                        <Contentpostmenu>
+                          <button type="button" className="postmenuShare">
+                            Share
+                          </button>
+                          <button
+                            type="button"
+                            className="postmenuEdit"
+                            onClick={() => {
+                              onNavigate('editquestion');
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button type="button" className="postmenuDelete">
+                            Delete
+                          </button>
+                          <button type="button" className="postmenuFollowing">
+                            Following
+                          </button>
+                        </Contentpostmenu>
                       </div>
                     </div>
                   </Smallcomments>

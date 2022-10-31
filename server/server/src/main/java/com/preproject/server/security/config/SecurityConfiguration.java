@@ -144,7 +144,7 @@ public class SecurityConfiguration {
 //        configuration.setAllowedOrigins(Arrays.asList(clientUrl));
 //        configuration.setAllowedMethods(Arrays.asList("*"));
 
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

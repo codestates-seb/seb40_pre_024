@@ -6,6 +6,7 @@ import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal';
+import Sidebar from '../components/Sidebar';
 
 export default function Ask() {
   const [title, setTitle] = useState('');
@@ -36,15 +37,18 @@ export default function Ask() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const exampleData = {
+    const newData = {
+      memberId: null,
       questionTitle: title,
-      questionContent: JSON.stringify(content),
+      questionContent: content,
     };
 
     await axios
-      .post('http://localhost:4000/test', exampleData)
+      .post('http://localhost:3000/data', JSON.stringify(newData), {
+        headers: { 'Content-Type': `application/json` },
+      })
       .then((res) => {
-        console.log(res.data);
+        console.log(console.log(res.data));
       })
       .catch((err) => console.log(err));
 
@@ -55,82 +59,106 @@ export default function Ask() {
   return (
     <>
       <Nav />
-      <Container>
-        <h2>Ask a public question</h2>
-        <SectionContainer>
-          <Section>
-            <SectionTitle>Title</SectionTitle>
-            <span>
-              {`Be specific and imagine you are asking a question to another
+      <ContainerWrapper>
+        <SidebarWrapper>
+          <Sidebar />
+        </SidebarWrapper>
+        <Container>
+          <h2>Ask a public question</h2>
+          <SectionContainer>
+            <Section>
+              <SectionTitle>Title</SectionTitle>
+              <span>
+                {`Be specific and imagine you are asking a question to another
               person. Minimum ${MIN_LENGTH_TITLE} characters.`}
-            </span>
-            <Input
-              type="text"
-              placeholder="type here.."
-              maxLength="70"
-              value={title}
-              onChange={(event) => {
-                setTitle(event.target.value);
-                setLengthTitle(event.target.value.length);
-              }}
-              required
-            />
-            <LengthCounter
-              qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
-            >
-              {lengthTitle} / {MIN_LENGTH_TITLE}
-            </LengthCounter>
-          </Section>
-          <Section>
-            <SectionTitle>Body</SectionTitle>
-            <span>
-              {`Introduce the problem and expand on what you put in the title.
+              </span>
+              <Input
+                type="text"
+                placeholder="type here.."
+                maxLength="70"
+                value={title}
+                onChange={(event) => {
+                  setTitle(event.target.value);
+                  setLengthTitle(event.target.value.length);
+                }}
+                required
+              />
+              <LengthCounter
+                qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
+              >
+                {lengthTitle} / {MIN_LENGTH_TITLE}
+              </LengthCounter>
+            </Section>
+            <Section>
+              <SectionTitle>Body</SectionTitle>
+              <span>
+                {`Introduce the problem and expand on what you put in the title.
               Minimum ${MIN_LENGTH_CONTENT} characters.`}
-            </span>
-            <TextEditor ref={editorRef} onChange={onChange} value={' '} />
-            <LengthCounter
-              qualified={
-                lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
-              }
-            >
-              {lengthContent} / {MIN_LENGTH_CONTENT}
-            </LengthCounter>
-          </Section>
-          <Section>
-            <SectionTitle>Tags</SectionTitle>
-            <span>
-              Add up to 5 tags to describe what your question is about.
-            </span>
-            <InputTag disabled placeholder="Temporarily disabled"></InputTag>
-          </Section>
-        </SectionContainer>
-        <ButtonContainer>
-          <form>
-            <Button
-              disabled={
-                title.length <= MIN_LENGTH_TITLE ||
-                content.length <= MIN_LENGTH_CONTENT
-                  ? true
-                  : null
-              }
-              typed="submit"
-              onClick={handleSubmit}
-              submit
-            >
-              Review your question
-            </Button>
-          </form>
-          <Modal functionHandler={backNavigate} />
-        </ButtonContainer>
-      </Container>
+              </span>
+              <TextEditor ref={editorRef} onChange={onChange} value={' '} />
+              <LengthCounter
+                qualified={
+                  lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
+                }
+              >
+                {lengthContent} / {MIN_LENGTH_CONTENT}
+              </LengthCounter>
+            </Section>
+            <Section>
+              <SectionTitle>Tags</SectionTitle>
+              <span>
+                Add up to 5 tags to describe what your question is about.
+              </span>
+              <InputTag disabled placeholder="Temporarily disabled"></InputTag>
+            </Section>
+          </SectionContainer>
+          <ButtonContainer>
+            <form>
+              <Button
+                disabled={
+                  title.length <= MIN_LENGTH_TITLE ||
+                  content.length <= MIN_LENGTH_CONTENT
+                    ? true
+                    : null
+                }
+                typed="submit"
+                onClick={handleSubmit}
+                submit
+              >
+                Review your question
+              </Button>
+            </form>
+            <Modal functionHandler={backNavigate} />
+          </ButtonContainer>
+        </Container>
+      </ContainerWrapper>
       <Footer />
     </>
   );
 }
 
+const ContainerWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  max-width: 1300px;
+  padding-top: 30px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto; // (이슈) 계속 중앙정렬 안되다가 이걸로 시도하니 해결
+`;
+
+const SidebarWrapper = styled.div`
+  position: sticky;
+  top: 53px;
+  height: 450px; // sticky 적용을 위한 height 설정 필수
+  margin-bottom: 8px;
+`;
+
 const Container = styled.main`
-  padding: 8vh 10vw;
-  background-color: #f1f2f3;
+  padding: 4vh 5vw;
+  background-color: transparent;
+  border: 1px solid #eee;
   display: flex;
   flex-direction: column;
   h2 {

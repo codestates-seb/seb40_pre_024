@@ -87,5 +87,4 @@ logging:
     org:
       springframework:
         security: DEBUG
-
-
+        

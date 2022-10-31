@@ -36,8 +36,8 @@ public class QuestionService {
             throw new BusinessException(ExceptionCode.BAD_REQUEST);
         }
 
-//        Optional.ofNullable(question.getModifiedAt())
-//                .ifPresent(modifiedAt -> findQuestion.setModifiedAt(modifiedAt));  // 수정날짜는 auditable에서 적용
+        Optional.ofNullable(question.getModifiedAt())
+                .ifPresent(modifiedAt -> findQuestion.setModifiedAt(modifiedAt));
         Optional.ofNullable(question.getQuestionTitle())
                 .ifPresent(questionTitle -> findQuestion.setQuestionTitle(questionTitle));
         Optional.ofNullable(question.getQuestionContent())

@@ -84,7 +84,7 @@ public class QuestionController {
         Question question = service.findQuestion(questionId);
 
         SingleResponseDto<QuestionAnswerDto> singleResponseDto =
-                new SingleResponseDto<>(mapper.questionToQuestionAnswerDto(question, memberMapper, answerMapper));
+                new SingleResponseDto<>(mapper.questionToQuestionAnswerDto(question, memberMapper, answerMapper, page-1));
 
         return new ResponseEntity<>(singleResponseDto, HttpStatus.OK);
     }

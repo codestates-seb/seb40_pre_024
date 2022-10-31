@@ -52,6 +52,7 @@ const ModalBtn = styled.button`
   height: 100%;
   border: none;
   color: #c22f32;
+  background-color: transparent;
   border-radius: 30px;
   cursor: pointer;
 `;
@@ -66,8 +67,8 @@ const ModalView = styled.div`
   display: flex;
   flex-direction: column;
   text-align: start;
-  width: 550px;
-  height: 110px;
+  width: 600px;
+  height: 140px;
   border-radius: 10px;
   padding: 20px;
   gap: 15px;

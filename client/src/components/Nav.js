@@ -11,6 +11,8 @@ import { HiInbox } from 'react-icons/hi2';
 import { TiThMenu } from 'react-icons/ti';
 import { FaUserCircle } from 'react-icons/fa';
 import MenuModal from './MenuModal';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Navbar = styled.nav`
   * {
@@ -276,10 +278,11 @@ const SearchToggle = styled.div`
 
 const Nav = () => {
   const [isFocus, setIsFocus] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const isLogin = useSelector((state) => state.user.currentUser);
+
   const [menuModal, setMenuModal] = useState(false);
   const [inputText, setInputText] = useState('');
-
+  const navigate = useNavigate();
   const outsideRef = useRef();
   const menuRef = useRef(null);
   useEffect(() => {
@@ -307,7 +310,9 @@ const Nav = () => {
     <Navbar>
       <div className="nav-container">
         <div className="logo-box">
-          <img src={logostackoverflow} alt="stackoverflow-logo" />
+          <Link to="/">
+            <img src={logostackoverflow} alt="stackoverflow-logo" />
+          </Link>
         </div>
         {isLogin ? (
           <div className="menu-box">
@@ -416,8 +421,8 @@ const Nav = () => {
         ) : (
           <div className="button-box">
             {/* 수정(버튼 클릭시 임시 로그인 기능 조치) */}
-            <button onClick={() => setIsLogin(true)}>Log in</button>
-            <button>Sign up</button>
+            <button onClick={() => navigate('/login')}>Log in</button>
+            <button onClick={() => navigate('/register')}>Sign up</button>
           </div>
         )}
       </div>

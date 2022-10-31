@@ -119,6 +119,7 @@ const Checkbox = styled.div`
 export default function RegisterContainer() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
@@ -127,11 +128,19 @@ export default function RegisterContainer() {
   const onLogin = async (data) => {
     // console.log(data);
     // 회원가입 api 자리
-    try {
-      axios.post('#', { ...data });
-    } catch (err) {
-      setError(err);
-    }
+    let userData = {
+      memberEmail: data.email,
+      memberName: data.displayName,
+      memberPwd: data.password,
+    };
+    return axios
+      .post('/api/members', { ...userData })
+      .then((res) => {
+        navigate('/login');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

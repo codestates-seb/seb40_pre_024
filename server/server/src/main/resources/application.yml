@@ -40,7 +40,6 @@ spring:
         format_sql: true
 
 
-### Local
 
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
@@ -59,17 +58,18 @@ spring:
 
 
 
-# encoding
-server:
-  servlet:
-    encoding:
-      force-response: true
+
+
+  web:   # 존재하지 않는 리소스의 url 요청시, 404
+    resources:
+      add-mappings: false
+
 
 # jwt, my properties
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 120
-  refresh-token-expiration-minutes: 420
+  refresh-token-expiration-minutes: 720
 
 # cors, my properties
 client:

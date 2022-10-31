@@ -35,15 +35,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 @RequiredArgsConstructor
 public class TxAspect {
 
-
     private final PlatformTransactionManager transactionManager;
-
-
-//    @Pointcut("execution(* com.preproject.server.question.controller.QuestionController.*Question(..))" )
-//    public void question() {
-//    }
-//    @Around("question()")
-
 
     @Around("@annotation(com.preproject.server.tx.NeedMemberId)") //NeedMemberId를 붙인 메소드에
     public Object applyTx(ProceedingJoinPoint joinPoint) throws Throwable {

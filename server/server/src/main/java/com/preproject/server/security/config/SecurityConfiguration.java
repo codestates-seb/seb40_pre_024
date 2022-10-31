@@ -1,6 +1,10 @@
 package com.preproject.server.security.config;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.preproject.server.filter.FilterChainExceptionHandlerFilter;
+import com.preproject.server.filter.FilterExceptionResolver;
 import com.preproject.server.filter.JwtAuthenticationFilter;
 import com.preproject.server.filter.JwtVerificationFilter;
 import com.preproject.server.jwt.JwtTokenizer;
@@ -24,11 +28,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 @EnableWebSecurity //등록 필터 로그로 확인 위해
 @Configuration
 @RequiredArgsConstructor
@@ -42,6 +46,7 @@ public class SecurityConfiguration {
     @Value("${client.url}")
     private String clientUrl;
 
+    private final Gson gson;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -72,8 +77,8 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .exceptionHandling()
-                .accessDeniedHandler(new CustomAccessDeniedHandler()) //권한에 맞지 않는 요청시 거부핸들러
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증 처리시 예외처리 핸들러
+                .accessDeniedHandler(new CustomAccessDeniedHandler()) //권한에 맞지 않는 요청시 거부핸들러, 인증은 됬지만 권한에 맞지 않는 리소스 요청시
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증 처리시 예외처리 핸들러, 권한이 필요한 리소스에 대해 접근하는데 인증을 하지 않아 Anonnymous 인 유저일 경우 발생 처리
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                                 .antMatchers(HttpMethod.PATCH,"/api/questions/*").hasRole("USER")
@@ -95,6 +100,8 @@ public class SecurityConfiguration {
     }
 
 
+
+
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
 
         @Override
@@ -103,6 +110,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
 
+            //인증 처리 필터
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
 
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/members/login");
@@ -111,15 +119,21 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
 
+            //토큰 검증 필터
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtil, redisTemplate);
 
 
+            //인증, 토큰 검증 필터 등록
             builder.addFilter(jwtAuthenticationFilter)
                             .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
 
+            //인증 관련 예외처리 필터 등록
+
+            builder.addFilterBefore(new FilterChainExceptionHandlerFilter(new FilterExceptionResolver(gson)), LogoutFilter.class);
 
         }
     }
+
 
 
 
@@ -130,7 +144,7 @@ public class SecurityConfiguration {
 //        configuration.setAllowedOrigins(Arrays.asList(clientUrl));
 //        configuration.setAllowedMethods(Arrays.asList("*"));
 
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

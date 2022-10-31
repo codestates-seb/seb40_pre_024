@@ -1,6 +1,7 @@
 package com.preproject.server.question.mapper;
 
 import com.preproject.server.answer.dto.AnswerResponseDto;
+import com.preproject.server.answer.entity.Answer;
 import com.preproject.server.answer.mapper.AnswerMapper;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.PageImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
@@ -61,7 +64,7 @@ public interface QuestionMapper {
 
     // 질문 상세페이지
     default QuestionAnswerDto questionToQuestionAnswerDto(Question question, MemberMapper memberMapper,
-                                                          AnswerMapper answerMapper){
+                                                          AnswerMapper answerMapper, int answerpage){
         if ( question == null ) {
             return null;
         }
@@ -80,9 +83,16 @@ public interface QuestionMapper {
 
         Collections.reverse(question.getAnswer()); // 리스트 역순으로 정렬
 
-        PageImpl page = new PageImpl<>(question.getAnswer()); // question에 저장된 answer를 response로
+        List<Answer> answerList = question.getAnswer() // 원하는 페이지에서 15개씩 answer 추출
+                .stream()
+                .skip(15*answerpage)
+                .limit(15)
+                .collect(Collectors.toList());
+
+
+        PageImpl page = new PageImpl<>(answerList); // question에 저장된 answer를 response로
         MultiResponseDto<AnswerResponseDto> multiResponseDto =
-                new MultiResponseDto<>(answerMapper.answerToAnswerResponseDtos(question.getAnswer()), page);
+                new MultiResponseDto<>(answerMapper.answerToAnswerResponseDtos(answerList), page);
         questionAnswerDto.setAnswerResponseDto(multiResponseDto);
 
 

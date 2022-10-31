@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 
@@ -43,7 +43,7 @@ const Description = styled.div`
   line-height: 20px;
 `;
 
-const StyledTitle = styled(Link)`
+const StyledTitle = styled.div`
   color: #0074cc;
   font-size: 17px;
   text-decoration: none;
@@ -78,6 +78,7 @@ const Time = styled.div`
   margin-left: 5px;
 `;
 export default function QuestionList({ QuestionData }) {
+  const navi = useNavigate();
   return (
     <>
       <Container>
@@ -89,7 +90,14 @@ export default function QuestionList({ QuestionData }) {
         <RightContainer>
           <StyledTitle to="/">
             {/* 질문 화면으로 이동해야함 */}
-            <h4>{QuestionData.title}</h4>
+            <div
+              onClick={() => {
+                navi(`detail/${QuestionData.id}`);
+              }}
+              role="presentation"
+            >
+              <h4>{QuestionData.title}</h4>
+            </div>
           </StyledTitle>
           <Description>
             {/* 등록된 질문 */}

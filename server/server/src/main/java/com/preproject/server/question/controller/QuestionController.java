@@ -61,20 +61,21 @@ public class QuestionController {
         return new ResponseEntity<>(singleResponseDto, HttpStatus.CREATED);
     }
 
+    @NeedMemberId
     @PatchMapping("/{question-id}")
     public ResponseEntity patchQuestion(@PathVariable("question-id") @Positive Long questionId,
-                                        @Valid @RequestBody QuestionPatchDto questionPatchDto) {
+                                        @Valid @RequestBody QuestionPatchDto questionPatchDto,
+                                        Long authMemberId) {
 
         Question question = mapper.questionPatchDtoToQuestion(questionPatchDto);
         question.setQuestionId(questionId);
-        Question updateQuestion = service.updateQuestion(question);
+        Question updateQuestion = service.updateQuestion(question, authMemberId);
 
         SingleResponseDto<QuestionResponseDto> singleResponseDto =
                 new SingleResponseDto<>(mapper.questionToQuestionResponseDto(updateQuestion, memberMapper));
 
         return new ResponseEntity<>(singleResponseDto, HttpStatus.OK);
     }
-
 
     @GetMapping("/{question-id}") // 질문을 클릭했을 때
     public ResponseEntity getQuestion(@PathVariable("question-id") @Positive Long questionId,
@@ -101,14 +102,13 @@ public class QuestionController {
         return new ResponseEntity(multiResponseDto, HttpStatus.OK);
     }
 
-    @NeedMemberId //파라미터로 서버에서 인증된 MemberId가 필요한 경우 붙이면 되는 사용자 정의 어노테이션
+    @NeedMemberId
     @DeleteMapping("/{question-id}")
-    public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive Long questionId) {
-        service.deleteQuestion(questionId);
+    public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive Long questionId,
+                                         Long authMemberId) {
+        service.deleteQuestion(questionId, authMemberId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
-
 
 }

@@ -113,12 +113,8 @@ export default function LoginContainer() {
       });
       if (res.status === 200) {
         sessionStorage.setItem('jwt-token', res.headers.authorization);
-        sessionStorage.setItem('user', data.email);
-        dispatch(
-          setUser({
-            userEmail: data.email,
-          })
-        );
+        sessionStorage.setItem('user', JSON.stringify({ ...res.data.data }));
+        dispatch(setUser({ ...res.data.data }));
         navigate('/');
       }
     } catch (err) {

@@ -14,11 +14,13 @@ import { useDispatch, useSelector } from 'react-redux';
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   useEffect(() => {
     let Token = sessionStorage.getItem('jwt-token');
     let user = sessionStorage.getItem('user');
+
     if (Token && user) {
-      dispatch(setUser(user));
+      dispatch(setUser(JSON.parse(user)));
     } else {
       sessionStorage.removeItem('jwt-token');
       sessionStorage.removeItem('user');

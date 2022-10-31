@@ -6,6 +6,8 @@ import com.preproject.server.answer.dto.AnswerResponseDto;
 import com.preproject.server.answer.entity.Answer;
 import com.preproject.server.answer.mapper.AnswerMapper;
 import com.preproject.server.answer.service.AnswerService;
+import com.preproject.server.exception.BusinessException;
+import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.member.service.MemberService;
@@ -14,6 +16,7 @@ import com.preproject.server.question.dto.QuestionResponseDto;
 import com.preproject.server.question.entity.Question;
 import com.preproject.server.response.MultiResponseDto;
 import com.preproject.server.response.SingleResponseDto;
+import com.preproject.server.tx.NeedMemberId;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,28 +41,33 @@ public class AnswerController {
         this.answerService = answerService;
         this.mapper = mapper;
     }
-
+    @NeedMemberId
     @PostMapping
-    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto answerPostDto) {
+    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto answerPostDto, Long authMemberId) {
 
 //        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
 //        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
 
+        Member member = new Member();
+        answerPostDto.setMemberId(authMemberId);
+
         Answer answer = mapper.answerPostDtoToAnswer(answerPostDto);
+
         Answer createdAnswer = answerService.createAnswer(answer);
 
         SingleResponseDto<AnswerResponseDto> singleResponseDto =
                 new SingleResponseDto<>(mapper.answerToAnswerResponseDto(createdAnswer));
-
         return new ResponseEntity<>(singleResponseDto, HttpStatus.CREATED);
     }
-
+    @NeedMemberId
     @PatchMapping("/{answer-id}")
     public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive long answerId,
-                                      @Valid @RequestBody AnswerPatchDto answerPatchDto) {
+                                      @Valid @RequestBody AnswerPatchDto answerPatchDto,
+                                      Long authMemberId) {
+
         Answer answer = mapper.answerPatchDtoToAnswer(answerPatchDto);
         answer.setAnswerId(answerId);
-        Answer updateAnswer = answerService.updateAnswer(answer);
+        Answer updateAnswer = answerService.updateAnswer(answer, authMemberId);
 
         SingleResponseDto<AnswerResponseDto> singleResponseDto =
                 new SingleResponseDto<>(mapper.answerToAnswerResponseDto(updateAnswer));
@@ -84,10 +92,12 @@ public class AnswerController {
                 new MultiResponseDto<>(mapper.answerToAnswerResponseDtos(answers), pageAnswers),
                 HttpStatus.OK);
     }
-
+    @NeedMemberId
     @DeleteMapping("/{answer-id}")
-    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
-        answerService.deleteAnswer(answerId);
+    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId, Long authMemberId) {
+
+
+        answerService.deleteAnswer(answerId, authMemberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

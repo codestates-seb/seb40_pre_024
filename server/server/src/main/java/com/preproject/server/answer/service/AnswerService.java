@@ -32,9 +32,15 @@ public class AnswerService {
         return savedAnswer;
     }
 
-    public Answer updateAnswer(Answer answer) {
+    public Answer updateAnswer(Answer answer, Long authMemberId) {
         Answer findAnswer = verifyExistsAnswer(answer.getAnswerId());
 
+        if(findAnswer.getMember().getMemberId() != authMemberId){
+            throw new BusinessException(ExceptionCode.BAD_REQUEST);
+        }
+
+        Optional.ofNullable(answer.getModifiedAt())
+                .ifPresent(modifiedAt -> findAnswer.setModifiedAt(modifiedAt));
         Optional.ofNullable(answer.getAnswerContent())
                 .ifPresent(answerContent -> findAnswer.setAnswerContent(answerContent));
 
@@ -60,8 +66,12 @@ public class AnswerService {
                 Sort.by("answerId").descending()));
     }
 
-    public void deleteAnswer(long answerId) {
+    public void deleteAnswer(long answerId, long authMemberId) {
         Answer answer = verifyExistsAnswer(answerId);
+
+        if(answer.getMember().getMemberId() != authMemberId){
+            throw new BusinessException(ExceptionCode.BAD_REQUEST);
+        }
         answerRepository.delete(answer);
     }
 

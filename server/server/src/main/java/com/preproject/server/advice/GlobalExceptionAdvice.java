@@ -82,6 +82,7 @@ public class GlobalExceptionAdvice {
         final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
                 e.getMessage());
 
+        log.info(e.getMessage());
         return response;
     }
 

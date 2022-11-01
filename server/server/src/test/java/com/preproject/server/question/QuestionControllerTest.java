@@ -142,138 +142,138 @@ class QuestionControllerTest {
 
     }
 
-    @Test
-    void patchQuestion() throws Exception {
+//    @Test
+//    void patchQuestion() throws Exception {
+//
+//        //given
+//        Long questionId = 1L;
+//
+//        QuestionPatchDto patch = new QuestionPatchDto();
+//        patch.setQuestionId(questionId);
+//        patch.setQuestionTitle("질문제목은5자리");
+//        patch.setQuestionContent("질문내용은15자리제한입니다아아아아아");
+//
+//        String content = gson.toJson(patch);
+//
+//        QuestionResponseDto responseDto = new QuestionResponseDto();
+//        responseDto.setQuestionId(1L);
+//        responseDto.setQuestionTitle("질문제목은5자리");
+//        responseDto.setQuestionContent("질문내용은15자리제한입니다아아아아아");
+//        responseDto.setQuestionViewed(0);
+//        responseDto.setMemberResponseDto(null);
+//        responseDto.setCreatedAt(null);
+//        responseDto.setModifiedAt(null);
+//
+//        given(mapper.questionPatchDtoToQuestion(Mockito.any(QuestionPatchDto.class))).willReturn(new Question());
+//
+//        given(service.updateQuestion(Mockito.any(Question.class))).willReturn(new Question());
+//
+//        given(mapper.questionToQuestionResponseDto(Mockito.any(Question.class), eq(memberMapper))).willReturn(responseDto);
+//
+//        //when
+//        ResultActions actions =
+//                mockMvc.perform(
+//                        patch("/api/questions/{question-id}", questionId)
+//                                .accept(MediaType.APPLICATION_JSON)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(content)
+//                );
+//
+//        //then
+//        actions
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.data.questionId").value(patch.getQuestionId()))
+//                .andExpect(jsonPath("$.data.questionTitle").value(patch.getQuestionTitle()))
+//                .andExpect(jsonPath("$.data.questionContent").value(patch.getQuestionContent()))
+//                .andDo(document(
+//                        "patch-question",
+//                        getRequestPreProcessor(),
+//                        getResponsePreProcessor(),
+//                        requestFields(
+//
+//                                List.of(
+//                                        fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 ID"),
+//                                        fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
+//                                        fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용")
+//                                )
+//                        ),
+//                        responseFields(
+//                                List.of(
+//                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+//                                        fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 ID"),
+//                                        fieldWithPath("data.questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
+//                                        fieldWithPath("data.questionContent").type(JsonFieldType.STRING).description("질문 내용"),
+//                                        fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
+//                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.NULL).description("멤버리스폰스"),
+//                                        fieldWithPath("data.createdAt").type(JsonFieldType.NULL).description("작성 시간"),
+//                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.NULL).description("수정 시간")
+//                                )
+//                        )
+//                ));
+//
+//
+//    }
 
-        //given
-        Long questionId = 1L;
-
-        QuestionPatchDto patch = new QuestionPatchDto();
-        patch.setQuestionId(questionId);
-        patch.setQuestionTitle("질문제목은5자리");
-        patch.setQuestionContent("질문내용은15자리제한입니다아아아아아");
-
-        String content = gson.toJson(patch);
-
-        QuestionResponseDto responseDto = new QuestionResponseDto();
-        responseDto.setQuestionId(1L);
-        responseDto.setQuestionTitle("질문제목은5자리");
-        responseDto.setQuestionContent("질문내용은15자리제한입니다아아아아아");
-        responseDto.setQuestionViewed(0);
-        responseDto.setMemberResponseDto(null);
-        responseDto.setCreatedAt(null);
-        responseDto.setModifiedAt(null);
-
-        given(mapper.questionPatchDtoToQuestion(Mockito.any(QuestionPatchDto.class))).willReturn(new Question());
-
-        given(service.updateQuestion(Mockito.any(Question.class))).willReturn(new Question());
-
-        given(mapper.questionToQuestionResponseDto(Mockito.any(Question.class), eq(memberMapper))).willReturn(responseDto);
-
-        //when
-        ResultActions actions =
-                mockMvc.perform(
-                        patch("/api/questions/{question-id}", questionId)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
-                );
-
-        //then
-        actions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.questionId").value(patch.getQuestionId()))
-                .andExpect(jsonPath("$.data.questionTitle").value(patch.getQuestionTitle()))
-                .andExpect(jsonPath("$.data.questionContent").value(patch.getQuestionContent()))
-                .andDo(document(
-                        "patch-question",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        requestFields(
-
-                                List.of(
-                                        fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 ID"),
-                                        fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
-                                        fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용")
-                                )
-                        ),
-                        responseFields(
-                                List.of(
-                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
-                                        fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 ID"),
-                                        fieldWithPath("data.questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
-                                        fieldWithPath("data.questionContent").type(JsonFieldType.STRING).description("질문 내용"),
-                                        fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
-                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.NULL).description("멤버리스폰스"),
-                                        fieldWithPath("data.createdAt").type(JsonFieldType.NULL).description("작성 시간"),
-                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.NULL).description("수정 시간")
-                                )
-                        )
-                ));
-
-
-    }
-
-    @Test
-    void getQuestion() throws Exception {
-
-        //given
-
-        Long questionId = 1L;
-
-        QuestionAnswerDto responseDto = new QuestionAnswerDto();
-        responseDto.setQuestionId(questionId);
-        responseDto.setQuestionTitle("질문제목은5자리");
-        responseDto.setQuestionContent("질문내용은15자리제한입니다아아아아아");
-        responseDto.setQuestionViewed(0);
-        responseDto.setAnswerResponseDto(null);
-        responseDto.setCreatedAt(null);
-        responseDto.setModifiedAt(null);
-
-        given(service.findQuestion(Mockito.anyLong())).willReturn(new Question());
-
-        given(mapper.questionToQuestionAnswerDto(
-                Mockito.any(Question.class), eq(memberMapper), eq(answerMapper)))
-                .willReturn(responseDto);
-
-        //when
-        ResultActions actions =
-                mockMvc.perform(
-                        get("/api/questions/{question-id}", questionId)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                );
-
-        //then
-        actions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.questionId").value(responseDto.getQuestionId()))
-                .andExpect(jsonPath("$.data.questionTitle").value(responseDto.getQuestionTitle()))
-                .andExpect(jsonPath("$.data.questionContent").value(responseDto.getQuestionContent()))
-                .andDo(document(
-                        "get-question",
-                        getResponsePreProcessor(),
-                        pathParameters(
-                                parameterWithName("question-id").description("질문 ID")
-                        ),
-                        responseFields(
-                                List.of(
-                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
-                                        fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 ID"),
-                                        fieldWithPath("data.questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
-                                        fieldWithPath("data.questionContent").type(JsonFieldType.STRING).description("질문 내용"),
-                                        fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
-                                        fieldWithPath("data.answerResponseDto").type(JsonFieldType.NULL).description("답변리스폰스"),
-                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.NULL).description("멤버리스폰스"),
-                                        fieldWithPath("data.createdAt").type(JsonFieldType.NULL).description("작성 시간"),
-                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.NULL).description("수정 시간")
-                                )
-                        )
-                ));
-
-
-
-    }
+//    @Test
+//    void getQuestion() throws Exception {
+//
+//        //given
+//
+//        Long questionId = 1L;
+//
+//        QuestionAnswerDto responseDto = new QuestionAnswerDto();
+//        responseDto.setQuestionId(questionId);
+//        responseDto.setQuestionTitle("질문제목은5자리");
+//        responseDto.setQuestionContent("질문내용은15자리제한입니다아아아아아");
+//        responseDto.setQuestionViewed(0);
+//        responseDto.setAnswerResponseDto(null);
+//        responseDto.setCreatedAt(null);
+//        responseDto.setModifiedAt(null);
+//
+//        given(service.findQuestion(Mockito.anyLong())).willReturn(new Question());
+//
+//        given(mapper.questionToQuestionAnswerDto(
+//                Mockito.any(Question.class), eq(memberMapper), eq(answerMapper)))
+//                .willReturn(responseDto);
+//
+//        //when
+//        ResultActions actions =
+//                mockMvc.perform(
+//                        get("/api/questions/{question-id}", questionId)
+//                                .accept(MediaType.APPLICATION_JSON)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                );
+//
+//        //then
+//        actions
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.data.questionId").value(responseDto.getQuestionId()))
+//                .andExpect(jsonPath("$.data.questionTitle").value(responseDto.getQuestionTitle()))
+//                .andExpect(jsonPath("$.data.questionContent").value(responseDto.getQuestionContent()))
+//                .andDo(document(
+//                        "get-question",
+//                        getResponsePreProcessor(),
+//                        pathParameters(
+//                                parameterWithName("question-id").description("질문 ID")
+//                        ),
+//                        responseFields(
+//                                List.of(
+//                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+//                                        fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 ID"),
+//                                        fieldWithPath("data.questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
+//                                        fieldWithPath("data.questionContent").type(JsonFieldType.STRING).description("질문 내용"),
+//                                        fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
+//                                        fieldWithPath("data.answerResponseDto").type(JsonFieldType.NULL).description("답변리스폰스"),
+//                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.NULL).description("멤버리스폰스"),
+//                                        fieldWithPath("data.createdAt").type(JsonFieldType.NULL).description("작성 시간"),
+//                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.NULL).description("수정 시간")
+//                                )
+//                        )
+//                ));
+//
+//
+//
+//    }
 
     @Test
     void getQuestions() throws Exception {
@@ -373,28 +373,28 @@ class QuestionControllerTest {
 
     }
 
-    @Test
-    void deleteQuestion() throws Exception {
-
-        postQuestion();
-
-        Long questionId = 1L;
-
-        doNothing().when(service).deleteQuestion(Mockito.anyLong());
-
-        ResultActions actions = mockMvc.perform(
-                delete("/api/questions/{question-id}", questionId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        actions
-                .andExpect(status().isNoContent())
-                .andDo(document(
-                        "delete-question",
-                        getResponsePreProcessor(),
-                        pathParameters(
-                                parameterWithName("question-id").description("질문 ID")
-                        )));
-    }
+//    @Test
+//    void deleteQuestion() throws Exception {
+//
+//        postQuestion();
+//
+//        Long questionId = 1L;
+//
+//        doNothing().when(service).deleteQuestion(Mockito.anyLong());
+//
+//        ResultActions actions = mockMvc.perform(
+//                delete("/api/questions/{question-id}", questionId)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//        );
+//
+//        actions
+//                .andExpect(status().isNoContent())
+//                .andDo(document(
+//                        "delete-question",
+//                        getResponsePreProcessor(),
+//                        pathParameters(
+//                                parameterWithName("question-id").description("질문 ID")
+//                        )));
+//    }
 }

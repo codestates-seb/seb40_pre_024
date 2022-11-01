@@ -1,10 +1,16 @@
 package com.preproject.server.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.preproject.server.jwt.JwtTokenizer;
+import com.preproject.server.member.dto.MemberDto;
 import com.preproject.server.member.entity.Member;
+import com.preproject.server.member.mapper.MemberMapper;
+import com.preproject.server.response.ErrorResponse;
+import com.preproject.server.response.SingleResponseDto;
 import com.preproject.server.security.dto.LoginDto;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.criteria.internal.predicate.MemberOfPredicate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +33,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+
+    private final MemberMapper memberMapper;
+    private final Gson gson;
 
     //검증이 되지 않은 Authentication을 만들어서 AuthenticationManager에게 넘기고, 리턴으로 검증이 된 Authentication을 넘긴다.
     @Override
@@ -58,7 +67,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //add는 기존에 같은 헤더키가 존재한다면 키에 해당하는 값이 복수로 생김,
         response.setHeader("Authorization", "bearer"+accessToken);
         response.setHeader("Refresh", refreshToken);
-//        System.out.println();
+
+        setResponseBody(response, authenticatedMember);
+    }
+
+    private void setResponseBody(HttpServletResponse httpServletResponse, Member authenticatedMember) throws IOException {
+
+        MemberDto.Response response = memberMapper.memberToMemberDtoResponse(authenticatedMember);
+        SingleResponseDto singleResponseDto = new SingleResponseDto(response);
+        String content = gson.toJson(singleResponseDto);
+        httpServletResponse.getWriter().write(content);
     }
 
     @Override

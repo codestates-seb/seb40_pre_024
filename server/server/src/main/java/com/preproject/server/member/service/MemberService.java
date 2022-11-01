@@ -9,6 +9,8 @@ import com.preproject.server.member.repository.MemberRepository;
 import com.preproject.server.utils.CustomAuthorityUtil;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 @Transactional
@@ -42,11 +45,8 @@ public class MemberService {
         member.setMemberPwd(passwordEncoder.encode(member.getPassword()));
         member.setRoles(customAuthorityUtil.getRole());
         Member savedMember = memberRepository.save(member);
-
-
         return savedMember;
     }
-
 
     public Member removeMember(Long memberId) {
         Member deletingMember = verifyExistsMember(memberId);
@@ -68,28 +68,23 @@ public class MemberService {
         registerJws(jws);
     }
 
+
+    public List<Member> findMembers() {
+
+        List<Member> allMemberList = memberRepository.findAll();
+        return allMemberList;
+    }
+
+
+
+    //----------------------- 핸들러 메소드 영역 -------------------------------
+
     private void registerJws(String jws) {
         Map<String, Object> verifyJws = jwtTokenizer.verifyJws(jws);
         ValueOperations valueOperations = redisTemplate.opsForValue();
         String username = (String)verifyJws.get("username");
         valueOperations.set("logout_"+jws,username,Duration.ofMinutes(jwtTokenizer.getAccessTokenExpirationMinutes()));
     }
-
-
-
-//    public Page<Member> findMembers() {
-//
-//        return null;
-//    }
-
-
-    //    public Member updateMember(Member member) {
-//
-//        return null;
-//    }
-
-    //----------------------- 핸들러 메소드 영역 -------------------------------
-
 
     private Member verifyExistsMember(Long memberId) {
 

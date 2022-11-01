@@ -56,6 +56,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs //MockMvc에 RestDocs 관련 설정해줌
 public class MemberControllerTests {
 
+
+
+
     @Autowired
     MockMvc mockMvc;
 

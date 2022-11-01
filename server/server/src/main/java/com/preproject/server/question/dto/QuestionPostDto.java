@@ -12,9 +12,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class QuestionPostDto {
 
-    //memberId 받아오기
-    private Long memberId;
-
     @NotBlank
     @Length(min = 5, max = 100)
     private String questionTitle;

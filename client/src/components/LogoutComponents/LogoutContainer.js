@@ -11,6 +11,7 @@ import Logo from '../../assets/img/Logo.png';
 import { useNavigate } from 'react-router-dom';
 import { clearUser } from '../../redux/actions/user_actions';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Container = styled.div`
   width: 526px;
@@ -142,6 +143,17 @@ export default function LogoutContainer() {
   const logoutHandler = () => {
     // 리덕스 현재 유저 정보 초기화 할것
     // api로 로그아웃 요청
+    let token = sessionStorage.getItem('jwt-token');
+    console.log(token);
+    axios.post(
+      'api/members/logout',
+      {},
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
     sessionStorage.removeItem('jwt-token');
     sessionStorage.removeItem('user');
     dispatch(clearUser());

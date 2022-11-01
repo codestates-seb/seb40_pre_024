@@ -220,6 +220,9 @@ const Contentpostmenu = styled.div`
     font-size: 13px;
     background-color: inherit;
   }
+  .hide {
+    display: none;
+  }
 `;
 
 // 날짜 계산
@@ -234,17 +237,14 @@ function timeForToday(value) {
   if (betweenTime < 60) {
     return `${betweenTime}분전`;
   }
-
   const betweenTimeHour = Math.floor(betweenTime / 60);
   if (betweenTimeHour < 24) {
     return `${betweenTimeHour}시간전`;
   }
-
   const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
   if (betweenTimeDay < 365) {
     return `${betweenTimeDay}일전`;
   }
-
   return `${Math.floor(betweenTimeDay / 365)}년전`;
 }
 
@@ -390,14 +390,17 @@ const QuestionDetails = () => {
                           </button>
                           <button
                             type="button"
-                            className="postmenuEdit"
+                            className={loginState ? 'postmenuEdit' : 'hide'}
                             onClick={() => {
                               onNavigate('editquestion');
                             }}
                           >
                             Edit
                           </button>
-                          <button type="button" className="postmenuDelete">
+                          <button
+                            type="button"
+                            className={loginState ? 'postmenuDelete' : 'hide'}
+                          >
                             Delete
                           </button>
                           <button type="button" className="postmenuFollowing">

@@ -29,11 +29,15 @@ public class QuestionService {
         return savedQuestion;
     }
 
-    public Question updateQuestion(Question question){
+    public Question updateQuestion(Question question, Long authMemberId){
         Question findQuestion = verifyExistsQuestion(question.getQuestionId());
 
-//        Optional.ofNullable(question.getModifiedAt())
-//                .ifPresent(modifiedAt -> findQuestion.setModifiedAt(modifiedAt));  // 수정날짜는 auditable에서 적용
+        if(findQuestion.getMember().getMemberId() != authMemberId){
+            throw new BusinessException(ExceptionCode.BAD_REQUEST);
+        }
+
+        Optional.ofNullable(question.getModifiedAt())
+                .ifPresent(modifiedAt -> findQuestion.setModifiedAt(modifiedAt));
         Optional.ofNullable(question.getQuestionTitle())
                 .ifPresent(questionTitle -> findQuestion.setQuestionTitle(questionTitle));
         Optional.ofNullable(question.getQuestionContent())
@@ -61,11 +65,15 @@ public class QuestionService {
         return findQeustions;
     }
 
-    public void deleteQuestion(Long questionId){
+    public void deleteQuestion(Long questionId, Long authMemberId){
 
-        Question findQeustion = verifyExistsQuestion(questionId);
+        Question findQuestion = verifyExistsQuestion(questionId);
 
-        questionRepository.delete(findQeustion);
+        if(findQuestion.getMember().getMemberId() != authMemberId){
+            throw new BusinessException(ExceptionCode.BAD_REQUEST);
+        }
+
+        questionRepository.delete(findQuestion);
 
     }
 

@@ -20,6 +20,10 @@ const MainContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  pre {
+    padding: 18px;
+    background-color: #eee;
+  }
 `;
 
 const SidebarWrapper = styled.div`

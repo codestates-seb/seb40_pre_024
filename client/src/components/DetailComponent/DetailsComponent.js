@@ -25,7 +25,7 @@ const Container = styled.main`
   }
 `;
 
-const TitleContainer = styled.h4`
+const TitleContainer = styled.div`
   margin: 0;
   margin-top: 16px;
 `;

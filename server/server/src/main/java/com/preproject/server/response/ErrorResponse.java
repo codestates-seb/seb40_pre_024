@@ -25,17 +25,20 @@ public class ErrorResponse {
     }
 
     private ErrorResponse(final List<FieldError> fieldErrors,
-                          final List<ConstraintViolationError> violationErrors) {
+                          final List<ConstraintViolationError> violationErrors, final HttpStatus httpStatus) {
+
         this.fieldErrors = fieldErrors;
         this.violationErrors = violationErrors;
+        this.status = httpStatus.value();
     }
 
-    public static ErrorResponse of(BindingResult bindingResult) {
-        return new ErrorResponse(FieldError.of(bindingResult), null);
+
+    public static ErrorResponse of(BindingResult bindingResult, HttpStatus httpStatus) {
+        return new ErrorResponse(FieldError.of(bindingResult), null, httpStatus);
     }
 
-    public static ErrorResponse of(Set<ConstraintViolation<?>> violations) {
-        return new ErrorResponse(null, ConstraintViolationError.of(violations));
+    public static ErrorResponse of(Set<ConstraintViolation<?>> violations, HttpStatus httpStatus) {
+        return new ErrorResponse(null, ConstraintViolationError.of(violations), httpStatus);
     }
 
     public static ErrorResponse of(ExceptionCode exceptionCode) {

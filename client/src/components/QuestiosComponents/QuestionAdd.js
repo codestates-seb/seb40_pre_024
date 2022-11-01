@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const Container = styled.header`
   width: 100%;
@@ -34,12 +35,16 @@ const AddBtn = styled.button`
   }
 `;
 export default function QuestionAdd() {
+  const user = useSelector((state) => state.user.currentUser);
+
   const navigate = useNavigate();
   const windowChange = () => {
-    // if(){ // 유저가 있으면 질문 작성 창으로 이동
-    // }else{
-    //   navigate('/login')
-    // }
+    // 유저가 있으면 질문 작성 창으로 이동
+    if (user) {
+      navigate('/ask');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (

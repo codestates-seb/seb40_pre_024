@@ -48,13 +48,14 @@ const Profile = styled.div`
     color: #0074cc;
   }
 `;
-export default function ProfileContainer({ detail }) {
+export default function MainProfileContainer({ detail }) {
   //여기에는 댓글을 작성한 사람의 고유 아이디를 넣을것
   // user 정보랑 댓글 정보가 같으면 Edit 버튼이 있어야함.
   const currentId = useSelector((state) => state.user.currentUser.memberEmail); // 여기에 상태로 관리되는 현재 유저아이디를 넣을것
   const navigate = useNavigate();
 
   const moveToEdit = (id) => {
+    // 경로 수정해줄것.
     navigate(`/editanswer/${id}`);
   };
 
@@ -64,7 +65,7 @@ export default function ProfileContainer({ detail }) {
 
     if (confirmData && token) {
       try {
-        await axios.delete(`/api/answers/${id}`, {
+        await axios.delete(`/api/questions/${id}`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -85,12 +86,12 @@ export default function ProfileContainer({ detail }) {
         <DetailBtn>Follwing</DetailBtn>
         {/* 댓글을 제작한 유저의 데이터가 필요함 */}
         {currentId === detail.memberResponseDto.memberEmail && (
-          <DetailBtn onClick={() => moveToEdit(detail.answerId)}>
+          <DetailBtn onClick={() => moveToEdit(detail.questionId)}>
             Edit
           </DetailBtn>
         )}
         {currentId === detail.memberResponseDto.memberEmail && (
-          <DetailBtn onClick={() => removeComment(detail.answerId)}>
+          <DetailBtn onClick={() => removeComment(detail.questionId)}>
             Delete
           </DetailBtn>
         )}

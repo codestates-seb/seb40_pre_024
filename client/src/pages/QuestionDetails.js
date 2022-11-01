@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import DetailsComponent from '../components/DetailComponent/DetailsComponent';
 import RightSidebar from '../components/RightSidebar';
@@ -6,7 +6,12 @@ import Sidebar from '../components/Sidebar';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import TextEditor from '../components/TextEditor';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import ProfileContainer from '../components/DetailComponent/ProfileContainer';
+import MainProfileContainer from '../components/DetailComponent/MainProfileContainer';
+
 const MainContainer = styled.div`
   * {
     box-sizing: border-box;
@@ -127,7 +132,10 @@ const Details = styled.div`
     margin-left: 5px;
   }
   .contentsmain {
-    width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   @media (max-width: 1000px) {
     .right {
@@ -210,41 +218,61 @@ const EditorContainer = styled.div`
 `;
 
 const QuestionDetails = () => {
-  const loginState = false;
-  const dummyDataQ = {
-    data: {
-      questionId: 1,
-      questionTitle: '질문제목은5자리',
-      questionContent: '질문내용은15자리제한입니다아아아아아',
-      questionViewed: 0,
-      createdAt: null,
-      modifiedAt: null,
-      answerResponseDto: null,
-      memberResponseDto: null,
-    },
-  };
+  const { id } = useParams();
+  const loginState = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
   const onNavigate = (e) => {
     navigate(`/${e}`);
   };
-  const coments = {
-    data: [
-      // {
-      //   answerId: 1,
-      //   answerContent: '답변은5자리부터',
-      //   createdAt: '2022-10-30',
-      //   modifiedAt: null,
-      //   memberResponseDto: '유저 이름인가요 여기가?',
-      // },
-      // {
-      //   answerId: 1,
-      //   answerContent: '답변은5자리부터',
-      //   createdAt: '2022-10-31',
-      //   modifiedAt: null,
-      //   memberResponseDto: '유저2 이름인가요 여기가?',
-      // },
-    ],
+  const [value, setValue] = useState('');
+  const onChange = () => {
+    setValue(editRef.current.getInstance().getHTML());
   };
+  const editRef = useRef(null);
+
+  // 현재 페이지 메인 데이터
+  const [mainData, setMaindata] = useState([]);
+  // 댓글 목록
+  const [coments, setComents] = useState([]);
+
+  const serverData = async (id) => {
+    try {
+      let data = await axios.get(`/api/questions/${id}`);
+      let settingData = data.data.data;
+      setMaindata([{ ...settingData }]);
+      if (settingData.answerResponseDto.data.length > 0) {
+        setComents([...settingData.answerResponseDto.data]);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onSumbit = async (e) => {
+    const token = sessionStorage.getItem('jwt-token');
+
+    try {
+      let res = await axios.post(
+        `/api/answers`,
+        {
+          questionId: id,
+          answerContent: value,
+        },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setValue('');
+      window.location.reload();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    serverData(id);
+  }, []);
 
   return (
     <MainContainer>
@@ -259,7 +287,9 @@ const QuestionDetails = () => {
           <ContentWrapper>
             {/* 여기엔 API에서 질문의 제목을 입력해주세요 */}
             <header className="head">
-              <h1 className="title">{dummyDataQ.data.questionTitle}</h1>
+              {mainData.length > 0 && (
+                <h1 className="title">{mainData[0].questionTitle}</h1>
+              )}
               {/* 유저가 로그인 되있으면 아래에 onClick 이벤트를 줘서 댓글창으로 이동해주세요 */}
               <button className="askbutton">Ask Question</button>
             </header>
@@ -328,29 +358,49 @@ const QuestionDetails = () => {
                     <div className="contentsmain">
                       <div>
                         <div className="contentspost">
-                          {dummyDataQ.data.questionContent}
+                          {mainData.length > 0 && (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: mainData[0].questionContent,
+                              }}
+                            ></div>
+                          )}
                         </div>
                       </div>
+                      {mainData.length > 0 && (
+                        <MainProfileContainer detail={mainData[0]} />
+                      )}
                     </div>
                   </Smallcomments>
                   {/* 질문에 대한 제목이 들어가야함 */}
-                  {coments && coments.data.length > 0 && <h3>Answers</h3>}
-                  {coments &&
-                    coments.data.length > 0 &&
-                    coments.data.map((coment) => (
-                      <DetailsComponent key={coment.id} detail={coment} />
-                    ))}
+                  {coments.length > 0 && <h3>Answers</h3>}
+                  {coments.length > 0 &&
+                    coments.map((coment) => {
+                      if (coment !== undefined) {
+                        return (
+                          <DetailsComponent
+                            key={coment.answerId}
+                            detail={coment}
+                          />
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
                   {/* 텍스트 에디터 부분 */}
                   <EditorContainer>
                     <h2>Your Answer</h2>
                     <div className="AnswerContainer">
-                      <TextEditor />
+                      <TextEditor ref={editRef} onChange={onChange} />
                     </div>
                     <div className="innerContain">
                       <button
                         className={loginState ? 'enableBtn' : 'disableBtn'}
                         id="Btn"
                         disabled={!loginState}
+                        onClick={() => {
+                          onSumbit();
+                        }}
                       >
                         Post Your Answer
                       </button>

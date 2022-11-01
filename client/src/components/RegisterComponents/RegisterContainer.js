@@ -158,10 +158,14 @@ export default function RegisterContainer() {
                   required: true,
                   minLength: 2,
                   maxLength: 16,
+                  pattern: /^[a-zA-Z]+$/,
                 })}
               />
               {errors.displayName && errors.displayName.type === 'required' && (
                 <Errormsg>⚠ 닉네임을 입력해주세요.</Errormsg>
+              )}
+              {errors.displayName && errors.displayName.type === 'pattern' && (
+                <Errormsg>⚠ 닉네임은 영어로만 가능합니다.</Errormsg>
               )}
               {errors.displayName &&
                 errors.displayName.type === 'minLength' && (

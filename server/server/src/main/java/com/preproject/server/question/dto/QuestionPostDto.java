@@ -17,7 +17,7 @@ public class QuestionPostDto {
     private String questionTitle;
 
     @NotBlank
-    @Length(min = 15, max = 1000)
+    @Length(min = 15)
     private String questionContent;
 
 }

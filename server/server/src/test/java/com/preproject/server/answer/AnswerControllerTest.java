@@ -61,6 +61,8 @@ public class AnswerControllerTest {
     private MemberMapper memberMapper;
 
 
+    int a = 0;
+
     @Test
     void postAnswerTest() throws Exception {
         //given

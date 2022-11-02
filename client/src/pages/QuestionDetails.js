@@ -52,7 +52,6 @@ const Details = styled.div`
   justify-content: center;
   display: flex;
   width: 100%;
-
   .head {
     margin: 70px 0 0 0;
     width: 100%;
@@ -84,7 +83,6 @@ const Details = styled.div`
     // 창 크기 조절에 따라 서치바 사이즈 자동 조정
     width: 80%;
     font-weight: normal;
-
     font-size: 27px;
     color: #3b4045;
   }
@@ -103,7 +101,6 @@ const Details = styled.div`
     margin-right: 16px;
     color: #babfc3;
   }
-
   .contents {
     display: flex;
     justify-content: space-between;
@@ -161,9 +158,7 @@ const ContentWrapper = styled.div`
 const Comments = styled.div`
   display: flex;
   flex-direction: column;
-
   width: 100%;
-
   & h3 {
     margin-top: 15px;
   }
@@ -177,11 +172,9 @@ const Smallcomments = styled.div`
 const EditorContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   & h2 {
     margin-top: 17px;
   }
-
   & .disableBtn {
     background-color: rgb(183, 225, 247);
   }
@@ -214,7 +207,6 @@ const EditorContainer = styled.div`
     font-weight: 600;
     cursor: pointer;
   }
-
   & .Link {
     display: inline-block;
     color: #379fef;

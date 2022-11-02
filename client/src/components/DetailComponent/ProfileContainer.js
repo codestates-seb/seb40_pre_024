@@ -39,7 +39,6 @@ const ProfileContain = styled.div`
 const Profile = styled.div`
   display: flex;
   align-items: center;
-
   & img {
     width: 32px;
     height: 32px;

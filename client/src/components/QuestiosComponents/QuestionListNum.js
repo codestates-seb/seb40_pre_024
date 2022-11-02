@@ -11,7 +11,6 @@ const Container = styled.header`
     margin: 0;
     padding: 0;
   }
-
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -29,7 +28,6 @@ const FilterNavContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
-
   .button-box-first {
     width: 100%;
     height: 100%;
@@ -54,20 +52,16 @@ const Button = styled.button`
   background-color: white;
   font-size: 13px;
   width: fit-content;
-
   &:first-child {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
   }
-
   &:hover {
     background-color: #f8f9f9;
   }
-
   &:focus {
     background-color: #e9e9e9;
   }
-
   &:active {
     box-shadow: 0px 0px 2px 3px rgba(157, 170, 189, 0.349);
   }
@@ -83,19 +77,15 @@ const LastButton = styled.div`
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   width: 70px;
-
   &:hover {
     background-color: #f8f9f9;
   }
-
   &:focus {
     background-color: #e9e9e9;
   }
-
   &:active {
     box-shadow: 0px 0px 2px 3px rgba(157, 170, 189, 0.349);
   }
-
   > div {
     position: relative;
     /* display: flex;
@@ -127,7 +117,6 @@ const MoreModal = styled.div`
   background-color: white;
   font-size: 14px;
   color: #646d75;
-
   > hr {
     width: 100%;
     border: 1px solid #e9e9e9;

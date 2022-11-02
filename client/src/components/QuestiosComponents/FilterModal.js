@@ -7,7 +7,6 @@ const Container = styled.div`
     margin: 0;
     padding: 0;
   }
-
   width: 97.5%;
   height: 260px;
   background-color: #e9e9e9;
@@ -33,17 +32,14 @@ const Form = styled.form`
 
 const OptionContainer = styled.div`
   flex: 1;
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;
-
   h3 {
     font-size: 18px;
   }
-
   label {
     font-size: 16px;
     display: flex;
@@ -61,11 +57,9 @@ const TextInput = styled.input`
   padding-left: 10px;
   margin-left: 7px;
   vertical-align: middle;
-
   &::placeholder {
     color: #b0b0b0;
   }
-
   &:focus,
   :active {
     outline: none;
@@ -80,7 +74,6 @@ const Downpart = styled.div`
   align-items: center;
   margin-top: 15px;
   padding: 0 18px;
-
   button {
     padding: 8px;
     border: 1px solid #7faac9;
@@ -89,7 +82,6 @@ const Downpart = styled.div`
     background-color: #e1ecf4;
     cursor: pointer;
   }
-
   a {
     font-size: 13px;
     margin-right: 5px;

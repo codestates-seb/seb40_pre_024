@@ -11,6 +11,8 @@ import { HiInbox } from 'react-icons/hi2';
 import { TiThMenu } from 'react-icons/ti';
 import { FaUserCircle } from 'react-icons/fa';
 import MenuModal from './MenuModal';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Navbar = styled.nav`
   * {
@@ -26,7 +28,6 @@ const Navbar = styled.nav`
   border-top: 4px solid #f38224;
   background-color: #f8f9f9;
   box-shadow: 0px 2px 2px 0px #e1ecf4;
-
   .nav-container {
     width: 100%; // 창 크기 조절에 따라 서치바 사이즈 자동 조정
     min-width: auto;
@@ -36,7 +37,6 @@ const Navbar = styled.nav`
     align-items: center;
     margin: 0 120px;
     /* background-color: #f8f9f9; // 구역 확인용 */
-
     .logo-box {
       flex: 1;
       width: 164px;
@@ -44,7 +44,6 @@ const Navbar = styled.nav`
       display: flex;
       justify-content: space-between;
       align-items: center;
-
       img {
         width: 157px;
         height: 38px;
@@ -55,7 +54,6 @@ const Navbar = styled.nav`
         background-color: #e9e9e9;
       }
     }
-
     .menu-box {
       width: ${(props) => props.width || null};
       /* width: 270px; */
@@ -64,7 +62,6 @@ const Navbar = styled.nav`
       align-items: center;
       gap: 7px;
       padding-top: 3px;
-
       button {
         border: none;
         font-size: 13px;
@@ -72,35 +69,29 @@ const Navbar = styled.nav`
         padding: 7px 12px;
         border-radius: 50px;
         background-color: #f8f9f9;
-
         &:hover {
           background-color: #e9e9e9;
         }
       }
-
       button:last-child {
         width: 90px;
         margin-right: 5px;
       }
     }
-
     a {
       text-decoration: none;
       color: black;
     }
-
     .searchbar-box {
       flex: 7;
       margin-right: 8px;
       position: relative;
-
       input {
         width: 100%;
         height: 37px;
         border: 1px solid #b0b0b0;
         border-radius: 3px;
         padding-left: 33px;
-
         &:focus,
         :active {
           outline: none;
@@ -108,7 +99,6 @@ const Navbar = styled.nav`
           box-shadow: 0px 0px 5px 3px rgba(54, 138, 255, 0.32);
         }
       }
-
       span {
         position: absolute;
         left: 10px;
@@ -117,14 +107,12 @@ const Navbar = styled.nav`
         color: #828c95;
       }
     }
-
     .button-box {
       flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 5px;
-
       button:first-child {
         width: 60px;
         height: 37px;
@@ -138,7 +126,6 @@ const Navbar = styled.nav`
           background-color: #c5dceb;
         }
       }
-
       button:last-child {
         width: 70px;
         height: 37px;
@@ -154,7 +141,6 @@ const Navbar = styled.nav`
         }
       }
     }
-
     .login-button-box {
       flex: 1;
       display: flex;
@@ -163,14 +149,12 @@ const Navbar = styled.nav`
       gap: 5px;
       color: #5b5c5d;
       /* margin-left: 10px; */
-
       .userinfo-box {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 5px;
         padding: 10px 10px;
-
         button {
           border: none;
           color: inherit;
@@ -178,25 +162,21 @@ const Navbar = styled.nav`
           cursor: pointer;
           background-color: inherit;
         }
-
         span {
           font-size: 13px;
           font-weight: bold;
           color: inherit;
         }
-
         &:hover {
           background-color: #e9e9e9;
         }
       }
-
       .userinfo-etc {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-right: 5px;
         position: relative;
-
         button {
           border: none;
           color: inherit;
@@ -207,7 +187,6 @@ const Navbar = styled.nav`
           padding: 12px 12px;
           height: inherit;
           cursor: pointer;
-
           &:hover,
           :focus {
             background-color: #e9e9e9;
@@ -234,11 +213,9 @@ const SearchToggle = styled.div`
   align-items: space-between;
   padding: 10px 13px;
   background-color: white;
-
   .search-toggle-text {
     display: flex;
     flex-wrap: wrap;
-
     p {
       flex: 1 1 40%;
       font-size: 13px;
@@ -249,13 +226,11 @@ const SearchToggle = styled.div`
       }
     }
   }
-
   .search-toggle-button {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 12px;
-
     button {
       padding: 8px;
       border: 1px solid #7faac9;
@@ -264,7 +239,6 @@ const SearchToggle = styled.div`
       background-color: #e1ecf4;
       cursor: pointer;
     }
-
     a {
       font-size: 12px;
       margin-right: 5px;
@@ -276,10 +250,11 @@ const SearchToggle = styled.div`
 
 const Nav = () => {
   const [isFocus, setIsFocus] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const isLogin = useSelector((state) => state.user.currentUser);
+
   const [menuModal, setMenuModal] = useState(false);
   const [inputText, setInputText] = useState('');
-
+  const navigate = useNavigate();
   const outsideRef = useRef();
   const menuRef = useRef(null);
   useEffect(() => {
@@ -289,7 +264,6 @@ const Nav = () => {
         setIsFocus(false);
       }
     };
-
     document.addEventListener('mousedown', clickOutside);
 
     return () => {
@@ -307,7 +281,9 @@ const Nav = () => {
     <Navbar>
       <div className="nav-container">
         <div className="logo-box">
-          <img src={logostackoverflow} alt="stackoverflow-logo" />
+          <Link to="/">
+            <img src={logostackoverflow} alt="stackoverflow-logo" />
+          </Link>
         </div>
         {isLogin ? (
           <div className="menu-box">
@@ -416,8 +392,8 @@ const Nav = () => {
         ) : (
           <div className="button-box">
             {/* 수정(버튼 클릭시 임시 로그인 기능 조치) */}
-            <button onClick={() => setIsLogin(true)}>Log in</button>
-            <button>Sign up</button>
+            <button onClick={() => navigate('/login')}>Log in</button>
+            <button onClick={() => navigate('/register')}>Sign up</button>
           </div>
         )}
       </div>

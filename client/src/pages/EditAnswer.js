@@ -1,33 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Nav from '../components/Nav';
 import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom';
-import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
 import AnswerTipModal from '../components/AnswerTipModal';
+import Modal from '../components/Modal';
 
 export default function EditAnswer() {
-  const [title, setTitle] = useState('');
-  const [lengthTitle, setLengthTitle] = useState('');
   const [content, setContent] = useState('');
+  const [answerId, setAnswerId] = useState('');
   const [lengthContent, setLengthContent] = useState('');
 
-  const MIN_LENGTH_TITLE = 20;
-  const MIN_LENGTH_CONTENT = 50;
-
-  const navigate = useNavigate();
-  const backNavigate = () => {
-    navigate(-1);
-  };
+  const token = sessionStorage.getItem('jwt-token');
+  const loginState = useSelector((state) => state.user.currentUser);
 
   const editorRef = useRef();
+  const navigate = useNavigate();
 
-  const onFocus = () => {};
+  const MIN_LENGTH_CONTENT = 5;
 
-  const onChange = () => {
+  const countCharacter = () => {
     const data = editorRef.current.getInstance().getHTML();
     setContent(data);
     const dataWithoutTag = data.replace(
@@ -37,23 +33,54 @@ export default function EditAnswer() {
     setLengthContent(dataWithoutTag.length);
   };
 
-  const handleSubmit = async (event) => {
+  const { id } = useParams();
+
+  useEffect(() => {
+    loadInfo();
+  }, []);
+
+  const loadInfo = async () => {
+    await axios
+      .get('/api/answers')
+      .then((response) => {
+        const PARAMS_VALUE = id;
+        const currentData = response.data.data.filter(
+          (el) => el.answerId == PARAMS_VALUE
+        )[0];
+        const loadContent = currentData.answerContent;
+        editorRef.current.getInstance().setHTML(loadContent);
+        setAnswerId(currentData.answerId);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleEdit = async (event) => {
     event.preventDefault();
 
-    const exampleData = {
-      questionTitle: title,
-      questionContent: JSON.stringify(content),
+    const formData = {
+      answerContent: content,
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: token,
     };
 
     await axios
-      .post('http://localhost:4000/test', exampleData)
-      .then((res) => {
-        console.log(res.data);
+      .patch(`/api/answers/${answerId}`, JSON.stringify(formData), {
+        headers: headers,
       })
-      .catch((err) => console.log(err));
-
-    setTitle('');
-    setContent('');
+      .then((response) => {
+        alert('Your answer has been edited successfully');
+        navigate(-1);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
   };
 
   return (
@@ -75,58 +102,36 @@ export default function EditAnswer() {
               </span>
               <TextEditor
                 ref={editorRef}
-                onChange={onChange}
+                onChange={countCharacter}
                 value={'수정할 텍스트를 불러올 부분입니다.'}
-                onFocus={onFocus}
               />
               <LengthCounter
-                qualified={
-                  lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
-                }
+                qualified={lengthContent >= MIN_LENGTH_CONTENT && 'qualified'}
               >
                 {lengthContent} / {MIN_LENGTH_CONTENT}
               </LengthCounter>
             </Section>
             <Section>
               <SectionTitle>Edit Summary</SectionTitle>
-              <span>
-                {`Be specific and imagine you are asking a question to another
-              person. Minimum ${MIN_LENGTH_TITLE} characters.`}
-              </span>
-              <Input
-                type="text"
-                placeholder="type here.."
-                maxLength="70"
-                value={'수정할 텍스트를 불러올 부분입니다.'}
-                onChange={(event) => {
-                  setTitle(event.target.value);
-                  setLengthTitle(event.target.value.length);
-                }}
-                required
-              />
-              <LengthCounter
-                qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
-              >
-                {lengthTitle} / {MIN_LENGTH_TITLE}
-              </LengthCounter>
+              <Input disabled placeholder="Temporarily disabled" />
             </Section>
           </SectionContainer>
           <ButtonContainer>
             <form>
               <Button
-                disabled={
-                  title.length <= MIN_LENGTH_TITLE ||
-                  content.length <= MIN_LENGTH_CONTENT
-                    ? true
-                    : null
-                }
+                disabled={lengthContent >= MIN_LENGTH_CONTENT ? false : true}
                 typed="submit"
-                onClick={handleSubmit}
+                onClick={handleEdit}
                 submit
               >
                 Save Edits
               </Button>
             </form>
+            <Modal
+              functionHandler={() => {
+                navigate(-1);
+              }}
+            />
           </ButtonContainer>
         </Container>
       </ContainerWrapper>
@@ -143,13 +148,13 @@ const ContainerWrapper = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
-  margin: 0 auto; // (이슈) 계속 중앙정렬 안되다가 이걸로 시도하니 해결
+  margin: 0 auto;
 `;
 
 const SidebarWrapper = styled.div`
   position: sticky;
   top: 53px;
-  height: 450px; // sticky 적용을 위한 height 설정 필수
+  height: 450px;
   margin-bottom: 8px;
 `;
 

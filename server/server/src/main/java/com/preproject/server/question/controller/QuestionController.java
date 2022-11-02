@@ -47,11 +47,7 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto, Long authMemberId) {
 
-        Question question = mapper.questionPostDtoToQuestion(questionPostDto);
-
-        Member member = new Member();
-        member.setMemberId(authMemberId);
-        question.setMember(member);
+        Question question = mapper.questionPostDtoToQuestion(questionPostDto, authMemberId);
 
         Question createdQuestion = service.createQuestion(question);
 

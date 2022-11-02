@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
 
-    default Question questionPostDtoToQuestion(QuestionPostDto questionPostDto){
+    default Question questionPostDtoToQuestion(QuestionPostDto questionPostDto, Long authMemberId){
         if ( questionPostDto == null ) {
             return null;
         }
@@ -34,7 +34,7 @@ public interface QuestionMapper {
         question.setQuestionContent( questionPostDto.getQuestionContent() );
 
         Member member = new Member(); // memberId를 question에 저장
-        member.setMemberId(questionPostDto.getMemberId());
+        member.setMemberId(authMemberId);
         question.setMember(member);
 
         return question;

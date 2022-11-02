@@ -256,7 +256,7 @@ const QuestionDetails = () => {
 
   const onSumbit = async (e) => {
     const token = sessionStorage.getItem('jwt-token');
-
+    //
     try {
       let res = await axios.post(
         `/api/answers`,

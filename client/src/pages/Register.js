@@ -20,6 +20,7 @@ const Container = styled.div`
 `;
 
 export default function Register() {
+  //
   return (
     <MainContainer>
       <Nav />

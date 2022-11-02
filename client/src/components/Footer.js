@@ -29,6 +29,7 @@ const ListContainer = styled.div`
 `;
 
 export default function Footer() {
+  //
   return (
     <MainContainer>
       <FooterContainer>

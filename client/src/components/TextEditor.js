@@ -14,6 +14,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 
 const TextEditor = forwardRef((props, ref) => {
+  //
   return (
     <>
       <Editor

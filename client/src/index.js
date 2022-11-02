@@ -16,7 +16,7 @@ const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware, // 리듀서가 promise 객체 처리가능
   ReduxThunk // 리듀서가 function 처리 가능
 )(createStore);
-
+//
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>

@@ -30,6 +30,7 @@ const SmallTitle = styled.li`
 `;
 export default function List({ title, dataList }) {
   const navigate = useNavigate();
+  //
   return (
     <ListContainer>
       {title && (

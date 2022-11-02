@@ -12,3 +12,4 @@ export function clearUser() {
     type: CLEAR_USER,
   };
 }
+//

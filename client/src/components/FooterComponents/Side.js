@@ -19,6 +19,7 @@ const Container = styled.div`
 `;
 
 export default function Side() {
+  //
   return (
     <Container>
       <div>

@@ -17,7 +17,7 @@ export default function EditAnswer() {
 
   const MIN_LENGTH_TITLE = 20;
   const MIN_LENGTH_CONTENT = 50;
-
+  //
   const navigate = useNavigate();
   const backNavigate = () => {
     navigate(-1);

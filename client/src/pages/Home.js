@@ -67,6 +67,7 @@ const FooterWrapper = styled.footer`
 `;
 
 const Home = () => {
+  //
   return (
     <>
       <MainContainer>

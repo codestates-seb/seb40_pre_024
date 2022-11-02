@@ -74,6 +74,11 @@ const Details = styled.div`
     font-size: 9pt;
     margin-top: 30px;
     margin-right: 20px;
+    cursor: pointer;
+    &:hover {
+      background-color: #0074cc;
+      transition: 0.5s;
+    }
   }
   .title {
     // 창 크기 조절에 따라 서치바 사이즈 자동 조정
@@ -314,7 +319,19 @@ const QuestionDetails = () => {
                 <h1 className="title">{mainData[0].questionTitle}</h1>
               )}
               {/* 유저가 로그인 되있으면 아래에 onClick 이벤트를 줘서 댓글창으로 이동해주세요 */}
-              <button className="askbutton">Ask Question</button>
+              <button
+                className="askbutton"
+                onClick={() => {
+                  if (loginState) {
+                    navigate('/ask');
+                  } else {
+                    alert('로그인을 해주세요');
+                    navigate('/login');
+                  }
+                }}
+              >
+                Ask Question
+              </button>
             </header>
 
             <div className="container">

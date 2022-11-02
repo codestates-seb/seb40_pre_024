@@ -9,8 +9,6 @@ import superuser from '../../assets/img/superuser.svg';
 import Mo from '../../assets/img/Mo.png';
 import Logo from '../../assets/img/Logo.png';
 import { useNavigate } from 'react-router-dom';
-import { clearUser } from '../../redux/actions/user_actions';
-import { useDispatch, useSelector } from 'react-redux';
 
 const Container = styled.div`
   width: 526px;
@@ -99,7 +97,7 @@ const IconUl = styled.ul`
   width: 100%;
   height: 189px;
   padding-left: 0;
-  margin: 0;
+
   padding-bottom: 8px;
   border-bottom: 1px solid black;
 `;
@@ -136,94 +134,82 @@ const IconLi = styled.li`
 
 export default function LogoutContainer() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.currentUser);
-
   const logoutHandler = () => {
     // 리덕스 현재 유저 정보 초기화 할것
     // api로 로그아웃 요청
-    sessionStorage.removeItem('jwt-token');
-    sessionStorage.removeItem('user');
-    dispatch(clearUser());
   };
-
   const cancleHandler = () => {
     // 이전 페이지로 이동
     navigate(-1);
   };
-
-  if (user) {
-    return (
-      <Container>
-        <Title>
-          Clicking “Log out” will log you out of the following domains on this
-          device:
-        </Title>
-        <LogoutContain>
-          <IconUl>
-            <IconLi>
-              <a href={'https://askubuntu.com'}>
-                <img src={Ask} alt="ask" />
-                {'  '}
-                <div>askubuntu.com</div>
-              </a>
-            </IconLi>
-            <IconLi>
-              <a href={'https://mathoverflow.net'}>
-                <img src={Mo} alt="Mo" />
-                <div>mathoverflow.net</div>
-              </a>
-            </IconLi>
-            <IconLi>
-              <a href={'https://serverfault.com'}>
-                {' '}
-                <img src={sf} alt="sf" />
-                <div>serverfault.com</div>
-              </a>
-            </IconLi>
-            <IconLi>
-              <a href={'https://stackapps.com'}>
-                {' '}
-                <img src={Stackapp} alt="sf" />
-                <div>stackapps.com</div>
-              </a>
-            </IconLi>
-            <IconLi>
-              <a href={'https://stackexchange.com'}>
-                {' '}
-                <img src={StackExchange} alt="StackExchange" />
-                <div>stackexchange.com</div>
-              </a>
-            </IconLi>
-            <IconLi>
-              <a href={'https://stackoverflow.com'}>
-                <img src={Logo} alt="Logo" />
-                <div>stackoverflow.com</div>
-              </a>
-            </IconLi>
-            <IconLi>
-              <a href={'https://superuser.com'}>
-                <img src={superuser} alt="superuser" />
-                <div>superuser.com</div>
-              </a>
-            </IconLi>
-          </IconUl>
-          <InputContain>
-            <input type="checkbox" style={{ margin: '0 6px 0 0' }} />{' '}
-            <div> Log out on all devices</div>
-          </InputContain>
-          <BtnContainer>
-            <LogoutBtn onClick={logoutHandler}>Logout</LogoutBtn>
-            <CancleBtn onClick={cancleHandler}>Cancle</CancleBtn>
-          </BtnContainer>
-          <Ment>
-            If you’re on a shared computer, remember to log out of your Open ID
-            provider (Facebook, Google, Stack Exchange, etc.) as well.
-          </Ment>
-        </LogoutContain>
-      </Container>
-    );
-  } else {
-    return navigate('/');
-  }
+  return (
+    <Container>
+      <Title>
+        Clicking “Log out” will log you out of the following domains on this
+        device:
+      </Title>
+      <LogoutContain>
+        <IconUl>
+          <IconLi>
+            <a href={'https://askubuntu.com'}>
+              <img src={Ask} alt="ask" />
+              {'  '}
+              <div>askubuntu.com</div>
+            </a>
+          </IconLi>
+          <IconLi>
+            <a href={'https://mathoverflow.net'}>
+              <img src={Mo} alt="Mo" />
+              <div>mathoverflow.net</div>
+            </a>
+          </IconLi>
+          <IconLi>
+            <a href={'https://serverfault.com'}>
+              {' '}
+              <img src={sf} alt="sf" />
+              <div>serverfault.com</div>
+            </a>
+          </IconLi>
+          <IconLi>
+            <a href={'https://stackapps.com'}>
+              {' '}
+              <img src={Stackapp} alt="sf" />
+              <div>stackapps.com</div>
+            </a>
+          </IconLi>
+          <IconLi>
+            <a href={'https://stackexchange.com'}>
+              {' '}
+              <img src={StackExchange} alt="StackExchange" />
+              <div>stackexchange.com</div>
+            </a>
+          </IconLi>
+          <IconLi>
+            <a href={'https://stackoverflow.com'}>
+              <img src={Logo} alt="Logo" />
+              <div>stackoverflow.com</div>
+            </a>
+          </IconLi>
+          <IconLi>
+            <a href={'https://superuser.com'}>
+              <img src={superuser} alt="superuser" />
+              <div>superuser.com</div>
+            </a>
+          </IconLi>
+        </IconUl>
+        <InputContain>
+          <input type="checkbox" style={{ margin: '0 6px 0 0' }} />{' '}
+          <div> Log out on all devices</div>
+        </InputContain>
+        <BtnContainer>
+          <LogoutBtn onClick={logoutHandler}>Logout</LogoutBtn>
+          <CancleBtn onClick={cancleHandler}>Cancle</CancleBtn>
+        </BtnContainer>
+        <Ment>
+          If you’re on a shared computer, remember to log out of your Open ID
+          provider (Facebook, Google, Stack Exchange, etc.) as well.
+        </Ment>
+      </LogoutContain>
+    </Container>
+  );
 }

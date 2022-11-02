@@ -9,6 +9,8 @@ import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.member.service.MemberService;
 
+import com.preproject.server.response.MultiResponseDto;
+import com.preproject.server.response.PageInfo;
 import com.preproject.server.response.SingleResponseDto;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 
 @Validated
@@ -88,35 +91,14 @@ public class MemberController {
 //    }
 
 
+    //테스트용의 전체 조회
+    @GetMapping
+    public ResponseEntity getMembers() {
 
-
-//    @GetMapping
-//    public ResponseEntity getMembers(@Positive @RequestParam("size") Integer size,
-//                                     @Positive @RequestParam("page") Integer page) {
-//
-//
-//        //stub
-////        List<Member> stub = new ArrayList<>();
-////        for (int i = 0; i < size; i++) {
-////            stub.add(MemberStubData.stubList.get(i));
-////        }
-////        Page<Member> memberPage = new PageImpl<>(
-////                stub,
-////                PageRequest.of(page,size,Sort.by(Sort.Direction.DESC,"memberId"))
-////                ,stub.size());
-////        List<MemberDto.Response> responses = mapper.memberListToMemberDtoResponseList(stub);
-////        PageDto pageDto = new PageDto(
-////                page,stub.size(), 20
-////        );
-////        MultiResponse<MemberDto.Response> response = new MultiResponse<>(responses, pageDto);
-//
-//
-//        return new ResponseEntity(response, HttpStatus.OK);
-//
-//
-//    }
-
-
-
+        List<Member> members = service.findMembers();
+        List<MemberDto.Response> responses = mapper.memberListToMemberDtoResponseList(members);
+        MultiResponseDto<MemberDto.Response> multiResponseDto = new MultiResponseDto<>(responses, new PageInfo(0,0,0,0));
+        return new ResponseEntity(multiResponseDto, HttpStatus.OK);
+    }
 
 }

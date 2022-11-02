@@ -17,7 +17,7 @@ import java.io.IOException;
 public class FilterExceptionResolver {
 
     private final Gson gson;
-    private String contentType = "application/json";
+    private String contentType = "application/json;charset=UTF-8";
     public void handleException(RuntimeException e,HttpServletResponse response) throws IOException {
 
         //인증, 인가(권한부여) 관련 에러일 경우만 처리

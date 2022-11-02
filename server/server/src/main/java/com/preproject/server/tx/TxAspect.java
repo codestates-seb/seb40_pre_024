@@ -1,34 +1,19 @@
 package com.preproject.server.tx;
 
-
-import com.preproject.server.exception.BusinessException;
-import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.member.wrapper.WrapperUserNamePasswordAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
-import java.util.List;
-
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-
 
 @Aspect
 @Component
@@ -70,39 +55,4 @@ public class TxAspect {
             throw runtimeException;
         }
     }
-
-
-
-
-
-
-
-
-//    //되는것
-//    @Pointcut("execution(* com.preproject.server.question.controller.QuestionController.postQuestion(..))")
-//    public void question() {
-//    }
-
-//    @Pointcut("execution(* com.preproject.server.question.controller.QuestionController.*Question.*(..))")
-//    public void question() {
-//    }
-
-
-//    @Around("question()")
-//    public Object applyTx(ProceedingJoinPoint joinPoint) throws Throwable {
-//        TransactionStatus transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
-//        try {
-//            System.out.println("이거이 바로 AOP다 이기야!");
-//            Object object = joinPoint.proceed();
-//            transactionManager.commit(transaction);
-//            return object;
-//        } catch (RuntimeException runtimeException) {
-//            transactionManager.rollback(transaction);
-//            throw runtimeException;
-//        }
-//    }
-
-
-
-
 }

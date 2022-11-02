@@ -8,6 +8,7 @@ import com.preproject.server.filter.FilterExceptionResolver;
 import com.preproject.server.filter.JwtAuthenticationFilter;
 import com.preproject.server.filter.JwtVerificationFilter;
 import com.preproject.server.jwt.JwtTokenizer;
+import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.security.handler.CustomAccessDeniedHandler;
 import com.preproject.server.security.handler.CustomAuthenticationEntryPoint;
 import com.preproject.server.security.handler.CustomAuthenticationFailureHandler;
@@ -48,6 +49,8 @@ public class SecurityConfiguration {
 
     private final Gson gson;
 
+    private final MemberMapper memberMapper;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -86,9 +89,10 @@ public class SecurityConfiguration {
                                 .antMatchers(HttpMethod.POST,"/api/questions").hasRole("USER")  // POST이면서 /api/questions/로 시작하는 것은 USER 권한
                                 .antMatchers(HttpMethod.GET,"/api/questions/**").permitAll() // GET이면서 /api/questions/로 시작하는 것은 모두 허용
 
-                                .antMatchers(HttpMethod.GET,"/api/members/**").hasRole("USER")
+//                                .antMatchers(HttpMethod.GET,"/api/members/**").hasRole("USER")
                                 .antMatchers(HttpMethod.POST,"/api/members/logout").hasRole("USER")
                                 .antMatchers(HttpMethod.POST,"/api/members/").permitAll()
+                                .antMatchers(HttpMethod.GET,"/api/members/").permitAll()
 
                                 .antMatchers(HttpMethod.PATCH,"/api/answers/*").hasRole("USER")
                                 .antMatchers(HttpMethod.DELETE,"/api/answers/*").hasRole("USER")
@@ -111,7 +115,7 @@ public class SecurityConfiguration {
 
 
             //인증 처리 필터
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberMapper, gson);
 
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/members/login");
 

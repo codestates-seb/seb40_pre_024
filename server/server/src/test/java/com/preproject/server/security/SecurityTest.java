@@ -61,17 +61,11 @@ public class SecurityTest {
     @MockBean
     AuthenticationManager authenticationManager;
 
-
-
     @Autowired
     MemberService memberService;
 
-
     @Test
     void login_success() throws Exception {
-
-
-
 
         //given
         String username = "januaryKim@gmail.com";
@@ -79,8 +73,6 @@ public class SecurityTest {
         Member member = Member.builder().memberName("januaryKim").memberEmail(username)
                         .memberPwd(password).build();
         memberService.createMember(member);
-
-
 
 
 //        String username = "jake";

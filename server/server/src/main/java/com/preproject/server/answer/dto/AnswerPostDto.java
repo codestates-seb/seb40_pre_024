@@ -14,7 +14,7 @@ public class AnswerPostDto {
 
     private Long questionId;
 
-    @Length(min = 5, max = 1000)
+    @Length(min = 5)
     @NotBlank
     private String answerContent;
 

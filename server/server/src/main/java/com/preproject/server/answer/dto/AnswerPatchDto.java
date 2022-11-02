@@ -16,7 +16,7 @@ public class AnswerPatchDto {
     private long answerId;
 
     @NotBlank
-    @Length(min = 5, max = 1000)
+    @Length(min = 5)
     private String answerContent;
 
     public void setAnswerId(long answerId) {

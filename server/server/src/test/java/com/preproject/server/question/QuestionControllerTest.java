@@ -6,6 +6,7 @@ import com.preproject.server.answer.entity.Answer;
 import com.preproject.server.answer.mapper.AnswerMapper;
 import com.preproject.server.answer.service.AnswerService;
 import com.preproject.server.member.dto.MemberDto;
+import com.preproject.server.member.entity.Member;
 import com.preproject.server.member.mapper.MemberMapper;
 import com.preproject.server.question.controller.QuestionController;
 import com.preproject.server.question.dto.QuestionAnswerDto;
@@ -26,6 +27,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
@@ -56,8 +58,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@MockBean({JpaMetamodelMappingContext.class, AnswerMapper.class})
-@WebMvcTest(value = QuestionController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@MockBean(JpaMetamodelMappingContext.class)
+@WebMvcTest(value = {QuestionController.class, AnswerMapper.class} ,excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureRestDocs
 //@SpringBootTest
 //@AutoConfigureMockMvc
@@ -270,6 +272,11 @@ class QuestionControllerTest {
         answer1.setCreatedAt(LocalDateTime.now());
         answer1.setModifiedAt(LocalDateTime.now());
 
+        Member member = Member.builder().memberId(response.getMemberId())
+                .memberEmail(response.getMemberEmail()).memberName(response.getMemberName()).roles(response.getRoles()).build();
+
+        answer1.setMember(member);
+
         Answer answer2 = new Answer();
         answer2.setAnswerId(2L);
         answer2.setAnswerContent("답변내용222222222222222222222");
@@ -278,16 +285,16 @@ class QuestionControllerTest {
 
         List<Answer> answerList = new ArrayList<>();
         answerList.add(answer1);
-        answerList.add(answer2);
+
 
         Page<Answer> answerPage = new PageImpl<>(answerList);
 
-        AnswerResponseDto answerResponseDto = new AnswerResponseDto();
-        answerResponseDto.setAnswerContent("답변내용입니다아아아아아아아아아아아");
-        answerResponseDto.setAnswerId(1L);
-        answerResponseDto.setCreatedAt(LocalDateTime.now());
-        answerResponseDto.setModifiedAt(LocalDateTime.now());
-        answerResponseDto.setMemberResponseDto(response);
+//        AnswerResponseDto answerResponseDto = new AnswerResponseDto();
+//        answerResponseDto.setAnswerContent("답변내용입니다아아아아아아아아아아아");
+//        answerResponseDto.setAnswerId(1L);
+//        answerResponseDto.setCreatedAt(LocalDateTime.now());
+//        answerResponseDto.setModifiedAt(LocalDateTime.now());
+//        answerResponseDto.setMemberResponseDto(response);
 
 
 
@@ -344,12 +351,22 @@ class QuestionControllerTest {
                                         //Answer Response
 
                                         fieldWithPath("data.answerResponseDto").type(JsonFieldType.OBJECT).description("답변리스폰스"),
-                                        fieldWithPath("data.answerResponseDto.data[]").type(JsonFieldType.ARRAY).description("답변 결과 데이터"),
-//                                        fieldWithPath("data.answerResponseDto.data[].answerID").type(JsonFieldType.NUMBER).description("답변 아이디"),
-//                                        fieldWithPath("data.answerResponseDto.data[].answerContent").type(JsonFieldType.STRING).description("답변 내용"),
-//                                        fieldWithPath("data.answerResponseDto.data[].createdAt").type(JsonFieldType.STRING).description("답변 작성 시간"),
-//                                        fieldWithPath("data.answerResponseDto.data[].modifiedAt").type(JsonFieldType.STRING).description("답변 수정 시간"),
-//                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto").type(JsonFieldType.OBJECT).description("답변 수정 시간"),
+                                        fieldWithPath("data.answerResponseDto.data").type(JsonFieldType.ARRAY).description("답변 결과 데이터"),
+
+
+                                        fieldWithPath("data.answerResponseDto.data[0].answerId").type(JsonFieldType.NUMBER).description("답변 아이디"),
+                                        fieldWithPath("data.answerResponseDto.data[0].answerContent").type(JsonFieldType.STRING).description("답변 내용"),
+                                        fieldWithPath("data.answerResponseDto.data[0].createdAt").type(JsonFieldType.STRING).description("답변 작성 시간"),
+                                        fieldWithPath("data.answerResponseDto.data[0].modifiedAt").type(JsonFieldType.STRING).description("답변 수정 시간"),
+                                        fieldWithPath("data.answerResponseDto.data[0].memberResponseDto").type(JsonFieldType.OBJECT).description("답변 수정 시간"),
+
+                                        fieldWithPath("data.answerResponseDto.data[0].memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
+                                        fieldWithPath("data.answerResponseDto.data[0].memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+                                        fieldWithPath("data.answerResponseDto.data[0].memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
+                                        fieldWithPath("data.answerResponseDto.data[0].memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+                                        fieldWithPath("data.answerResponseDto.data[0].memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들"),
+
+                                        fieldWithPath("data.answerResponseDto.pageInfo").type(JsonFieldType.OBJECT).description("페이지 결과 데이터"),
                                         fieldWithPath("data.answerResponseDto.pageInfo.page").type(JsonFieldType.NUMBER).description("페이지"),
                                         fieldWithPath("data.answerResponseDto.pageInfo.size").type(JsonFieldType.NUMBER).description("사이즈"),
                                         fieldWithPath("data.answerResponseDto.pageInfo.totalElements").type(JsonFieldType.NUMBER).description("회원수"),

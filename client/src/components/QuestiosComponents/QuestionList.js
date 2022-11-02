@@ -77,6 +77,38 @@ const Profile = styled.div`
 const Time = styled.div`
   margin-left: 5px;
 `;
+
+// 특정시간으로부터 현재시간의 차이를 계산하는 함수
+function elapsedTime(date) {
+  const start = new Date(date);
+  const end = new Date(); // 현재 날짜
+
+  const diff = end - start; // 경과 시간
+  // console.log('diff: ', diff);
+
+  const times = [
+    { time: 'min', milliSeconds: 1000 * 60 },
+    { time: 'hour', milliSeconds: 1000 * 60 * 60 },
+    { time: 'day', milliSeconds: 1000 * 60 * 60 * 24 },
+    { time: 'month', milliSeconds: 1000 * 60 * 60 * 24 * 30 },
+    { time: 'year', milliSeconds: 1000 * 60 * 60 * 24 * 365 },
+  ].reverse();
+
+  // 년 단위부터 알맞는 단위 찾기
+  for (const value of times) {
+    const betweenTime = Math.floor(diff / value.milliSeconds);
+
+    // 큰 단위는 0보다 작은 소수 단위 나옴
+    if (betweenTime === 1) {
+      return `${betweenTime} ${value.time} ago`;
+    } else if (betweenTime > 0) {
+      return `${betweenTime} ${value.time}s ago`;
+    }
+  }
+
+  return 'just a few moments ago';
+}
+
 export default function QuestionList({ QuestionData }) {
   const {
     answer,
@@ -86,6 +118,19 @@ export default function QuestionList({ QuestionData }) {
     memberResponseDto,
     createdAt,
   } = QuestionData;
+
+  // createdAt을 UTC기준시로부터 한국시간으로(9시간이후) 맞춰주는 작업
+  let years = new Date(createdAt).getFullYear();
+  let months = new Date(createdAt).getMonth() + 1;
+  let dates = new Date(createdAt).getDate();
+  let hours = new Date(createdAt).getHours() + 9;
+  let minutes = new Date(createdAt).getMinutes();
+  let seconds = new Date(createdAt).getSeconds();
+  let newDate = new Date(
+    `${years}-${months}-${dates} ${hours}:${minutes}:${seconds}`
+  );
+  // console.log('newDate: ', newDate);
+  // console.log(Date(newDate));
 
   return (
     <>
@@ -112,17 +157,23 @@ export default function QuestionList({ QuestionData }) {
                 : questionContent}
             </p>
           </Description>
-          {/* <TagMockUp>
+          <TagMockUp>
             {QuestionData.tag &&
               QuestionData.tag.map((el, idx) => {
                 return <button key={idx}>{el}</button>;
-              })} */}
-          {/* <button>{QuestionData.tag}</button> */}
-          {/* </TagMockUp> */}
+              })}
+            {/* <button>{QuestionData.tag}</button> */}
+          </TagMockUp>
           <Profile>
             <CgProfile />
             {memberResponseDto.memberName}
-            <Time>{createdAt}</Time>
+            <Time>
+              {/* 작성시간으로부터 얼마나 지났는지 표시 */}
+              {elapsedTime(newDate)}
+
+              {/* 작성시간을 표시하고 싶을 경우 */}
+              {/* {new Date(newDate).toLocaleString('ko-KR')} */}
+            </Time>
           </Profile>
         </RightContainer>
       </Container>

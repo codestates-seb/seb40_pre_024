@@ -288,7 +288,7 @@ const Nav = () => {
   useEffect(() => {
     const clickOutside = (e) => {
       if (outsideRef.current && !outsideRef.current.contains(e.target)) {
-        console.log(e.target);
+        // console.log(e.target);
         setIsFocus(false);
       }
     };

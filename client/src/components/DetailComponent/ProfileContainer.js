@@ -54,7 +54,6 @@ export default function ProfileContainer({ detail }) {
   // user 정보랑 댓글 정보가 같으면 Edit 버튼이 있어야함.
   const currentId = useSelector((state) => state.user.currentUser) || {}; // 여기에 상태로 관리되는 현재 유저아이디를 넣을것
   const navigate = useNavigate();
-  //
 
   const timeForToday = (value) => {
     const today = new Date();

@@ -139,7 +139,7 @@ export default function LogoutContainer() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
-  //
+
   const logoutHandler = () => {
     // 리덕스 현재 유저 정보 초기화 할것
     // api로 로그아웃 요청

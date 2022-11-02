@@ -86,7 +86,7 @@ export default function QuestionList({ QuestionData }) {
     memberResponseDto,
     createdAt,
   } = QuestionData;
-  //
+
   return (
     <>
       <Container>

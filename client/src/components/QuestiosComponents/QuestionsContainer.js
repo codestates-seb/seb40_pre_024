@@ -17,7 +17,6 @@ const LeftMenu = styled.div`
 `;
 
 export default function QuestionsContainer({ QuestionData }) {
-  //
   return (
     <ListContainer>
       <LeftMenu></LeftMenu>

@@ -10,7 +10,6 @@ const Container = styled.main`
   padding-top: 16px;
   min-height: 186px;
   border-bottom: 1px solid #eee;
-
   & aside {
     padding-right: 16px;
     display: flex;

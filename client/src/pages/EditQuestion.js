@@ -21,7 +21,7 @@ export default function EditQuestion() {
   const backNavigate = () => {
     navigate(-1);
   };
-  //
+
   const editorRef = useRef();
 
   const onFocus = () => {};

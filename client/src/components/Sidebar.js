@@ -13,7 +13,7 @@ function Sidebar() {
     { name: 'Tags', link: './' },
     { name: 'Users', link: './' },
   ];
-  //
+
   return (
     <>
       <Container>

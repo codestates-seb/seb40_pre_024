@@ -299,7 +299,7 @@ const Nav = () => {
       document.removeEventListener('mousedown', clickOutside);
     };
   }, [outsideRef]);
-  //
+
   const handleSubmit = () => {
     e.preventDefault();
     // 검색 요청 로직 작성 부분

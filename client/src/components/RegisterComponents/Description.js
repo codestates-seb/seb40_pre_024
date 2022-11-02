@@ -38,7 +38,6 @@ const IconContainer = styled.div`
   }
 `;
 export default function Description() {
-  //
   return (
     <Container>
       <Title>Join the Stack Overflow community</Title>

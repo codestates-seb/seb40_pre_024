@@ -18,7 +18,7 @@ const ListContainer = styled.div`
 
 export default function Questions() {
   const [filterModal, setFilterModal] = useState(false);
-  //
+
   const [questions, setQuestions] = useState([]); // 총 게시물 데이터
   const [limit, setLimit] = useState(15); // 페이지당 게시물 수
   const [page, setPage] = useState(1); // 현재 페이지

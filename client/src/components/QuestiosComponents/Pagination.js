@@ -92,7 +92,7 @@ const Pagination = ({ total, limit, page, setPage }) => {
     setCurrentPageArray(slicedPageArray[0]);
     // getQuestions();
   }, [total]);
-  //
+
   return (
     <>
       <Nav>

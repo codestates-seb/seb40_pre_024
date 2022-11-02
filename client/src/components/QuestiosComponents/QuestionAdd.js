@@ -40,7 +40,6 @@ export default function QuestionAdd() {
     // }else{
     //   navigate('/login')
     // }
-    //
   };
 
   return (

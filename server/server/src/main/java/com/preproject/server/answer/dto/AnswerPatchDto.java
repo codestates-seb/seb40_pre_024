@@ -10,10 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class AnswerPatchDto {
 
-    private Long memberId;
-
-    private long questionId;
-    private long answerId;
+    private Long answerId;
 
     @NotBlank
     @Length(min = 5)

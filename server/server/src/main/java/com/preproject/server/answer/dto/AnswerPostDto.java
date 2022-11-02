@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class AnswerPostDto {
 
-    private Long memberId;
 
     private Long questionId;
 

@@ -49,16 +49,14 @@ public class AnswerService {
         return updateAnswer;
     }
 
-    private Answer verifyExistsAnswer(Long answerId) {
 
-        return  answerRepository.findById(answerId).orElseThrow(() ->
-        {throw new BusinessException(ExceptionCode.ANSWER_NOT_EXISTS);
-        });
 
-    }
+    public Answer findAnswer(Long answerId) {
 
-    public Answer findAnswer(long answerId) {
-        return verifyExistsAnswer(answerId);
+        Answer findAnswer = verifyExistsAnswer(answerId);
+        answerRepository.save(findAnswer);
+
+        return  findAnswer;
     }
 
     public Page<Answer> findAnswers(int page, int size) {
@@ -66,13 +64,20 @@ public class AnswerService {
                 Sort.by("answerId").descending()));
     }
 
-    public void deleteAnswer(long answerId, long authMemberId) {
-        Answer answer = verifyExistsAnswer(answerId);
+    public void deleteAnswer(long answerId, Long authMemberId) {
+        Answer findAnswer = verifyExistsAnswer(answerId);
 
-        if(answer.getMember().getMemberId() != authMemberId){
+        if(findAnswer.getMember().getMemberId() != authMemberId){
             throw new BusinessException(ExceptionCode.BAD_REQUEST);
         }
-        answerRepository.delete(answer);
+        answerRepository.delete(findAnswer);
     }
 
+    private Answer verifyExistsAnswer(Long answerId) {
+
+        return  answerRepository.findById(answerId).orElseThrow(() ->
+        {throw new BusinessException(ExceptionCode.ANSWER_NOT_EXISTS);
+        });
+
+    }
 }

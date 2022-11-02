@@ -127,7 +127,7 @@ const Button = styled.a`
   &:hover {
     background-color: orange;
     scale: 1.05;
-    font-weight: bold;
+    /* font-weight: bold;*/
     transition: 0.1s ease-in-out;
   }
 `;

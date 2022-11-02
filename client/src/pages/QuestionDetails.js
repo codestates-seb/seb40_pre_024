@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import ProfileContainer from '../components/DetailComponent/ProfileContainer';
 import MainProfileContainer from '../components/DetailComponent/MainProfileContainer';
+import PostView from '../components/PostView';
 
 const MainContainer = styled.div`
   * {
@@ -20,10 +21,6 @@ const MainContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  pre {
-    padding: 18px;
-    background-color: #eee;
-  }
 `;
 
 const SidebarWrapper = styled.div`
@@ -363,11 +360,12 @@ const QuestionDetails = () => {
                       <div>
                         <div className="contentspost">
                           {mainData.length > 0 && (
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: mainData[0].questionContent,
-                              }}
-                            ></div>
+                            <PostView
+                              markdown={mainData[0].questionContent}
+                              // dangerouslySetInnerHTML={{
+                              //   __html: mainData[0].questionContent,
+                              // }}
+                            ></PostView>
                           )}
                         </div>
                       </div>

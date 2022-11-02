@@ -56,7 +56,7 @@ export default function MainProfileContainer({ detail }) {
 
   const moveToEdit = (id) => {
     // 경로 수정해줄것.
-    navigate(`/editanswer/${id}`);
+    navigate(`/detail/${id}/edit`);
   };
 
   const removeComment = async (id) => {

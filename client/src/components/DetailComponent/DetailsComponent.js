@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PostView from '../PostView';
 import IconContainer from './IconContainer';
 import ProfileContainer from './ProfileContainer';
 
@@ -42,9 +43,10 @@ export default function DetailsComponent({ detail }) {
         {/* 질문 타이틀 넣어주기 */}
         <TitleContainer>
           {detail && (
-            <div
-              dangerouslySetInnerHTML={{ __html: detail.answerContent }}
-            ></div>
+            <PostView
+              markdown={detail.answerContent}
+              // dangerouslySetInnerHTML={{ __html: detail.answerContent }}
+            ></PostView>
           )}
         </TitleContainer>
         {/* 태그 제외 , 작성자 정보 알려주기, 여기 현재 아이디와 다르다면 현재 유저는 edit버튼을 가질 수 없음*/}

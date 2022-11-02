@@ -55,7 +55,7 @@ export default function ProfileContainer({ detail }) {
   const navigate = useNavigate();
 
   const moveToEdit = (id) => {
-    navigate(`/editanswer/${id}`);
+    navigate(`/comment/${id}/edit`);
   };
 
   const removeComment = async (id) => {

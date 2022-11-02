@@ -31,7 +31,7 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e) {
-        final ErrorResponse response = ErrorResponse.of(e.getBindingResult());
+        final ErrorResponse response = ErrorResponse.of(e.getBindingResult(), HttpStatus.BAD_REQUEST);
 
         return response;
     }
@@ -40,7 +40,7 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleConstraintViolationException(
             ConstraintViolationException e) {
-        final ErrorResponse response = ErrorResponse.of(e.getConstraintViolations());
+        final ErrorResponse response = ErrorResponse.of(e.getConstraintViolations(), HttpStatus.BAD_REQUEST);
 
         return response;
     }

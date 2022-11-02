@@ -16,7 +16,7 @@ function QuestionTipModal({ margin }) {
       ],
     },
   ];
-  //
+
   const handleClick = () => {
     setOpen(true);
   };

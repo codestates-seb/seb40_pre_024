@@ -75,7 +75,6 @@ export default function MainProfileContainer({ detail }) {
     const betweenTimeHour = Math.floor(betweenTime / 60);
     if (betweenTimeHour < 24) {
       return `${betweenTimeHour}시간전`;
-      //
     }
     const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
     if (betweenTimeDay < 365) {

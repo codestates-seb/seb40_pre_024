@@ -123,7 +123,6 @@ export default function LoginContainer() {
         setError('');
       }, 2000);
     }
-    //
   };
 
   if (!user) {

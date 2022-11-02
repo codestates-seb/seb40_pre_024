@@ -46,7 +46,6 @@ const Sidebar = styled.div`
 `;
 
 const RightSidebar = () => {
-  //
   return (
     <Sidebar>
       <ul>

@@ -9,5 +9,3 @@ const useScrollTop = () => {
 };
 
 export default useScrollTop;
-
-//

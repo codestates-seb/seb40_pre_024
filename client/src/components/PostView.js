@@ -10,7 +10,6 @@ import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 
 export default function PostView({ markdown }) {
-  //
   return (
     <>
       <Viewer

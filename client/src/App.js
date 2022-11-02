@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
-  //
+
   useEffect(() => {
     let Token = sessionStorage.getItem('jwt-token');
     let user = sessionStorage.getItem('user');

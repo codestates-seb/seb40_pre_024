@@ -20,7 +20,7 @@ export default function Ask() {
   const backNavigate = () => {
     navigate(-1);
   };
-  //
+
   const editorRef = useRef();
 
   const onChange = () => {

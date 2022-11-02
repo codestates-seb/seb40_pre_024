@@ -6,7 +6,6 @@ function Modal({ functionHandler }) {
   const openModalHandler = () => {
     setIsOpen(!isOpen);
   };
-  //
   return (
     <>
       <ModalContainer>

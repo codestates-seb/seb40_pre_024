@@ -4,7 +4,6 @@ import styled from 'styled-components';
 function AnswerTipModal({ margin }) {
   // 부모 컴포넌트에 값 입력 e.g. margin={'0px 0px 50px 0px'}
   const [open, setOpen] = useState(false);
-  //
   const menuText = [
     {
       title: 'Thanks for contributing an answer to Stack Overflow!',

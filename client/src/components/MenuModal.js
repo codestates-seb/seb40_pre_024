@@ -144,7 +144,7 @@ const ModalMenu = styled.div`
 
 const MenuModal = ({ setMenuModal, menuRef }) => {
   const outsidemenuRef = useRef();
-  //
+
   useEffect(() => {
     const clickOutsideMenu = (e) => {
       if (

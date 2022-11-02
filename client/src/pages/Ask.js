@@ -36,18 +36,15 @@ export default function Ask() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const newData = {
-      memberId: null,
+    const exampleData = {
       questionTitle: title,
-      questionContent: content,
+      questionContent: JSON.stringify(content),
     };
 
     await axios
-      .post('http://localhost:3000/data', JSON.stringify(newData), {
-        headers: { 'Content-Type': `application/json` },
-      })
+      .post('http://localhost:4000/test', exampleData)
       .then((res) => {
-        console.log(console.log(res.data));
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
 
@@ -134,7 +131,6 @@ export default function Ask() {
 const Container = styled.main`
   padding: 8vh 10vw;
   background-color: #f1f2f3;
-  border: 1px solid #eee;
   display: flex;
   flex-direction: column;
   h2 {

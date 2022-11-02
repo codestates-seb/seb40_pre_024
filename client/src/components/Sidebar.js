@@ -9,9 +9,9 @@ function Sidebar() {
     setIsActive(index);
   };
   const menuItems = [
-    { name: 'Questions', link: './' },
-    { name: 'Tags', link: './' },
-    { name: 'Users', link: './' },
+    { name: 'Questions', link: '#' },
+    { name: 'Tags', link: '#' },
+    { name: 'Users', link: '#' },
   ];
 
   return (

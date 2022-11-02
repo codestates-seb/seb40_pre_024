@@ -78,51 +78,39 @@ const Time = styled.div`
   margin-left: 5px;
 `;
 export default function QuestionList({ QuestionData }) {
-  const {
-    answer,
-    questionViewed,
-    questionTitle,
-    questionContent,
-    memberResponseDto,
-    createdAt,
-  } = QuestionData;
-
   return (
     <>
       <Container>
         <LeftContainer>
-          {/* 백과 데이터 작업 안하므로 로우데이터로 처리 */}
-          {/* <span>{QuestionData.votes}34 votes</span>
-          <span>{QuestionData.answer}0 answer</span> */}
-          <span>34 votes</span>
-          <span>0 answer</span>
-          <span>{questionViewed} views</span>
+          <span>{QuestionData.votes}</span>
+          <span>{QuestionData.answer}</span>
+          <span>{QuestionData.views}</span>
         </LeftContainer>
         <RightContainer>
-          <StyledTitle to={`detail/${QuestionData.questionId}`}>
+          <StyledTitle to="/">
             {/* 질문 화면으로 이동해야함 */}
-            <h4>{questionTitle}</h4>
+            <h4>{QuestionData.title}</h4>
           </StyledTitle>
           <Description>
             {/* 등록된 질문 */}
             {/* (추가)내용이 길면 일부만 보여주는 로직 */}
             <p>
-              {questionContent && questionContent.length > 150
-                ? `${questionContent.slice(0, 150)} ...`
-                : questionContent}
+              {QuestionData.question && QuestionData.question.length > 150
+                ? `${QuestionData.question.slice(0, 150)} ...`
+                : QuestionData.question}
             </p>
           </Description>
-          {/* <TagMockUp>
+          <TagMockUp>
             {QuestionData.tag &&
               QuestionData.tag.map((el, idx) => {
                 return <button key={idx}>{el}</button>;
-              })} */}
-          {/* <button>{QuestionData.tag}</button> */}
-          {/* </TagMockUp> */}
+              })}
+            {/* <button>{QuestionData.tag}</button> */}
+          </TagMockUp>
           <Profile>
             <CgProfile />
-            {memberResponseDto.memberName}
-            <Time>{createdAt}</Time>
+            {QuestionData.author}
+            <Time>작성 시간</Time>
           </Profile>
         </RightContainer>
       </Container>

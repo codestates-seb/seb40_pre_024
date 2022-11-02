@@ -14,12 +14,16 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
-    default Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto) {
+    default Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto, Long authMemberId) {
+        if ( answerPostDto == null ) {
+            return null;
+        }
+
         Answer answer = new Answer();
         answer.setAnswerContent(answerPostDto.getAnswerContent());
 
         Member member = new Member(); // memberId를 answer에 저장
-        member.setMemberId(answerPostDto.getMemberId());
+        member.setMemberId(authMemberId);
         answer.setMember(member);
 
         Question question = new Question(); // questionId를 answer에 저장

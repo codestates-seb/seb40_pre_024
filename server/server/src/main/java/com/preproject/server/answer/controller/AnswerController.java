@@ -48,10 +48,9 @@ public class AnswerController {
 //        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken = (WrapperUserNamePasswordAuthenticationToken)authentication;
 //        Integer memberId = wrapperUserNamePasswordAuthenticationToken.getMemberId();
 
-        Member member = new Member();
-        answerPostDto.setMemberId(authMemberId);
 
-        Answer answer = mapper.answerPostDtoToAnswer(answerPostDto);
+
+        Answer answer = mapper.answerPostDtoToAnswer(answerPostDto,authMemberId);
 
         Answer createdAnswer = answerService.createAnswer(answer);
 
@@ -61,13 +60,14 @@ public class AnswerController {
     }
     @NeedMemberId
     @PatchMapping("/{answer-id}")
-    public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive long answerId,
+    public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive Long answerId,
                                       @Valid @RequestBody AnswerPatchDto answerPatchDto,
                                       Long authMemberId) {
 
         Answer answer = mapper.answerPatchDtoToAnswer(answerPatchDto);
         answer.setAnswerId(answerId);
         Answer updateAnswer = answerService.updateAnswer(answer, authMemberId);
+
 
         SingleResponseDto<AnswerResponseDto> singleResponseDto =
                 new SingleResponseDto<>(mapper.answerToAnswerResponseDto(updateAnswer));
@@ -76,7 +76,7 @@ public class AnswerController {
     }
 
     @GetMapping("/{answer-id}")
-    public ResponseEntity getAnswer(@PathVariable("answer-id") @Positive long answerId) {
+    public ResponseEntity getAnswer(@PathVariable("answer-id") @Positive Long answerId) {
         Answer answer = answerService.findAnswer(answerId);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.answerToAnswerResponseDto(answer)), HttpStatus.OK);
@@ -94,7 +94,7 @@ public class AnswerController {
     }
     @NeedMemberId
     @DeleteMapping("/{answer-id}")
-    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId, Long authMemberId) {
+    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive Long answerId, Long authMemberId) {
 
 
         answerService.deleteAnswer(answerId, authMemberId);

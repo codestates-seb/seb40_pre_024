@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class AnswerResponseDto {
-    private long answerId;
+    private Long answerId;
     private String answerContent;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

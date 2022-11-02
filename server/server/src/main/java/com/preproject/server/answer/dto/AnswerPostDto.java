@@ -10,11 +10,10 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class AnswerPostDto {
 
-    private Long memberId;
 
     private Long questionId;
 
-    @Length(min = 5, max = 1000)
+    @Length(min = 5)
     @NotBlank
     private String answerContent;
 

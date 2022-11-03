@@ -18,6 +18,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
         //권한이 필요한 리소스에 대해 접근하는데, 권한이 존재하지 않는 경우 진입
-        throw new AuthException(ExceptionCode.UNAUTHORIZED_EXCEPTION);
+        throw new AuthException(ExceptionCode.UNAUTHORIZED_EXCEPTION, authException.getMessage());
     }
 }

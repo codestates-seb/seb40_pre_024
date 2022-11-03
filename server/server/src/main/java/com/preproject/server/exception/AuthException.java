@@ -9,8 +9,8 @@ public class AuthException extends AuthenticationException {
     @Getter
     ExceptionCode exceptionCode;
 
-    public AuthException(ExceptionCode exceptionCode) {
-        super(exceptionCode.getMessage());
+    public AuthException(ExceptionCode exceptionCode, String sourceMessage) {
+        super(sourceMessage);
         this.exceptionCode = exceptionCode;
     }
 }

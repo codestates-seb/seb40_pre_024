@@ -42,7 +42,7 @@ export default function Questions() {
   // api로 전체 데이터 받아오기([{질문 아이디, 질문 제목, 질문 내용, 멤버 닉네임, 작성 날짜},...] 형식)
   const getQuestions = async () => {
     const { data } = await axios
-      .get(`/api/questions${location.search || `?page=${page}&size=${limit}`}`)
+      .get(`/api/questions/${location.search || `?page=${page}&size=${limit}`}`)
       .catch((err) => console.log(err, 'Error'));
 
     let randomTags = randomTag();

@@ -60,7 +60,7 @@ export default function Questions() {
         setQuestionsInfo({ ...res.pageInfo });
         setLoading(false);
       })
-      .catch((err) => console.log(err, 'Error'));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {

@@ -45,7 +45,7 @@ const FilterNavContainer = styled.div`
 `;
 
 const Button = styled.button`
-  padding: 9.5px 12px;
+  padding: 10.5px 12px;
   border: 1px solid #b0b0b0;
   cursor: pointer;
   color: #646d75;
@@ -140,7 +140,7 @@ const FilterButton = styled.button`
   justify-content: center;
   align-items: center;
   gap: 3px;
-  padding: 8px 9px;
+  padding: 8.5px 9px;
   border: 1px solid #7faac9;
   border-radius: 3px;
   color: #2d5877;

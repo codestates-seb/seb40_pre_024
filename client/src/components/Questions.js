@@ -41,20 +41,23 @@ export default function Questions() {
 
   // api로 전체 데이터 받아오기([{질문 아이디, 질문 제목, 질문 내용, 멤버 닉네임, 작성 날짜},...] 형식)
   const getQuestions = async () => {
-    const { data } = await axios
+    return await axios
       .get(`/api/questions/${location.search || `?page=${page}&size=${limit}`}`)
+      .then((res) => {
+        let randomTags = randomTag();
+        const tags = {
+          tag: randomTags,
+        };
+        if (res.data.data.length > 0) {
+          let addedData = res.data.data.map((el) => {
+            return Object.assign({ ...el }, tags);
+          });
+          setQuestions([...addedData]);
+        }
+        setQuestionsInfo({ ...res.pageInfo });
+        setLoading(false);
+      })
       .catch((err) => console.log(err, 'Error'));
-
-    let randomTags = randomTag();
-    const tags = {
-      tag: randomTags,
-    };
-    let addedData = data.data.map((el) => {
-      return Object.assign({ ...el }, tags);
-    });
-    setQuestions([...addedData]);
-    setQuestionsInfo({ ...data.pageInfo });
-    setLoading(false);
   };
 
   useEffect(() => {

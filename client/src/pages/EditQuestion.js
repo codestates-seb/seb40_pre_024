@@ -9,12 +9,14 @@ import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
 import QuestionTipModal from '../components/QuestionTipModal';
 import Modal from '../components/Modal';
+import Loading from '../components/Loading';
 
 export default function EditQuestion() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [lengthTitle, setLengthTitle] = useState('');
   const [lengthContent, setLengthContent] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const editorRef = useRef();
   const navigate = useNavigate();
@@ -37,7 +39,9 @@ export default function EditQuestion() {
   };
 
   useEffect(() => {
+    setLoading(true);
     loadInfo();
+    setLoading(false);
   }, []);
 
   const loadInfo = async () => {
@@ -98,55 +102,60 @@ export default function EditQuestion() {
         <SidebarWrapper>
           <Sidebar />
         </SidebarWrapper>
+
         <Container>
           <h2>Edit Your Question</h2>
           <QuestionTipModal margin={'0px 0px 30px 0px'} />
-          <SectionContainer>
-            <Section>
-              <SectionTitle>Title</SectionTitle>
-              <span>
-                {`Be specific and imagine you are asking a question to another
+          {loading ? (
+            <Loading />
+          ) : (
+            <SectionContainer>
+              <Section>
+                <SectionTitle>Title</SectionTitle>
+                <span>
+                  {`Be specific and imagine you are asking a question to another
               person. Minimum ${MIN_LENGTH_TITLE} characters.`}
-              </span>
-              <Input
-                type="text"
-                placeholder="type here.."
-                maxLength="70"
-                value={title}
-                onChange={(event) => {
-                  setTitle(event.target.value);
-                  setLengthTitle(event.target.value.length);
-                }}
-                required
-              />
-              <LengthCounter
-                qualified={
-                  (lengthTitle >= MIN_LENGTH_TITLE ||
-                    title.length >= MIN_LENGTH_TITLE) &&
-                  'qualified'
-                }
-              >
-                {title.length} / {MIN_LENGTH_TITLE}
-              </LengthCounter>
-            </Section>
-            <Section>
-              <SectionTitle>Body</SectionTitle>
-              <span>
-                {`Introduce the problem and expand on what you put in the title.
+                </span>
+                <Input
+                  type="text"
+                  placeholder="type here.."
+                  maxLength="70"
+                  value={title}
+                  onChange={(event) => {
+                    setTitle(event.target.value);
+                    setLengthTitle(event.target.value.length);
+                  }}
+                  required
+                />
+                <LengthCounter
+                  qualified={
+                    (lengthTitle >= MIN_LENGTH_TITLE ||
+                      title.length >= MIN_LENGTH_TITLE) &&
+                    'qualified'
+                  }
+                >
+                  {title.length} / {MIN_LENGTH_TITLE}
+                </LengthCounter>
+              </Section>
+              <Section>
+                <SectionTitle>Body</SectionTitle>
+                <span>
+                  {`Introduce the problem and expand on what you put in the title.
               Minimum ${MIN_LENGTH_CONTENT} characters.`}
-              </span>
-              <TextEditor
-                ref={editorRef}
-                onChange={countCharacter}
-                value={' '}
-              />
-              <LengthCounter
-                qualified={lengthContent >= MIN_LENGTH_CONTENT && 'qualified'}
-              >
-                {lengthContent} / {MIN_LENGTH_CONTENT}
-              </LengthCounter>
-            </Section>
-          </SectionContainer>
+                </span>
+                <TextEditor
+                  ref={editorRef}
+                  onChange={countCharacter}
+                  value={' '}
+                />
+                <LengthCounter
+                  qualified={lengthContent >= MIN_LENGTH_CONTENT && 'qualified'}
+                >
+                  {lengthContent} / {MIN_LENGTH_CONTENT}
+                </LengthCounter>
+              </Section>
+            </SectionContainer>
+          )}
           <ButtonContainer>
             <form>
               <Button type="submit" onClick={handleEdit} submit>

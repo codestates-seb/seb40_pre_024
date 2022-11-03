@@ -12,6 +12,7 @@ import axios from 'axios';
 import ProfileContainer from '../components/DetailComponent/ProfileContainer';
 import MainProfileContainer from '../components/DetailComponent/MainProfileContainer';
 import PostView from '../components/PostView';
+import Loading from '../components/Loading';
 
 const MainContainer = styled.div`
   * {
@@ -213,9 +214,13 @@ const EditorContainer = styled.div`
     margin: 0;
     cursor: pointer;
   }
+  .AnswerContainer {
+  }
 `;
 
 const QuestionDetails = () => {
+  const [loading, setLoading] = useState(true);
+
   const { id } = useParams();
   const loginState = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
@@ -238,6 +243,7 @@ const QuestionDetails = () => {
       let data = await axios.get(`/api/questions/${id}`);
       let settingData = data.data.data;
       setMaindata([{ ...settingData }]);
+      setLoading(false);
       if (settingData.answerResponseDto.data.length > 0) {
         setComents([...settingData.answerResponseDto.data]);
       }
@@ -306,177 +312,183 @@ const QuestionDetails = () => {
           </SidebarWrapper>
           <ContentWrapper>
             {/* 여기엔 API에서 질문의 제목을 입력해주세요 */}
-            <header className="head">
-              {mainData.length > 0 && (
-                <h1 className="title">{mainData[0].questionTitle}</h1>
-              )}
-              {/* 유저가 로그인 되있으면 아래에 onClick 이벤트를 줘서 댓글창으로 이동해주세요 */}
-              <button
-                className="askbutton"
-                onClick={() => {
-                  if (loginState) {
-                    navigate('/ask');
-                  } else {
-                    alert('로그인을 해주세요');
-                    navigate('/login');
-                  }
-                }}
-              >
-                Ask Question
-              </button>
-            </header>
+            {loading ? (
+              <Loading />
+            ) : (
+              <>
+                <header className="head">
+                  {mainData.length > 0 && (
+                    <h1 className="title">{mainData[0].questionTitle}</h1>
+                  )}
+                  {/* 유저가 로그인 되있으면 아래에 onClick 이벤트를 줘서 댓글창으로 이동해주세요 */}
+                  <button
+                    className="askbutton"
+                    onClick={() => {
+                      if (loginState) {
+                        navigate('/ask');
+                      } else {
+                        alert('로그인을 해주세요');
+                        navigate('/login');
+                      }
+                    }}
+                  >
+                    Ask Question
+                  </button>
+                </header>
 
-            <div className="container">
-              <div className="current">
-                <div>
-                  Asked
-                  <span className="currentcontents asked">
-                    {mainData[0] && timeForToday(mainData[0].createdAt)}
-                  </span>
-                </div>
-                <div>
-                  Modified
-                  <span className="currentcontents Modified">
-                    {mainData[0] && timeForToday(mainData[0].modifiedAt)}
-                  </span>
-                </div>
-                <div>
-                  Viewed
-                  <span className="currentcontents Viewed">
-                    {mainData[0] && mainData[0].questionViewed}
-                  </span>
-                </div>
-              </div>
-              <div className="contents">
-                <Comments>
-                  {' '}
-                  {/* question 안에다가 댓글 넣을 것 */}
-                  <Smallcomments>
-                    <div className="vote">
-                      <svg
-                        aria-hidden="true"
-                        className="svg-icon iconArrowUpLg"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 36 36"
-                      >
-                        <path d="M2 25h32L18 9 2 25Z"></path>
-                      </svg>
-                      <div className="count">0</div>
-                      <svg
-                        aria-hidden="true"
-                        className="iconArrowDownLg"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 36 36"
-                      >
-                        <path d="M2 11h32L18 27 2 11Z"></path>
-                      </svg>
-                      <svg
-                        aria-hidden="true"
-                        className="iconBookmarkAlt"
-                        width="23"
-                        height="23"
-                        viewBox="0 0 18 18"
-                        preserveAspectRatio="none"
-                      >
-                        <path d="m9 10.6 4 2.66V3H5v10.26l4-2.66ZM3 17V3c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v14l-6-4-6 4Z"></path>
-                      </svg>
-                      <svg
-                        aria-hidden="true"
-                        className="iconHistory"
-                        width="23"
-                        height="23"
-                        viewBox="0 0 19 18"
-                        preserveAspectRatio="none"
-                      >
-                        <path d="M3 9a8 8 0 1 1 3.73 6.77L8.2 14.3A6 6 0 1 0 5 9l3.01-.01-4 4-4-4h3L3 9Zm7-4h1.01L11 9.36l3.22 2.1-.6.93L10 10V5Z"></path>
-                      </svg>
+                <div className="container">
+                  <div className="current">
+                    <div>
+                      Asked
+                      <span className="currentcontents asked">
+                        {mainData[0] && timeForToday(mainData[0].createdAt)}
+                      </span>
                     </div>
-                    <div className="contentsmain">
-                      <div>
-                        <div className="contentspost">
+                    <div>
+                      Modified
+                      <span className="currentcontents Modified">
+                        {mainData[0] && timeForToday(mainData[0].modifiedAt)}
+                      </span>
+                    </div>
+                    <div>
+                      Viewed
+                      <span className="currentcontents Viewed">
+                        {mainData[0] && mainData[0].questionViewed}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="contents">
+                    <Comments>
+                      {' '}
+                      {/* question 안에다가 댓글 넣을 것 */}
+                      <Smallcomments>
+                        <div className="vote">
+                          <svg
+                            aria-hidden="true"
+                            className="iconArrowUpLg"
+                            width="36"
+                            height="36"
+                            viewBox="0 0 36 36"
+                          >
+                            <path d="M2 25h32L18 9 2 25Z"></path>
+                          </svg>
+                          <div className="count">0</div>
+                          <svg
+                            aria-hidden="true"
+                            className="iconArrowDownLg"
+                            width="36"
+                            height="36"
+                            viewBox="0 0 36 36"
+                          >
+                            <path d="M2 11h32L18 27 2 11Z"></path>
+                          </svg>
+                          <svg
+                            aria-hidden="true"
+                            className="iconBookmarkAlt"
+                            width="23"
+                            height="23"
+                            viewBox="0 0 18 18"
+                            preserveAspectRatio="none"
+                          >
+                            <path d="m9 10.6 4 2.66V3H5v10.26l4-2.66ZM3 17V3c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v14l-6-4-6 4Z"></path>
+                          </svg>
+                          <svg
+                            aria-hidden="true"
+                            className="iconHistory"
+                            width="23"
+                            height="23"
+                            viewBox="0 0 19 18"
+                            preserveAspectRatio="none"
+                          >
+                            <path d="M3 9a8 8 0 1 1 3.73 6.77L8.2 14.3A6 6 0 1 0 5 9l3.01-.01-4 4-4-4h3L3 9Zm7-4h1.01L11 9.36l3.22 2.1-.6.93L10 10V5Z"></path>
+                          </svg>
+                        </div>
+                        <div className="contentsmain">
+                          <div>
+                            <div className="contentspost">
+                              {mainData.length > 0 && (
+                                <PostView
+                                  markdown={mainData[0].questionContent}
+                                  // dangerouslySetInnerHTML={{
+                                  //   __html: mainData[0].questionContent,
+                                  // }}
+                                ></PostView>
+                              )}
+                            </div>
+                          </div>
                           {mainData.length > 0 && (
-                            <PostView
-                              markdown={mainData[0].questionContent}
-                              // dangerouslySetInnerHTML={{
-                              //   __html: mainData[0].questionContent,
-                              // }}
-                            ></PostView>
+                            <MainProfileContainer detail={mainData[0]} />
                           )}
                         </div>
-                      </div>
-                      {mainData.length > 0 && (
-                        <MainProfileContainer detail={mainData[0]} />
-                      )}
-                    </div>
-                  </Smallcomments>
-                  {/* 질문에 대한 제목이 들어가야함 */}
-                  {coments.length > 0 && <h3>Answers</h3>}
-                  {coments.length > 0 &&
-                    coments.map((coment) => {
-                      if (coment !== undefined) {
-                        return (
-                          <DetailsComponent
-                            key={coment.answerId}
-                            detail={coment}
-                          />
-                        );
-                      } else {
-                        return null;
-                      }
-                    })}
-                  {/* 텍스트 에디터 부분 */}
-                  <EditorContainer>
-                    <h2>Your Answer</h2>
-                    <div className="AnswerContainer">
-                      <TextEditor ref={editRef} onChange={onChange} />
-                    </div>
-                    <div className="innerContain">
-                      <button
-                        className={loginState ? 'enableBtn' : 'disableBtn'}
-                        id="Btn"
-                        disabled={!loginState}
-                        onClick={() => {
-                          onSumbit();
-                        }}
-                      >
-                        Post Your Answer
-                      </button>
-                      {!loginState && (
-                        <div className="LoginMessage">
-                          You need to{' '}
-                          <p
-                            role="presentation"
-                            className="Link"
-                            onClick={() => {
-                              onNavigate('login');
-                            }}
-                          >
-                            login
-                          </p>{' '}
-                          or{' '}
-                          <p
-                            className="Link"
-                            role="presentation"
-                            onClick={() => {
-                              onNavigate('register');
-                            }}
-                          >
-                            signup
-                          </p>{' '}
-                          to add an answer.
+                      </Smallcomments>
+                      {/* 질문에 대한 제목이 들어가야함 */}
+                      {coments.length > 0 && <h3>Answers</h3>}
+                      {coments.length > 0 &&
+                        coments.map((coment) => {
+                          if (coment !== undefined) {
+                            return (
+                              <DetailsComponent
+                                key={coment.answerId}
+                                detail={coment}
+                              />
+                            );
+                          } else {
+                            return null;
+                          }
+                        })}
+                      {/* 텍스트 에디터 부분 */}
+                      <EditorContainer>
+                        <h2>Your Answer</h2>
+                        <div className="AnswerContainer">
+                          <TextEditor ref={editRef} onChange={onChange} />
                         </div>
-                      )}
+                        <div className="innerContain">
+                          <button
+                            className={loginState ? 'enableBtn' : 'disableBtn'}
+                            id="Btn"
+                            disabled={!loginState}
+                            onClick={() => {
+                              onSumbit();
+                            }}
+                          >
+                            Post Your Answer
+                          </button>
+                          {!loginState && (
+                            <div className="LoginMessage">
+                              You need to{' '}
+                              <p
+                                role="presentation"
+                                className="Link"
+                                onClick={() => {
+                                  onNavigate('login');
+                                }}
+                              >
+                                login
+                              </p>{' '}
+                              or{' '}
+                              <p
+                                className="Link"
+                                role="presentation"
+                                onClick={() => {
+                                  onNavigate('register');
+                                }}
+                              >
+                                signup
+                              </p>{' '}
+                              to add an answer.
+                            </div>
+                          )}
+                        </div>
+                      </EditorContainer>
+                      {/*  */}
+                    </Comments>
+                    <div className="right">
+                      <RightSidebar />
                     </div>
-                  </EditorContainer>
-                  {/*  */}
-                </Comments>
-                <div className="right">
-                  <RightSidebar />
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </ContentWrapper>
         </ContentWrappers>
       </Details>

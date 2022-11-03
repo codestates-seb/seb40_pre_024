@@ -106,24 +106,22 @@ export default function ProfileContainer({ detail }) {
         <DetailBtn>Share</DetailBtn>
         <DetailBtn>Follwing</DetailBtn>
         {/* 댓글을 제작한 유저의 데이터가 필요함 */}
-        {currentId !== null &&
-          currentId.memberEmail === detail.memberResponseDto.memberEmail && (
-            <DetailBtn onClick={() => moveToEdit(detail.answerId)}>
-              Edit
-            </DetailBtn>
-          )}
-        {currentId !== null &&
-          currentId.memberEmail === detail.memberResponseDto.memberEmail && (
-            <DetailBtn onClick={() => removeComment(detail.answerId)}>
-              Delete
-            </DetailBtn>
-          )}
+        {currentId !== null && currentId.memberName === detail.memberName && (
+          <DetailBtn onClick={() => moveToEdit(detail.answerId)}>
+            Edit
+          </DetailBtn>
+        )}
+        {currentId !== null && currentId.memberName === detail.memberName && (
+          <DetailBtn onClick={() => removeComment(detail.answerId)}>
+            Delete
+          </DetailBtn>
+        )}
       </div>
       <ProfileContain>
         <div>{detail && timeForToday(detail.modifiedAt)}</div>
         <Profile>
           <img src={ProfileImg} alt={'프로필 사진'} />
-          <div>{detail && detail.memberResponseDto.memberName}</div>
+          <div>{detail && detail.memberName}</div>
           {/* 작성 유저 닉넥임을 여기에 넣습니다 */}
         </Profile>
       </ProfileContain>

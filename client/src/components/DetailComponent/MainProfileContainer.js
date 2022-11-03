@@ -109,12 +109,12 @@ export default function MainProfileContainer({ detail }) {
         <DetailBtn>Share</DetailBtn>
         <DetailBtn>Follwing</DetailBtn>
         {/* 댓글을 제작한 유저의 데이터가 필요함 */}
-        {currentId.memberEmail === detail.memberResponseDto.memberEmail && (
+        {currentId.memberName === detail.memberName && (
           <DetailBtn onClick={() => moveToEdit(detail.questionId)}>
             Edit
           </DetailBtn>
         )}
-        {currentId.memberEmail === detail.memberResponseDto.memberEmail && (
+        {currentId.memberName === detail.memberName && (
           <DetailBtn onClick={() => removeComment(detail.questionId)}>
             Delete
           </DetailBtn>
@@ -124,7 +124,7 @@ export default function MainProfileContainer({ detail }) {
         <div>{detail && timeForToday(detail.modifiedAt)}</div>
         <Profile>
           <img src={ProfileImg} alt={'프로필 사진'} />
-          <div>{detail && detail.memberResponseDto.memberName}</div>
+          <div>{detail && detail.memberName}</div>
           {/* 작성 유저 닉넥임을 여기에 넣습니다 */}
         </Profile>
       </ProfileContain>

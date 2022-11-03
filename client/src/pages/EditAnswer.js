@@ -9,11 +9,13 @@ import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
 import AnswerTipModal from '../components/AnswerTipModal';
 import Modal from '../components/Modal';
+import Loading from '../components/Loading';
 
 export default function EditAnswer() {
   const [content, setContent] = useState('');
   const [answerId, setAnswerId] = useState('');
   const [lengthContent, setLengthContent] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const token = sessionStorage.getItem('jwt-token');
   const loginState = useSelector((state) => state.user.currentUser);
@@ -36,7 +38,9 @@ export default function EditAnswer() {
   const { id } = useParams();
 
   useEffect(() => {
+    setLoading(true);
     loadInfo();
+    setLoading(false);
   }, []);
 
   const loadInfo = async () => {
@@ -93,29 +97,33 @@ export default function EditAnswer() {
         <Container>
           <h2>Edit Your Answer</h2>
           <AnswerTipModal margin={'0px 0px 30px 0px'} />
-          <SectionContainer>
-            <Section>
-              <SectionTitle>Answer</SectionTitle>
-              <span>
-                {`Introduce the problem and expand on what you put in the title.
+          {loading ? (
+            <Loading />
+          ) : (
+            <SectionContainer>
+              <Section>
+                <SectionTitle>Answer</SectionTitle>
+                <span>
+                  {`Introduce the problem and expand on what you put in the title.
               Minimum ${MIN_LENGTH_CONTENT} characters.`}
-              </span>
-              <TextEditor
-                ref={editorRef}
-                onChange={countCharacter}
-                value={'수정할 텍스트를 불러올 부분입니다.'}
-              />
-              <LengthCounter
-                qualified={lengthContent >= MIN_LENGTH_CONTENT && 'qualified'}
-              >
-                {lengthContent} / {MIN_LENGTH_CONTENT}
-              </LengthCounter>
-            </Section>
-            <Section>
-              <SectionTitle>Edit Summary</SectionTitle>
-              <Input disabled placeholder="Temporarily disabled" />
-            </Section>
-          </SectionContainer>
+                </span>
+                <TextEditor
+                  ref={editorRef}
+                  onChange={countCharacter}
+                  value={'수정할 텍스트를 불러올 부분입니다.'}
+                />
+                <LengthCounter
+                  qualified={lengthContent >= MIN_LENGTH_CONTENT && 'qualified'}
+                >
+                  {lengthContent} / {MIN_LENGTH_CONTENT}
+                </LengthCounter>
+              </Section>
+              <Section>
+                <SectionTitle>Edit Summary</SectionTitle>
+                <Input disabled placeholder="Temporarily disabled" />
+              </Section>
+            </SectionContainer>
+          )}
           <ButtonContainer>
             <form>
               <Button

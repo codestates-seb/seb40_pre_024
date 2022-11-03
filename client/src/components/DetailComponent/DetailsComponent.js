@@ -33,7 +33,6 @@ const TitleContainer = styled.div`
 
 // 질문 데이터 하나하나를 여기에 담음
 export default function DetailsComponent({ detail }) {
-  // console.log(detail.questionTitle);
   return (
     <Container>
       <aside>

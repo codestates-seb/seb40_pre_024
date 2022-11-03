@@ -83,7 +83,6 @@ function elapsedTime(date) {
   const end = new Date(); // 현재 날짜
 
   const diff = end - start; // 경과 시간
-  // console.log('diff: ', diff);
 
   const times = [
     { time: 'min', milliSeconds: 1000 * 60 },
@@ -110,11 +109,11 @@ function elapsedTime(date) {
 
 export default function QuestionList({ QuestionData }) {
   const {
-    answer,
+    answerCount,
     questionViewed,
     questionTitle,
     questionContent,
-    memberResponseDto,
+    memberName,
     createdAt,
   } = QuestionData;
 
@@ -128,8 +127,8 @@ export default function QuestionList({ QuestionData }) {
   let newDate = new Date(
     `${years}-${months}-${dates} ${hours}:${minutes}:${seconds}`
   );
-  // console.log('newDate: ', newDate);
-  // console.log(Date(newDate));
+
+  const datas = questionContent.replace(/<[^>]*>?/g, '');
 
   return (
     <>
@@ -139,7 +138,7 @@ export default function QuestionList({ QuestionData }) {
           {/* <span>{QuestionData.votes}34 votes</span>
           <span>{QuestionData.answer}0 answer</span> */}
           <span>34 votes</span>
-          <span>0 answer</span>
+          <span>{answerCount} answer</span>
           <span>{questionViewed} views</span>
         </LeftContainer>
         <RightContainer>
@@ -151,9 +150,9 @@ export default function QuestionList({ QuestionData }) {
             {/* 등록된 질문 */}
             {/* (추가)내용이 길면 일부만 보여주는 로직 */}
             <p>
-              {questionContent && questionContent.length > 150
-                ? `${questionContent.slice(0, 150)} ...`
-                : questionContent}
+              {datas && datas.length > 150
+                ? `${datas.slice(0, 150)} ...`
+                : datas}
             </p>
           </Description>
           <TagMockUp>
@@ -165,7 +164,7 @@ export default function QuestionList({ QuestionData }) {
           </TagMockUp>
           <Profile>
             <CgProfile />
-            {memberResponseDto.memberName}
+            {memberName && memberName}
             <Time>
               {/* 작성시간으로부터 얼마나 지났는지 표시 */}
               {elapsedTime(newDate)}

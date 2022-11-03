@@ -145,7 +145,7 @@ export default function LogoutContainer() {
     let token = sessionStorage.getItem('jwt-token');
     console.log(token);
     axios.post(
-      'api/members/logout',
+      '/api/members/logout',
       {},
       {
         headers: {

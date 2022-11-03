@@ -57,15 +57,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
 
-            throw new AuthException(ExceptionCode.EXPIRED_TOKEN);
+            throw new AuthException(ExceptionCode.EXPIRED_TOKEN, e.getMessage());
 
         } catch (SignatureException e) {
 
-            throw new AuthException(ExceptionCode.INVALID_SIGNATURE_TOKEN);
+            throw new AuthException(ExceptionCode.INVALID_SIGNATURE_TOKEN, e.getMessage());
 
         } catch (RuntimeException e) {
 
-            throw new AuthException(ExceptionCode.INVALID_TOKEN);
+            throw new AuthException(ExceptionCode.INVALID_TOKEN, e.getMessage());
         }
 
     }

@@ -6,12 +6,14 @@ import com.preproject.server.exception.ExceptionCode;
 import com.preproject.server.response.ErrorResponse;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 /** 필터에서 Exception 발생시 실질적으로 분기하여 처리하는 클래스 **/
 public class FilterExceptionResolver {
@@ -29,11 +31,11 @@ public class FilterExceptionResolver {
 
         }
         else {
-            System.out.println(e.getMessage());
-
             //실제 live라면 클라이언트에게 에러 내용을 넘기면 안되지만,
             //현재는 개발 편의상 전달
+            log.warn(e.getMessage());
             response.getWriter().write(e.getMessage());
+
         }
     }
 

@@ -32,7 +32,8 @@ public class MemberDetailsService implements UserDetailsService {
     private Member verifyExistsMember(String email) {
 
         Member findMember = repository.findMemberByMemberEmail(email).orElseThrow(() -> {
-            throw new AuthException(ExceptionCode.MEMBER_NOT_EXISTS);
+            ExceptionCode exceptionCode = ExceptionCode.MEMBER_NOT_EXISTS;
+            throw new AuthException(exceptionCode, exceptionCode.getMessage());
         });
 
         return findMember;

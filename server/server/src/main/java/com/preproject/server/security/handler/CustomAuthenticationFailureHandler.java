@@ -21,6 +21,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         //존재하지 않는 이메일일 경우
         //비밀번호가 틀린 경우 모두 진입함.
-        throw new AuthException(ExceptionCode.AUTHENTICATION_FAIL);
+        throw new AuthException(ExceptionCode.AUTHENTICATION_FAIL, exception.getMessage());
     }
 }

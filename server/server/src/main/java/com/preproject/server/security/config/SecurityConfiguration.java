@@ -34,6 +34,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @EnableWebSecurity //등록 필터 로그로 확인 위해
 @Configuration
 @RequiredArgsConstructor
@@ -44,9 +46,6 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtil customAuthorityUtil;
 
     private final RedisTemplate redisTemplate;
-    @Value("${client.url}")
-    private String clientUrl;
-
     private final Gson gson;
 
     private final MemberMapper memberMapper;
@@ -145,12 +144,16 @@ public class SecurityConfiguration {
     //cors 설정자 빈 등록
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList(clientUrl));
-//        configuration.setAllowedMethods(Arrays.asList("*"));
 
+//        configuration.addAllowedOriginPattern("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedMethod("*");
+//        configuration.setAllowCredentials(true);
+
+        //기존 소스에 비해 명확하게 지정.. 효과는 다를것 없음:wq
         configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT" ,"PATCH", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

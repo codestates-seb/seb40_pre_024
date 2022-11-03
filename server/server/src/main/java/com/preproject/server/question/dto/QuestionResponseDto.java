@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -14,9 +15,10 @@ public class QuestionResponseDto {
     private String questionTitle;
     private String questionContent;
     private int questionViewed;
-    private MemberDto.Response memberResponseDto;
+    private Long memberId;
+    private String memberName;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
+    private int answerCount;
 
 }

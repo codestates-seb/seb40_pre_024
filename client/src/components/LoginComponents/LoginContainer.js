@@ -107,7 +107,7 @@ export default function LoginContainer() {
   const dispatch = useDispatch();
   const onLogin = async (data) => {
     try {
-      let res = await axios.post('api/members/login', {
+      let res = await axios.post('/api/members/login', {
         username: data.email,
         password: data.password,
       });

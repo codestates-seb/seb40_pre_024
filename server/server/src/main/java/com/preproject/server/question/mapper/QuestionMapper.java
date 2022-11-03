@@ -14,6 +14,7 @@ import com.preproject.server.response.MultiResponseDto;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.PageImpl;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +47,7 @@ public interface QuestionMapper {
         if ( question == null ) {
             return null;
         }
+//        ZoneId seoulZoneId = ZoneId.of("Asia/Seoul");
 
         QuestionResponseDto questionResponseDto = new QuestionResponseDto();
 
@@ -54,10 +56,13 @@ public interface QuestionMapper {
         questionResponseDto.setQuestionContent( question.getQuestionContent() );
         questionResponseDto.setQuestionViewed( question.getQuestionViewed() );
         questionResponseDto.setCreatedAt( question.getCreatedAt() );
-        questionResponseDto.setModifiedAt( question.getModifiedAt() );
+        questionResponseDto.setModifiedAt( question.getModifiedAt());
+        questionResponseDto.setAnswerCount( question.getAnswer().size());
+        questionResponseDto.setMemberId(question.getMember().getMemberId());
+        questionResponseDto.setMemberName(question.getMember().getMemberName());
 
-        Member member = question.getMember(); // question에 저장된 member를 response로
-        questionResponseDto.setMemberResponseDto(memberMapper.memberToMemberDtoResponse(member));
+//        Member member = question.getMember(); // question에 저장된 member를 response로
+//        questionResponseDto.setMemberResponseDto(memberMapper.memberToMemberDtoResponse(member));
 
         return questionResponseDto;
     }
@@ -76,10 +81,13 @@ public interface QuestionMapper {
         questionAnswerDto.setQuestionContent( question.getQuestionContent() );
         questionAnswerDto.setQuestionViewed( question.getQuestionViewed() );
         questionAnswerDto.setCreatedAt( question.getCreatedAt() );
-        questionAnswerDto.setModifiedAt( question.getModifiedAt() ); // 클릭했을때 수정시간이 변할 이유가?
+        questionAnswerDto.setModifiedAt( question.getModifiedAt() );
+        questionAnswerDto.setAnswerCount(question.getAnswer().size());
+        questionAnswerDto.setMemberId(question.getMember().getMemberId());
+        questionAnswerDto.setMemberName(question.getMember().getMemberName());
 
-        Member member = question.getMember(); // question에 저장된 member를 response로
-        questionAnswerDto.setMemberResponseDto(memberMapper.memberToMemberDtoResponse(member));
+//        Member member = question.getMember(); // question에 저장된 member를 response로
+//        questionAnswerDto.setMemberResponseDto(memberMapper.memberToMemberDtoResponse(member));
 
         Collections.reverse(question.getAnswer()); // 리스트 역순으로 정렬
 

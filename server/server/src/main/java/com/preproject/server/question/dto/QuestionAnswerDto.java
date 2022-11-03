@@ -24,6 +24,8 @@ public class QuestionAnswerDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private MultiResponseDto<AnswerResponseDto> answerResponseDto;
-    private MemberDto.Response memberResponseDto;
+    private Long memberId;
+    private String memberName;
+    private int answerCount;
 
 }

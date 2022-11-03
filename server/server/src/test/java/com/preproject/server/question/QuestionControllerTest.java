@@ -107,7 +107,9 @@ class QuestionControllerTest {
         responseDto.setQuestionTitle("질문제목은5자리");
         responseDto.setQuestionContent("질문내용은15자리제한입니다아아아아아");
         responseDto.setQuestionViewed(0);
-        responseDto.setMemberResponseDto(response);
+        responseDto.setMemberId(response.getMemberId());
+        responseDto.setMemberName(response.getMemberName());
+//        responseDto.setMemberResponseDto(response);
         responseDto.setCreatedAt(LocalDateTime.now());
         responseDto.setModifiedAt(LocalDateTime.now());
 
@@ -150,14 +152,18 @@ class QuestionControllerTest {
                                         fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성 시간"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 시간"),
+                                        fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("답변 개수"),
 
                                         //Member Response
 
-                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
-                                        fieldWithPath("data.memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
-                                        fieldWithPath("data.memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
-                                        fieldWithPath("data.memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
-                                        fieldWithPath("data.memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들")
+                                        fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("멤버 ID"),
+                                        fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("멤버 닉네임")
+
+//                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
+//                                        fieldWithPath("data.memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+//                                        fieldWithPath("data.memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
+//                                        fieldWithPath("data.memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+//                                        fieldWithPath("data.memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들")
                                 )
                         )
                 ));
@@ -190,7 +196,8 @@ class QuestionControllerTest {
         responseDto.setQuestionTitle("질문제목은5자리");
         responseDto.setQuestionContent("질문내용은15자리제한입니다아아아아아");
         responseDto.setQuestionViewed(0);
-        responseDto.setMemberResponseDto(response);
+        responseDto.setMemberId(response.getMemberId());
+        responseDto.setMemberName(response.getMemberName());
         responseDto.setCreatedAt(LocalDateTime.now());
         responseDto.setModifiedAt(LocalDateTime.now());
 
@@ -236,14 +243,18 @@ class QuestionControllerTest {
                                         fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성 시간"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 시간"),
+                                        fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("답변 개수"),
 
                                         //Member Response
 
-                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
-                                        fieldWithPath("data.memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
-                                        fieldWithPath("data.memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
-                                        fieldWithPath("data.memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
-                                        fieldWithPath("data.memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들")
+                                        fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("멤버 ID"),
+                                        fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("멤버 닉네임")
+
+//                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
+//                                        fieldWithPath("data.memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+//                                        fieldWithPath("data.memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
+//                                        fieldWithPath("data.memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+//                                        fieldWithPath("data.memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들")
                                 )
                         )
                 ));
@@ -296,9 +307,11 @@ class QuestionControllerTest {
         responseDto.setQuestionContent("질문내용은15자리제한입니다아아아아아");
         responseDto.setQuestionViewed(0);
         responseDto.setAnswerResponseDto(multiResponseDto);
-        responseDto.setMemberResponseDto(response);
+        responseDto.setMemberId(response.getMemberId());
+        responseDto.setMemberName(response.getMemberName());
         responseDto.setCreatedAt(LocalDateTime.now());
         responseDto.setModifiedAt(LocalDateTime.now());
+        responseDto.setAnswerCount(2);
 
 
         given(service.findQuestion(Mockito.anyLong())).willReturn(new Question());
@@ -336,6 +349,7 @@ class QuestionControllerTest {
                                         fieldWithPath("data.questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성 시간"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 시간"),
+                                        fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("답변 개수"),
 
                                         //Answer Response
 
@@ -345,12 +359,13 @@ class QuestionControllerTest {
                                         fieldWithPath("data.answerResponseDto.data[].answerContent").type(JsonFieldType.STRING).description("답변 내용"),
                                         fieldWithPath("data.answerResponseDto.data[].createdAt").type(JsonFieldType.STRING).description("답변 작성 시간"),
                                         fieldWithPath("data.answerResponseDto.data[].modifiedAt").type(JsonFieldType.STRING).description("답변 수정 시간"),
-                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto").type(JsonFieldType.OBJECT).description("답변 멤버 리스폰스"),
-                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
-                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
-                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
-                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들"),
-
+                                        fieldWithPath("data.answerResponseDto.data[].memberId").type(JsonFieldType.NUMBER).description("답변 작성 멤버 ID"),
+                                        fieldWithPath("data.answerResponseDto.data[].memberName").type(JsonFieldType.STRING).description("답변 작성 멤버 닉네임"),
+//                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto").type(JsonFieldType.OBJECT).description("답변 멤버 리스폰스"),
+//                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+//                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
+//                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+//                                        fieldWithPath("data.answerResponseDto.data[].memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들"),
 
                                         fieldWithPath("data.answerResponseDto.pageInfo.page").type(JsonFieldType.NUMBER).description("페이지"),
                                         fieldWithPath("data.answerResponseDto.pageInfo.size").type(JsonFieldType.NUMBER).description("사이즈"),
@@ -359,11 +374,15 @@ class QuestionControllerTest {
 
                                         //Member Response
 
-                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
-                                        fieldWithPath("data.memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
-                                        fieldWithPath("data.memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
-                                        fieldWithPath("data.memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
-                                        fieldWithPath("data.memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들")
+                                        fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("멤버 ID"),
+                                        fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("멤버 닉네임")
+
+
+//                                        fieldWithPath("data.memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
+//                                        fieldWithPath("data.memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+//                                        fieldWithPath("data.memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
+//                                        fieldWithPath("data.memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+//                                        fieldWithPath("data.memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들")
                                 )
                         )
                 ));
@@ -412,18 +431,22 @@ class QuestionControllerTest {
         responseDto1.setQuestionTitle("질문리스트제목");
         responseDto1.setQuestionContent("질문리스트내용111111111111111111");
         responseDto1.setQuestionViewed(0);
-        responseDto1.setMemberResponseDto(response);
+        responseDto1.setMemberId(response.getMemberId());
+        responseDto1.setMemberName(response.getMemberName());
         responseDto1.setCreatedAt(LocalDateTime.now());
         responseDto1.setModifiedAt(LocalDateTime.now());
+        responseDto1.setAnswerCount(0);
 
         QuestionResponseDto responseDto2 = new QuestionResponseDto();
         responseDto2.setQuestionId(2L);
         responseDto2.setQuestionTitle("질문리스트제목2");
         responseDto2.setQuestionContent("질문리스트내용222222222222222222");
         responseDto2.setQuestionViewed(0);
-        responseDto2.setMemberResponseDto(response);
+        responseDto2.setMemberId(response.getMemberId());
+        responseDto2.setMemberName(response.getMemberName());
         responseDto2.setCreatedAt(LocalDateTime.now());
         responseDto2.setModifiedAt(LocalDateTime.now());
+        responseDto2.setAnswerCount(0);
 
 
 
@@ -462,17 +485,23 @@ class QuestionControllerTest {
                                         fieldWithPath("data[].questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
                                         fieldWithPath("data[].questionContent").type(JsonFieldType.STRING).description("질문 내용"),
                                         fieldWithPath("data[].questionViewed").type(JsonFieldType.NUMBER).description("조회수"),
-                                        fieldWithPath("data[].memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
-                                        fieldWithPath("data[].memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
-                                        fieldWithPath("data[].memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
-                                        fieldWithPath("data[].memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
-                                        fieldWithPath("data[].memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들"),
+//                                        fieldWithPath("data[].memberResponseDto").type(JsonFieldType.OBJECT).description("멤버리스폰스"),
+//                                        fieldWithPath("data[].memberResponseDto.memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+//                                        fieldWithPath("data[].memberResponseDto.memberEmail").type(JsonFieldType.STRING).description("멤버 이메일"),
+//                                        fieldWithPath("data[].memberResponseDto.memberName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+//                                        fieldWithPath("data[].memberResponseDto.roles").type(JsonFieldType.ARRAY).description("멤버 권한들"),
                                         fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("작성 시간"),
                                         fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("수정 시간"),
+                                        fieldWithPath("data[].answerCount").type(JsonFieldType.NUMBER).description("답변 개수"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지"),
                                         fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("사이즈"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("회원수"),
-                                        fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("페이지수")
+                                        fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("페이지수"),
+
+                                        //member
+
+                                        fieldWithPath("data[].memberId").type(JsonFieldType.NUMBER).description("멤버 아이디"),
+                                        fieldWithPath("data[].memberName").type(JsonFieldType.STRING).description("멤버 닉네임")
                                 )
                         )
                 ));

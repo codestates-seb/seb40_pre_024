@@ -1,32 +1,32 @@
-import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 import Nav from '../components/Nav';
+import Sidebar from '../components/Sidebar';
 import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom';
 import QuestionTipModal from '../components/QuestionTipModal';
-import Sidebar from '../components/Sidebar';
+import Modal from '../components/Modal';
 
 export default function EditQuestion() {
   const [title, setTitle] = useState('');
-  const [lengthTitle, setLengthTitle] = useState('');
   const [content, setContent] = useState('');
+  const [lengthTitle, setLengthTitle] = useState('');
   const [lengthContent, setLengthContent] = useState('');
 
-  const MIN_LENGTH_TITLE = 20;
-  const MIN_LENGTH_CONTENT = 50;
-
-  const navigate = useNavigate();
-  const backNavigate = () => {
-    navigate(-1);
-  };
-
   const editorRef = useRef();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const onFocus = () => {};
+  const token = sessionStorage.getItem('jwt-token');
+  const loginState = useSelector((state) => state.user.currentUser);
 
-  const onChange = () => {
+  const MIN_LENGTH_TITLE = 5;
+  const MIN_LENGTH_CONTENT = 15;
+
+  const countCharacter = () => {
     const data = editorRef.current.getInstance().getHTML();
     setContent(data);
     const dataWithoutTag = data.replace(
@@ -36,23 +36,59 @@ export default function EditQuestion() {
     setLengthContent(dataWithoutTag.length);
   };
 
-  const handleSubmit = async (event) => {
+  useEffect(() => {
+    loadInfo();
+  }, []);
+
+  const loadInfo = async () => {
+    await axios
+      .get('/api/questions')
+      .then((response) => {
+        let currentData = response.data.data;
+        let originalTitle, originalContent;
+        for (let i = 0; i < currentData.length; i++) {
+          if (currentData[i].questionId == id) {
+            originalTitle = currentData[i].questionTitle;
+            originalContent = currentData[i].questionContent;
+            setTitle(originalTitle);
+            editorRef.current.getInstance().setHTML(originalContent);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleEdit = async (event) => {
     event.preventDefault();
 
-    const exampleData = {
+    const formData = {
+      questionId: id,
       questionTitle: title,
-      questionContent: JSON.stringify(content),
+      questionContent: content,
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: token,
     };
 
     await axios
-      .post('http://localhost:4000/test', exampleData)
-      .then((res) => {
-        console.log(res.data);
+      .patch(`/api/questions/${id}`, JSON.stringify(formData), {
+        headers: headers,
       })
-      .catch((err) => console.log(err));
-
-    setTitle('');
-    setContent('');
+      .then((response) => {
+        alert('Your question has been edited successfully.');
+        navigate(-1);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
   };
 
   return (
@@ -76,7 +112,7 @@ export default function EditQuestion() {
                 type="text"
                 placeholder="type here.."
                 maxLength="70"
-                value={'수정할 텍스트를 불러올 부분입니다.'}
+                value={title}
                 onChange={(event) => {
                   setTitle(event.target.value);
                   setLengthTitle(event.target.value.length);
@@ -84,9 +120,13 @@ export default function EditQuestion() {
                 required
               />
               <LengthCounter
-                qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
+                qualified={
+                  (lengthTitle >= MIN_LENGTH_TITLE ||
+                    title.length >= MIN_LENGTH_TITLE) &&
+                  'qualified'
+                }
               >
-                {lengthTitle} / {MIN_LENGTH_TITLE}
+                {title.length} / {MIN_LENGTH_TITLE}
               </LengthCounter>
             </Section>
             <Section>
@@ -97,14 +137,11 @@ export default function EditQuestion() {
               </span>
               <TextEditor
                 ref={editorRef}
-                onChange={onChange}
-                value={'수정할 텍스트를 불러올 부분입니다.'}
-                onFocus={onFocus}
+                onChange={countCharacter}
+                value={' '}
               />
               <LengthCounter
-                qualified={
-                  lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
-                }
+                qualified={lengthContent >= MIN_LENGTH_CONTENT && 'qualified'}
               >
                 {lengthContent} / {MIN_LENGTH_CONTENT}
               </LengthCounter>
@@ -112,20 +149,15 @@ export default function EditQuestion() {
           </SectionContainer>
           <ButtonContainer>
             <form>
-              <Button
-                disabled={
-                  title.length <= MIN_LENGTH_TITLE ||
-                  content.length <= MIN_LENGTH_CONTENT
-                    ? true
-                    : null
-                }
-                typed="submit"
-                onClick={handleSubmit}
-                submit
-              >
-                Edit Your Question
+              <Button type="submit" onClick={handleEdit} submit>
+                Save Edits
               </Button>
             </form>
+            <Modal
+              functionHandler={() => {
+                navigate(-1);
+              }}
+            />
           </ButtonContainer>
         </Container>
       </ContainerWrapper>
@@ -142,13 +174,13 @@ const ContainerWrapper = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
-  margin: 0 auto; // (이슈) 계속 중앙정렬 안되다가 이걸로 시도하니 해결
+  margin: 0 auto;
 `;
 
 const SidebarWrapper = styled.div`
   position: sticky;
   top: 53px;
-  height: 450px; // sticky 적용을 위한 height 설정 필수
+  height: 450px;
   margin-bottom: 8px;
 `;
 
@@ -205,10 +237,10 @@ const ButtonContainer = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: ${(props) => (props.submit ? '#0074CC' : null)};
+  background-color: ${(props) => (props.submit ? '#0074CC' : 'white')};
   border-radius: 5px;
   border: none;
-  color: ${(props) => (props.submit ? 'white' : '#B13235')};
+  color: ${(props) => (props.submit ? 'white' : 'red')};
   font-size: 13px;
   padding: 10px;
   width: 150px;
@@ -217,6 +249,12 @@ const Button = styled.button`
   align-self: start;
   opacity: ${(props) => (props.disabled ? '0.5' : '1')};
   margin-right: 25px;
+  font-weight: bold;
+  &:hover {
+    background-color: ${(props) => (props.submit ? '#0074cc' : 'C22F32')};
+    opacity: 0.7;
+    transition: 0.5s;
+  }
 `;
 
 const LengthCounter = styled.div`

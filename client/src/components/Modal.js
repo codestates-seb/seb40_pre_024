@@ -15,8 +15,7 @@ function Modal({ functionHandler }) {
             <ModalView onClick={(e) => e.stopPropagation()}>
               <h3>Discard question</h3>
               <span>
-                Are you sure you want to discard this question? This cannot be
-                undone.
+                Are you sure you want to discard? This cannot be undone.
               </span>
               <div>
                 <button onClick={functionHandler}>Discard</button>
@@ -67,7 +66,7 @@ const ModalView = styled.div`
   display: flex;
   flex-direction: column;
   text-align: start;
-  width: 600px;
+  width: 400px;
   height: 140px;
   border-radius: 10px;
   padding: 20px;

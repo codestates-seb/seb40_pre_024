@@ -139,7 +139,10 @@ export default function RegisterContainer() {
         navigate('/login');
       })
       .catch((err) => {
-        console.log(err);
+        setError(err.response.data.message);
+        setTimeout(() => {
+          setError('');
+        }, 2000);
       });
   };
 

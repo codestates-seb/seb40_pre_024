@@ -108,7 +108,6 @@ const IconUl = styled.ul`
 const IconLi = styled.li`
   margin-bottom: 7px;
   height: 20px;
-
   & a {
     display: flex;
     flex-direction: row;

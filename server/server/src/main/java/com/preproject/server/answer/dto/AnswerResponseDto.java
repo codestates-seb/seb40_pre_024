@@ -13,5 +13,6 @@ public class AnswerResponseDto {
     private String answerContent;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private MemberDto.Response memberResponseDto;
+    private Long memberId;
+    private String memberName;
 }

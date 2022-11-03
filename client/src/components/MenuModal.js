@@ -28,7 +28,6 @@ const ModalMenu = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   /* color: #0074cb; */
-
   .modal-menu-title {
     width: 378px;
     height: 30px;
@@ -38,7 +37,6 @@ const ModalMenu = styled.div`
     padding-top: 8px;
     display: flex;
     justify-content: space-between;
-
     // 순서를 지켜줘야 적용됨 link, visited, hover, active순
     a:visited {
       text-decoration: none;
@@ -47,17 +45,14 @@ const ModalMenu = styled.div`
         color: #3e9fea;
       }
     }
-
     > div {
       margin: 0 12px;
     }
-
     > div:nth-child(2) {
       text-transform: lowercase;
       font-weight: normal;
     }
   }
-
   .modal-menu-content {
     width: 100%;
     height: 30px;
@@ -85,35 +80,29 @@ const ModalMenu = styled.div`
       font-weight: bold;
     }
   }
-
   .modal-menu-content:last-child {
     background-color: white;
     &:hover {
       background-color: #d4e5f3;
     }
   }
-
   .modal-menu-content-2nd {
     width: 100%;
     padding: 8px 65px;
     background-color: #e8eef2;
     padding-bottom: 8px;
-
     a:visited {
       text-decoration: none;
       color: #0074cb;
     }
-
     &:hover {
       background-color: #d4e5f3;
     }
   }
-
   .modal-menu-box {
     position: relative;
     padding-top: 10px;
     background-color: white; // 추가(뒷배경 보임 조치)
-
     input {
       width: 360px;
       height: 32px;
@@ -121,11 +110,9 @@ const ModalMenu = styled.div`
       border-radius: 3px;
       padding-left: 32px;
       margin-left: 7px;
-
       &::placeholder {
         color: #b0b0b0;
       }
-
       &:focus,
       :active {
         outline: none;

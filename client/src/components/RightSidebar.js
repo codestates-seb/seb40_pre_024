@@ -10,11 +10,9 @@ const Sidebar = styled.div`
   color: #525960;
   box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
     0 2px 8px hsla(0, 0%, 0%, 0.05);
-
   width: 298px;
   float: right;
   margin-bottom: 16px;
-
   header {
     padding: 12px 1px;
     border-bottom: 1px solid #efe5c5;
@@ -23,13 +21,11 @@ const Sidebar = styled.div`
     font-weight: 700;
     margin-left: -10px;
   }
-
   ul {
     margin: 0;
     padding: 0px 15px 12px 15px;
     background-color: #fdf7e1;
   }
-
   li {
     margin: 1px 0;
     font-size: 13px;
@@ -39,7 +35,6 @@ const Sidebar = styled.div`
   a {
     text-decoration-line: none;
   }
-
   svg {
     padding-right: 10px;
   }

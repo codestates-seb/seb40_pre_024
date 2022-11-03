@@ -1,29 +1,29 @@
 import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 import Nav from '../components/Nav';
 import TextEditor from '../components/TextEditor';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal';
 
 export default function Ask() {
   const [title, setTitle] = useState('');
-  const [lengthTitle, setLengthTitle] = useState('');
   const [content, setContent] = useState('');
+  const [lengthTitle, setLengthTitle] = useState('');
   const [lengthContent, setLengthContent] = useState('');
 
-  const MIN_LENGTH_TITLE = 20;
-  const MIN_LENGTH_CONTENT = 50;
-
-  const navigate = useNavigate();
-  const backNavigate = () => {
-    navigate(-1);
-  };
-
   const editorRef = useRef();
+  const navigate = useNavigate();
 
-  const onChange = () => {
+  const token = sessionStorage.getItem('jwt-token');
+  const loginState = useSelector((state) => state.user.currentUser);
+
+  const MIN_LENGTH_TITLE = 5;
+  const MIN_LENGTH_CONTENT = 15;
+
+  const countCharacter = () => {
     const data = editorRef.current.getInstance().getHTML();
     setContent(data);
     const dataWithoutTag = data.replace(
@@ -36,20 +36,38 @@ export default function Ask() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const newData = {
-      memberId: null,
+    if (!token) {
+      alert('Token expired');
+      navigate('/login');
+      location.reload();
+    }
+
+    const formData = {
+      memberId: loginState.memberId,
       questionTitle: title,
       questionContent: content,
     };
 
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    };
+
     await axios
-      .post('http://localhost:3000/data', JSON.stringify(newData), {
-        headers: { 'Content-Type': `application/json` },
+      .post('/api/questions', JSON.stringify(formData), {
+        headers: headers,
       })
-      .then((res) => {
-        console.log(console.log(res.data));
+      .then((response) => {
+        alert('Your question has been posted successfully.');
+        navigate('/');
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
 
     setTitle('');
     setContent('');
@@ -79,7 +97,7 @@ export default function Ask() {
               required
             />
             <LengthCounter
-              qualified={lengthTitle >= MIN_LENGTH_TITLE ? 'qualified' : null}
+              qualified={lengthTitle >= MIN_LENGTH_TITLE && 'qualified'}
             >
               {lengthTitle} / {MIN_LENGTH_TITLE}
             </LengthCounter>
@@ -90,11 +108,9 @@ export default function Ask() {
               {`Introduce the problem and expand on what you put in the title.
               Minimum ${MIN_LENGTH_CONTENT} characters.`}
             </span>
-            <TextEditor ref={editorRef} onChange={onChange} value={' '} />
+            <TextEditor ref={editorRef} onChange={countCharacter} value={' '} />
             <LengthCounter
-              qualified={
-                lengthContent >= MIN_LENGTH_CONTENT ? 'qualified' : null
-              }
+              qualified={lengthContent >= MIN_LENGTH_CONTENT && 'qualified'}
             >
               {lengthContent} / {MIN_LENGTH_CONTENT}
             </LengthCounter>
@@ -111,19 +127,23 @@ export default function Ask() {
           <form>
             <Button
               disabled={
-                title.length <= MIN_LENGTH_TITLE ||
-                content.length <= MIN_LENGTH_CONTENT
-                  ? true
-                  : null
+                lengthTitle >= MIN_LENGTH_TITLE &&
+                lengthContent >= MIN_LENGTH_CONTENT
+                  ? false
+                  : true
               }
-              typed="submit"
+              type="submit"
               onClick={handleSubmit}
               submit
             >
               Review your question
             </Button>
           </form>
-          <Modal functionHandler={backNavigate} />
+          <Modal
+            functionHandler={() => {
+              navigate(-1);
+            }}
+          />
         </ButtonContainer>
       </Container>
       <Footer />

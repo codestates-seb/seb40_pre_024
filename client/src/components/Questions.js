@@ -16,6 +16,18 @@ const ListContainer = styled.div`
   flex-direction: column;
 `;
 
+// 태그 랜덤 생성
+// (옵션) 순서도 섞고 데이터마다 랜덤한 태그가 들어가도록 추가작업 해보기
+const randomTag = () => {
+  let tags = ['java', 'javascript', 'firefox', 'svg', 'springboot'];
+  let randomNum = Math.floor(Math.random() * 3 + 2);
+  let randomIndexArray = [];
+  for (let i = 0; i < randomNum; i++) {
+    randomIndexArray.push(tags[i]);
+  }
+  return randomIndexArray;
+};
+
 export default function Questions() {
   const [filterModal, setFilterModal] = useState(false);
 
@@ -34,13 +46,16 @@ export default function Questions() {
           location.search || `?page=${page}&size=${limit}`
         }`
       )
-
       .catch((err) => console.log(err, 'Error'));
 
-    // const tag = { tag: ['java', 'javascript', 'firefox', 'svg', 'springboot'] };
-    // let addedData = data.data.map((el) => el, tag);
-
-    setQuestions([...data.data]);
+    let randomTags = randomTag();
+    const tags = {
+      tag: randomTags,
+    };
+    let addedData = data.data.map((el) => {
+      return Object.assign({ ...el }, tags);
+    });
+    setQuestions([...addedData]);
     setQuestionsInfo({ ...data.pageInfo });
   };
 

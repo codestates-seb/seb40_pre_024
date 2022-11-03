@@ -35,9 +35,12 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
         <Route path="/ask" element={<Ask />} />
+        {/* 상세페이지 창 */}
         <Route path="/detail/:id" element={<QuestionDetails />} />
-        <Route path="/editquestion" element={<EditQuestion />} />
-        <Route path="/editanswer/:id" element={<EditAnswer />} />
+        {/* 질문 수정*/}
+        <Route path="/detail/:id/edit" element={<EditQuestion />} />
+        {/* 댓글 수정 */}
+        <Route path="/comment/:id/edit" element={<EditAnswer />} />
       </Routes>
     </>
   );

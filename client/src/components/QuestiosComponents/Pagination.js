@@ -21,7 +21,6 @@ const SideButton = styled.button`
   background-color: white;
   font-size: 0.8rem;
   cursor: pointer;
-
   &:disabled {
     display: none;
   }
@@ -34,12 +33,10 @@ const Button = styled.button`
   padding: 6px 9px;
   background-color: white;
   font-size: 0.8rem;
-
   &:hover {
     cursor: pointer;
     background-color: lightgray;
   }
-
   &[aria-current] {
     border: 1px solid #f48225;
     background-color: #f48225;

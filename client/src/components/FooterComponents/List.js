@@ -22,7 +22,6 @@ const SmallTitle = styled.li`
   font-weight: 500;
   padding: 0;
   font-size: 0.8rem;
-
   cursor: pointer;
   &:hover {
     color: white;

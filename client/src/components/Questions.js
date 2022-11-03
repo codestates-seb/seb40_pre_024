@@ -57,7 +57,6 @@ export default function Questions() {
           ];
         }
         setQuestions([...addedData]);
-
         setQuestionsInfo({ ...res.pageInfo });
         setLoading(false);
       })

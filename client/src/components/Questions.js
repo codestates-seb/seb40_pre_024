@@ -48,11 +48,13 @@ export default function Questions() {
         const tags = {
           tag: randomTags,
         };
-        let addedData = [...res.data.data];
-        if (addedData.length > 0) {
-          addedData = res.data.data.map((el) => {
-            return Object.assign({ ...el }, tags);
-          });
+        let addedData = [];
+        if (Array.isArray(res.data.data)) {
+          addedData = [
+            ...res.data.data.map((el) => {
+              return Object.assign({ ...el }, tags);
+            }),
+          ];
         }
         setQuestions([...addedData]);
 

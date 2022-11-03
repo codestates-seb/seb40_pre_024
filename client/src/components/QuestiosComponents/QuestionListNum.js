@@ -178,10 +178,7 @@ export default function QuestionListNum({
         MoreButtonRef.current &&
         !MoreButtonRef.current.contains(e.target)
       ) {
-        // console.log(outsidemenuRef.current);
-        // console.log(menuModal);
         setMoreModal(false);
-        // console.log(menuRef);
       }
     };
 

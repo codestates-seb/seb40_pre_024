@@ -140,10 +140,7 @@ const MenuModal = ({ setMenuModal, menuRef }) => {
         menuRef.current &&
         !menuRef.current.contains(e.target)
       ) {
-        // console.log(outsidemenuRef.current);
-        // console.log(menuModal);
         setMenuModal(false);
-        // console.log(menuRef);
       }
     };
 

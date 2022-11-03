@@ -126,7 +126,6 @@ export default function RegisterContainer() {
     handleSubmit,
   } = useForm({ mode: onchange });
   const onLogin = async (data) => {
-    // console.log(data);
     // 회원가입 api 자리
     let userData = {
       memberEmail: data.email,

@@ -75,7 +75,6 @@ const Pagination = ({ total, limit, page, setPage }) => {
     // 페이지 단위가 전환될 때
     if (page % PAGE_LIMIT === 1) {
       setCurrentPageArray(totalPageArray[Math.floor(page / PAGE_LIMIT)]);
-      // console.log('currentPageArray: ', currentPageArray);
     } else if (page % PAGE_LIMIT === 0) {
       setCurrentPageArray(totalPageArray[Math.floor(page / PAGE_LIMIT) - 1]);
     }

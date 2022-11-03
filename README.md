@@ -2,6 +2,8 @@
 
 ## 잠 못자조?
 
+[배포 링크](https://seb40-pre-024-da6p3bsxi-cansleep.vercel.app/)
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->

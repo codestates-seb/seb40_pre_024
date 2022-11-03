@@ -48,7 +48,8 @@ export default function Questions() {
         const tags = {
           tag: randomTags,
         };
-        if (res.data.data.length > 0) {
+
+        if ([...res.data.data].length > 0) {
           let addedData = res.data.data.map((el) => {
             return Object.assign({ ...el }, tags);
           });

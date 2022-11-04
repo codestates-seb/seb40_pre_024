@@ -6,9 +6,7 @@ import QuestionListNum from './QuestiosComponents/QuestionListNum';
 import QuestionsContainer from './QuestiosComponents/QuestionsContainer';
 import FilterModal from './QuestiosComponents/FilterModal';
 import Pagination from './QuestiosComponents/Pagination';
-import useScrollTop from '../util/useScrollTop';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 import Loading from './Loading';
 
 const ListContainer = styled.div`
@@ -37,12 +35,11 @@ export default function Questions() {
   const [page, setPage] = useState(1); // 현재 페이지
   const [questionsInfo, setQuestionsInfo] = useState({}); // 게시물 전체 데이터 정보
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
 
   // api로 전체 데이터 받아오기([{질문 아이디, 질문 제목, 질문 내용, 멤버 닉네임, 작성 날짜},...] 형식)
   const getQuestions = async () => {
     return await axios
-      .get(`/api/questions${location.search || `?page=${page}&size=${limit}`}`)
+      .get(`/api/questions${`?page=${page}&size=${limit}`}`)
       .then((res) => {
         let randomTags = randomTag();
         const tags = {
@@ -57,7 +54,7 @@ export default function Questions() {
           ];
         }
         setQuestions([...addedData]);
-        setQuestionsInfo({ ...res.pageInfo });
+        setQuestionsInfo({ ...res.data.pageInfo });
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -65,7 +62,7 @@ export default function Questions() {
 
   useEffect(() => {
     getQuestions();
-  }, [location.search, page]);
+  }, [page]);
 
   return (
     <ListContainer>

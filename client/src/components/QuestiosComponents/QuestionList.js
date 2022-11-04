@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
+import useScrollTop from '../../util/useScrollTop';
 
 const Container = styled.div`
   * {
@@ -108,6 +109,7 @@ function elapsedTime(date) {
 }
 
 export default function QuestionList({ QuestionData }) {
+  useScrollTop();
   const {
     answerCount,
     questionViewed,

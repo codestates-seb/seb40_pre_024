@@ -15,6 +15,7 @@ export default function PostView({ markdown }) {
       <Viewer
         plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
         initialValue={markdown}
+        //주석을 짱짱으로 추가합니다
       />
     </>
   );

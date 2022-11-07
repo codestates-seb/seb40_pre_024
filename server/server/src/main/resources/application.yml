@@ -1,0 +1,91 @@
+spring:
+
+#  ---------------------------------------------------
+
+# h2
+
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:test
+#  jpa:
+#    hibernate:
+#      ddl-auto: create  # ??? ?? ??
+#    show-sql: true      # SQL ?? ??
+#    properties:
+#      hibernate:
+#        format_sql: true  # SQL pretty print
+#  ---------------------------------------------------
+
+#  ---------------------------------------------------
+
+
+# mysql
+
+### Server
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: admin
+    password: 12341234
+    url: ${DB_RDS_SERVER}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+
+
+
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: qwer1234
+#    url: jdbc:mysql://localhost:3306/pre-project-server?serverTimezone=UTC&characterEncoding=UTF-8
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+#  ---------------------------------------------------
+
+
+
+
+
+  web:   # 존재하지 않는 리소스의 url 요청시, 404
+    resources:
+      add-mappings: false
+
+
+# jwt, my properties
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 120
+  refresh-token-expiration-minutes: 720
+
+# cors, my properties
+client:
+  url: https://example.com
+
+# redis, my properties
+redis:
+  network:
+    host: localhost
+    port: 6379
+
+#spring security filter log
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+
